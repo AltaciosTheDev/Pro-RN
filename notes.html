@@ -1,0 +1,126 @@
+<!-- 
+CONCEPT RECAP
+    1)jsx
+    2)fragments
+    3)components
+    4)props
+    5)event handlers
+    6)hooks
+    7)shortcuts (rfc)
+    8)useState - renders 
+    9)useEffect - side effects 
+    10)() return several lines
+    11)`` ${} template literals
+    12)return -> exit from function 
+    13)... -> spred operator
+    14)&& short circuiting 
+    15)style={{fontStyle="50px"}}
+    16)every component could import its own css file 
+    17)let,var,const
+    18)controlled input
+
+SIMPLE LOGGIC BEHIND LOADING A WEB PAGE
+    1)client requests url to server
+    2)server serves the index.html
+    3)index.html links to all the static files(fonts, images, stylesheets,favicon)
+    4)client will make network request for all those static files
+
+NEW KNOWLEDGE
+    1)arrow funcs need to be exported at the end of the file
+    2)"react/prop-types":"off"
+
+PROJECT 1 - FANCY COUNTER
+    CREATE PROJECT WITH VITE
+        npm create vite@version
+        npm install
+        npm run dev
+
+    PAKCHAGE JSON
+        All important information about the project(versions, commands, dependencies)
+
+    ESLINT
+        Can install extension but config file will take precedence.
+
+    HOW CAN PEOPLE GET NODE_MODULES
+        npm install
+            installs dependencies on the package.json
+        .gitignore
+            holds the node_modules so they are not commited or shared
+
+    WHERE TO STORE IMAGES
+        src
+            assets
+                if they are referenced
+        public
+            if they are not referenced
+
+    AUTO IMPORTS
+        ctrl+enter -> should pop up intellisense
+
+PROEJECT 2 - WORD ANALYTICS
+    TO LEARN
+        Character analyzer to see how many characters are left in a post for social media.
+    
+    CREATE PROJECT
+        npm create vite@version . 
+
+    TRIIGGER INTELLISENSE
+        ctrl + space
+        enter
+
+    REMEMBER SEMANTIC HTML
+        <header>
+        <footer>
+        <main>
+        <section>
+
+    REMEMBER RETURN
+        return from negative paths to prevent rest of code to execute
+        
+    DON'T NEED TO ADD MORE STATE
+        Analyze if states are very closely related and eliminate one. 
+        Boolean state is not necessary, we can condition with trushy and falsy states.
+    
+    DERIVED STATE
+        Calculations based on an existing state.
+        Avoids overpopulating with more states.
+
+    LIFTING STATE UP 
+        To parent component that can distribute to all children in need.
+
+    PASSING PROPS AS DESTRUCTURED OBJECT
+        Passing a lot of props gets messy and tedious.
+
+        const stats = {
+            numberOfWords: text.split(/\s/).filter((word) => word !== "").length,
+            numberOfCharacters: text.length,
+            instagramCharactersLeft: 280 - text.length,
+            facebookCharactersLeft: 2200 - text.length,
+        };
+
+        <Stats
+            {...stats}
+        />
+
+    CONDITIONAL STYLING IN REACT
+        className={`original clases ${var ? "classToRender" : ""}`}
+
+    EXTRACTING CONSTANTS IN SEPARATE FILE
+        Every single constant value, in separate constants.js file.
+        
+        EXAMPLE
+            export const INSTAGRAM_MAX_CHARACTERS = 280
+            export const FACEBOOK_MAX_CHARACTERS = 280
+    
+    FOLDER STRUCTURE
+        paths must be relative to the main.jsx
+
+        COMPONENTS
+            all react components
+        LIB
+            constants
+            hooks
+            utilites
+
+
+-->
