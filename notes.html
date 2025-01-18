@@ -122,5 +122,310 @@ PROEJECT 2 - WORD ANALYTICS
             hooks
             utilites
 
+INTERMEDIATE REACT & JAVASCRIPT
+    ARRAYS - INTERMEDIATE
+        push
+        length
+        .forEach
+        item[#]
+    OBJECTS - INTERMEDIATE
+        nested objects
+        property shorthands
+    ARRAYS - ADVANCED
+        .push()
+        .map() - returns new array - always specify return keyword
+        .some() - returns true if at least 1 element fulfills condition - always specify return keyword
+        .find() - returns 1st element or undefined - always specify return keyword
+        .filter() - returns new array with elements that specify condition - always specify return keyword
+    
+    OBJECTS - ADVANCED
+        bracker notation 
+            object[property]
+    SPREAD OPERATOR
+        const totalArry = [...arr, ...arr2]
+    DESTRUCTURING
+        const {name} = user -> must be same name
+        const [anything] = cart -> order is what matters
+    PRIMITIVES VS REFERENCES
+        only primitives can be compared(== || ===)
+        reference -> you get pointers to where the data is stored -> thats why they can't be compared
+    SHORT CIRCUITING && --
+        && -> super consice if this is true, run the right part.
+        || -> if first is true, stop there. If first is false, run second.
+    FUNCTIONS - INTERMEDIATE
+        order of execution 
+        refactoring -> get rid of redundant code always
+        early return -> stops function execution
+    FUNCTIONS - ADVANCED
+        callbacks -> function as parameter
+        method -> function on something
+            this keyword only works on traditional function (not arrows)
+        default param
+            could avoid undefinde in a math operation
+    FETCH - INTRO
+        words we can type without error are browser included:
+            fetch()
+        json -> syntad used by client - server communication 
+            readable
+            supported by most prog-langs
+        .then()
+            handles a promise -> must return 
+        .catch()
+            handles errors from the server
+        if(!res.ok) -> method that comes with fetch promise -> indicates if response status is in the 200s. This is necessary b/c .catch won;t always catch all errors.
+        
+    ASYNC - AWAIT
+        More modern syntax
+
+        try{
+            res = await fetch 
+            data = await res
+        }
+        catch{
+            errror
+        }
+
+    CUSTOM HOOKS
+        Functions that incorporate default hooks + additional logic
+
+        WHERE TO PUT
+            hooks folder
+                specific hook file
+
+    RULES OF HOOKS
+        NOT IN 
+            loops
+            conditions
+            nested functions
+            after early return statement
+
+PROJECT 3 - TREKBAG 
+    FEATURES
+        add items in form (done)
+        delete items (done)
+        check items (done )
+        sort
+            pack
+            unpacked
+            default 
+        reset to initial (done)
+        mark all as complete(done)
+        mark all as incomplete(done)
+        remove all items(done)
+        localstorage for data persistence
+        counter
+
+    TO LEARN
+        context api
+        zustand
+    
+    ESLINT
+        Pop linting tool for js and ts. 
+        Finds potential bugs by analyzing files and flagging issues based on predefined or custom rules.
+
+    ESLINT-PLUGIN-REACT
+        specifically for react.
+        same as normal eslint but related to react and jsx.
+    ESLINT-PLUGIN-REACT-HOOKS
+        enforces rules of react hooks.
+        ensures popular hooks are used correctly following react guidelines.
+
+    LOOP
+        ALWAYS loop when you are repeating your code.
+    
+    STATIC DATA
+        If in file, store outside component definition
+
+    EMOJI POP UP MODAL
+        windows + . 
+    
+    NEW DATE().GETTIME()
+        Can be used as a substitute for an id in an object in a database
+
+    useRef()
+        Hook to literally hook in a ref for an element in the browser.
+        useEffec()
+
+    TOAST instead of ALERTS
+        more professional
+
+    IMPLEMENTATION LOGIC AND STATE IN 1 PLACE
+        Standard practice to keep in 1 place:
+            state
+            derived state
+                normal arithmetic logic on existing state
+            logic handlers
+
+    onEvent - onHandleEvent
+        When the prop reaches the component that will make use of it,change naming to onEvent to keep html standards.
+
+    SORTING
+        1)place component
+            React-Select Library
+                Represents a whole new approach to developing powerful React.js components that just work out of the box, while being extremely customisable.
+        2)Set props
+            onChange
+            options
+            setDefaultValue
+        3)make UI change depending on the sortState
+            create sort state
+            sort array
+            map sorted array 
+    
+    LOCALSTORAGE
+        Store items
+        UseEffect
+        initialize state with return from lc || initial data if lc empty
+
+    USEMEMO
+        hook in react to avoid doing recalculation by storing a computation in memory until dependencies change. 
+        Same useEffefcct syntax
+
+
+    CHILDREN COMPOSITION
+        Pretty much just move the components higher and bloat up higher to avoid prop drilling.
+
+    CONTEXT
+        Hook that allows for the transport of information. 
+
+        1)CREATE CONTEXT COMPONENT
+            <ItemsContextProvider>
+            1.1)Outside that component definition createContext
+                const ItemsContext = createContext()
+
+            1.2)return the context.provider
+                return(
+                    <ItemsContext.Provider value={{objWithData}}>{children}</ItemsContext.Provider>
+                )
+        2)WRAP ELEMENTS WITH CONTEXT
+            <ItemsContextProvider>
+                <everything else>
+            </ItemsContextProvider>
+        3)export and consume the context from somewhere
+            1)export it from the file where it was created
+                export ItemsContext = createContext()
+            2)consume it
+                const {this,that} = useContext(ItemsContext)
+
+        PROBLEMS
+            No selectors, meaning every component attached to a part of context will always render if 1 of them change. 
+            Big apps will need A LOT of context providers. That will mean a lot of boilerplate code and wrapping of components. 
+            Middleware and advanced, context is limited. 
+            
+
+    CUSTOM HOOKS
+        Regular js function that encompasses and makes use of a hook.
+
+        STRUCTURE
+            lib
+                hook.js
+
+        EXAMPLE
+            export function useItemsContext() {
+                const context = useContext(ItemsContext)
+
+                if(!context) {
+                    throw new Error
+                }
+                return context
+            }
+        BENEFITS
+            1 import instead of 2(useContext, itemsContext)
+            easier to write useItemsContext() instead of useContext(ItemsContext)
+            when using typescript will have to account for situation in which context returns nothing.This logic can be handled here
+        
+        
+    ZUSTAND 
+        State management library for react providing simple, lightweight, flexible alternative to redux. 
+
+        BENEFITS
+            ease of use
+            minimal boilerplate
+            powerful capabilities
+
+        WHY IT WORKS WELL
+            simplicity
+                intuitive and no strict pattern
+            performance 
+                no unnecessary re-renders
+            no context provider hell
+                no context api use, so no context provider hell
+            versatility
+                supports both local and global state management, suitable for different scale applications
+            merging of state
+                dont have to spread the store object, only the modified part will be changed.
+                No need to specify {...store, propToChange: newValue}
+
+        INSTALL 
+            npm install zustand
+
+        WHERE
+            stores(folder)
+                itemsStore.js
+
+        HOW
+            Creates a store for managing state. 
+
+            1)store creation
+                create function to define state and actions.  
+
+                import create from 'zustand'
+            
+                const useStore = create((set) => {
+                    bears:0,
+                    increasePopulation: () => set((state) => ({bears: state.bears + 1})) -> previous State needed, set receives it as parameter
+                    removeAllBears: () => set({bears: 0})                                -> no prev state needed, just replace the state.
+                    updateBears: (newBears) => set({bears: newBears})                    -> payload from outside needed. Main function receives as param. 
+                })
+            *)export store
+                const export useItemStore = create((set) => ({store}))
+
+            2)accessing the store 
+                inside component
+                    const bears = useStore((state) => state.bears)
+                    const increasePopulation = useStore((state) => state.increasePopulation)
+
+            3)state update
+                zustand uses "set" function to update state. 
+                Reactive updates: only parts using the affected parts will re render.
+            4)middleware support
+                supports middleware like extending state or logging changes.
+            
+        ADVANCED FEATURES
+            1)selectors
+                derived state
+                pick specific parts of the store
+            2)middleware
+                you can enhance the store with middleware for logging, persistance or async actions.
+
+        WHEN
+            small - medium sized applications
+            simple alternative to redux
+            global state managemnt NO boilerplate
+            avoiding limits of context API
+
+        WHERE ZUSTAND SHINES
+            NO PROVIDER COMPONENT HELL
+            NO UNNECESARY RE RENDER
+            NO NEED TO SPREAD STATE, MORE DECLARATIVE PROGRAMMING
+            SIMPLE TO SET AND USE
+            SMALL,MID,LARGE PROJECTS 
+            AVANCED MIDDLEWARE like persist for localstorage
+            
+
+
+
+        
+
+
+
+        
+
+
+
+
+
+        
+
 
 -->
