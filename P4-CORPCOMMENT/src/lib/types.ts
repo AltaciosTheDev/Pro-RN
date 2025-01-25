@@ -5,5 +5,4 @@ export type TFeedbackItem = {
     company: string;
     text: string;
     daysAgo: number;
-
 }
