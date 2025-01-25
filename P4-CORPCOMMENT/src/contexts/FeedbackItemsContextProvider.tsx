@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 import { TFeedbackItem } from "../lib/types";
 
 type FeedbackItemsContextProps = {
@@ -126,12 +126,3 @@ export default function FeedbackItemsContextProvider({
   );
 }
 
-export function useFeedbackItemsContext() {
-  const context = useContext(FeedbackItemsContext);
-  if (!context) {
-    throw new Error(
-      "FeedbackItemsContext is not defined in FeedbackList component"
-    );
-  }
-  return context;
-}

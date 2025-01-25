@@ -1,6 +1,6 @@
 import {useState } from "react";
 import { MAX_CHARACTERS } from "../../lib/constants";
-import {useFeedbackItemsContext } from "../../contexts/FeedbackItemsContextProvider";
+import { useFeedbackItemsContext } from "../../lib/hooks";
 
 export default function FeedbackForm() {
   //context usage

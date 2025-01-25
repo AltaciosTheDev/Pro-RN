@@ -1,4 +1,4 @@
-import { useFeedbackItemsContext } from "../../contexts/FeedbackItemsContextProvider";
+import { useFeedbackItemsContext } from "../../lib/hooks";
 import HashtagItem from "./HashtagItem";
 
 export default function HashtagList() {
