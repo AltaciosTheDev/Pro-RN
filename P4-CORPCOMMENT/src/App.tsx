@@ -1,7 +1,7 @@
 import Container from "./components/Container"
 import Footer from "./components/Footer"
 import HashtagList from "./components/HashtagList"
-import { TFeedbackItem } from "../lib/types";
+import { TFeedbackItem } from "./lib/types";
 import { useEffect, useState } from "react";
 
 function App() {
