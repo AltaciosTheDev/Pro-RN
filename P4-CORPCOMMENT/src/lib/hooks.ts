@@ -1,5 +1,6 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FeedbackItemsContext } from "../contexts/FeedbackItemsContextProvider";
+import { TFeedbackItem } from "./types";
 
 export function useFeedbackItemsContext() {
     const context = useContext(FeedbackItemsContext);
@@ -9,5 +10,46 @@ export function useFeedbackItemsContext() {
       );
     }
     return context;
+  }
+
+  export function useFeedbackItems() {
+      const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
+      const [isLoading, setIsLoading] = useState(false);
+      const [errorMessage, setErrorMessage] = useState("");
+
+      //zustanded
+    useEffect(() => {
+        const fetchFeedbackItems = async () => {
+          setIsLoading(true);
+          try {
+            const response = await fetch(
+              "https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks"
+            );
+    
+            if (!response.ok) {
+              throw new Error(); //this goes to the catch immediately.
+            }
+            const data = await response.json();
+            setFeedbackItems(data.feedbacks);
+            setIsLoading(false);
+          } catch {
+            //network error
+            //not 2xx response
+            //json parsing error
+            setErrorMessage("Something went wrong.");
+            setIsLoading(false);
+          }
+        };
+        fetchFeedbackItems();
+      }, []);
+    
+      return {
+        feedbackItems,
+        isLoading,
+        errorMessage,
+        setFeedbackItems,
+        setIsLoading,
+        setErrorMessage
+      }
   }
   

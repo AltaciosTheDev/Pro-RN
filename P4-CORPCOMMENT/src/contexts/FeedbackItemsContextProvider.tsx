@@ -1,5 +1,6 @@
-import { createContext, useEffect, useMemo, useState } from "react";
+import { createContext, useMemo, useState } from "react";
 import { TFeedbackItem } from "../lib/types";
+import { useFeedbackItems } from "../lib/hooks";
 
 type FeedbackItemsContextProps = {
   isLoading: boolean;
@@ -21,10 +22,8 @@ type FeedbackItemsContextProviderProps = {
 export default function FeedbackItemsContextProvider({
   children,
 }: FeedbackItemsContextProviderProps) {
-  //states
-  const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  //states - zustanded
+  const{feedbackItems, isLoading, errorMessage, setFeedbackItems} = useFeedbackItems()
   const [selectedCompany, setSelectedCompany] = useState("");
 
   //derived states
@@ -47,11 +46,11 @@ export default function FeedbackItemsContextProvider({
     [feedbackItems, selectedCompany]
   ); //the main items worked on , the variable that will change them
 
-  //handlers of states
+  //handlers of states - zustanded
   const handleSelectCompany = (company: string) => {
     setSelectedCompany(company);
   };
-  //handlers of state
+  //handlers of state - zustanded
   const handleAddToList = async (text: string) => {
     const companyName = text
       .split(" ")
@@ -83,30 +82,6 @@ export default function FeedbackItemsContextProvider({
     );
   };
 
-  useEffect(() => {
-    const fetchFeedbackItems = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          "https://bytegrad.com/course-assets/projects/corpcomment/api/feedbacks"
-        );
-
-        if (!response.ok) {
-          throw new Error(); //this goes to the catch immediately.
-        }
-        const data = await response.json();
-        setFeedbackItems(data.feedbacks);
-        setIsLoading(false);
-      } catch {
-        //network error
-        //not 2xx response
-        //json parsing error
-        setErrorMessage("Something went wrong.");
-        setIsLoading(false);
-      }
-    };
-    fetchFeedbackItems();
-  }, []);
 
   return (
     <FeedbackItemsContext.Provider

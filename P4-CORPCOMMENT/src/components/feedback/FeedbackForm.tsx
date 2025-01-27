@@ -1,10 +1,11 @@
 import {useState } from "react";
 import { MAX_CHARACTERS } from "../../lib/constants";
-import { useFeedbackItemsContext } from "../../lib/hooks";
+import { useFeedbackItemsStore } from "../../stores/feedbackItemsStore";
 
 export default function FeedbackForm() {
   //context usage
-  const {handleAddToList: onAddToList} = useFeedbackItemsContext()
+  //const {handleAddToList: onAddToList} = useFeedbackItemsContext()
+  const addItemToList = useFeedbackItemsStore((state) => state.addItemToList)
 
   //states
   const [text, setText] = useState("");
@@ -35,7 +36,7 @@ export default function FeedbackForm() {
       return
     }
 
-    onAddToList(text)
+    addItemToList(text)
     setText("")
   }
 
