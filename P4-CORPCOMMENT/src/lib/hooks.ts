@@ -12,7 +12,8 @@ export function useFeedbackItemsContext() {
     return context;
   }
 
-  export function useFeedbackItems() {
+  //hook to encapsulate declaration and initial values of the 3 related states in 1 hook that is named after the feature
+  export function useFeedbackItems() {//encapsulate logic that only deals with one thing. 
       const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
       const [isLoading, setIsLoading] = useState(false);
       const [errorMessage, setErrorMessage] = useState("");
