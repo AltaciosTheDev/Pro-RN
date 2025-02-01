@@ -244,7 +244,7 @@ PROJECT 3 - TREKBAG
 
     useRef()
         Hook to literally hook in a ref for an element in the browser.
-        useEffec()
+        useEffect()
 
     TOAST instead of ALERTS
         more professional
@@ -361,7 +361,7 @@ PROJECT 3 - TREKBAG
 
         WHERE
             stores(folder)
-                itemsStore.js
+                itemsStore.js/ts
 
         HOW
             Creates a store for managing state. 
@@ -412,6 +412,626 @@ PROJECT 3 - TREKBAG
             SMALL,MID,LARGE PROJECTS 
             AVANCED MIDDLEWARE like persist for localstorage
             
+TYPESCRIPT IN REACT
+    IN COMPONENT PROPS:
+        MAINTAINS CONSISTENCY IN PROPS GIVEN AND NEEDED
+            Instance
+                Given props not defined in component definition will return error.
+                    Property 'pillshape' does not exist on type 'IntrinsicAttributes & ButtonProps'
+                Missing props defined but not given will remind the user they are needed.
+                   Type '{}' is missing the following properties from type 'ButtonProps': backgroundColor, fontSize, pillShapets(2739)
+
+            Definition
+                Defined props not used, will return error.
+                    'backgroundColor' is defined but never used
+            
+            INTELLISENSE
+                ctrl+space
+                    Ts will show all the possible props that the component is expecting
+
+        DEFINING PROP TYPES
+            Since prop is an object, prop types will be for objects.
+
+            SYNTAX 1 - INLINE
+                export default function Button({backgroundColor,fontSize pillShape}:{backgroundColor:string, fontSize:number, pillShape: boolean}) {
+                    return (
+                        <button>
+                            ...
+                        </button>
+                    );
+                }
+
+            SYNTAX 2 - EXTRACTED PROP TYPE
+                Declare type outside of component definition
+
+                type ButtonProps = {backgroundColor:string, fontSize:number, pillShape: boolean}
+
+                export default function Button({backgroundColor,fontSize, pillShape}:ButtonProps) {
+                    return (
+                        <button className="bg-blue-500 text-white rounded px-4 py-2">
+                        Click me
+                        </button>
+                    );
+                }
+
+                EXTRACTED UNION TYPE FOR ALREADY EXTRACTED PROP TYPE
+                    type Color = "red" | "blue" | "green"
+                    type ButtonProps = {backgroundColor: Color, fontSize:number, pillShape: boolean}
+
+
+        OPTIONAL PROP 
+            type ButtonProps = {backgroundColor:string, fontSize:number, pillShape?: boolean}
+
+        ARRAY TYPE FOR PROP
+            type ButtonProps = {backgroundColor: Color[], fontSize:number, pillShape: boolean, padding: number[]}
+
+        TUPLE TYPE FOR PROP
+            Will determine:
+                1)specific number of elements
+                2)type of each specific element
+
+            type ButtonProps = {backgroundColor: Color[], fontSize:number, pillShape: boolean, padding: [number, number, number]}
+            <Button padding: [44,33,22]/> -> only 3 elements b/c that is what is defined in the tuple 
+
+        USING AND OBJECT FOR STYLE INSTEAD OF INDIVIDUAL PROPERTIES
+            MANUAL 
+                type ButtonProps = {
+                    style: {
+                        backgroundColor: string,
+                        fontSize: number
+                        etc
+                    }
+                }
+
+                <Button style={{backgroundColor: "blue", fontSize: 24}}/>
+            
+            REACT CSS PROPERTIES TYPE
+                type ButtonProps = {
+                    style: React.CSSProperties
+                }
+
+                WHY?
+                    Permits use to pass an object filled with actual css properties in the component instance AND AVOID writing all of them in the type created, b/c this is already done by React.
+                    Will tell you if you wrote incorrectly a property in the instance, since it will not exist in the interface created by react
+                    Will tell you if the value you wrote is incorrect, since it is already defined in he interface what values are permited.
+
+        GENERICS IN PROP TYPES
+            type ButtonProps = {
+                borderRadius: Record<string, number>
+            }
+
+            <Button borderRadius={{
+                topLeft: 5,
+                topRight: 5, 
+                bottomRight:10,
+                bottomLeft:10
+            }}/>
+
+        TYPES FOR FUNCTION PROPS
+            Create and pass the function
+                const onClick = (test:string) => 5
+                <Button onClick={onClick}/> 
+
+            Specify parameters and their types and return type
+                type ButtonProps = {
+                    onClick: (test: string) => number
+                }
+
+        TYPES FOR CHILDREN PROP
+            Giving children to component instance
+                <Button>Click me</Button>
+            
+            Consume prop in component
+                export default function Button({children}){
+                    ...
+                }
+
+            Define in the ButtonProps
+                type ButonProps = {
+                    children: React.ReactNode 
+                }
+
+            FROM REACT
+                React.ReactNode
+                React.CSSProperties
+                React.ReactElement
+                React.Dispatch<React.SetStateAction<number>>
+                React.MouseEvent<HTMLButtonElement, MouseEvent>
+                <HTMLButtonElement>
+                REACT.JSX.ELEMENT
+
+            REACT.REACTNODE
+                Allows for a range of types that can be rendered by React.
+                    string: text content
+                    number: numberic contenxt
+                    boolean: true or false
+                    null: nothing
+                    undefined: no content
+                    ReactElement: jsx
+                    ReactFragment: fragment containing multiple children
+                    ReactPortal: portal that renders childen into different parts of the dom
+                
+        TYPE FOR SET STATE FUNCTION 
+            Giving SET FUNCTION to component instance
+                <Button setCount={setCount}>Click me</Button>
+            
+            Consume prop in component
+                export default function Button({setCount}){
+                    ...
+                }
+
+            Define in the ButtonProps
+                type ButonProps = {
+                    setCount: React.Dispatch<React.SetStateAction<number>>
+                }
+
+            React.Dispatch<React.SetStateAction<number>>
+                Type of a state setter function returned by useState hook in react.
+                Ensures that the setter function can accept either a new state value directly or a function that takes the previous state and returns a new value.
+
+                React.Dispatch
+                    dispatch function hat can be used to update state
+                React.SetStateAction<number>
+                    action that can be dispatched, either new state value number or function with prev state returning new type of number.
+            
+        ComponentProps<"element"> 
+            This line means that ButtonProps will inherit all the props of a native HTML <button> element.
+
+            ComponentProps: 
+                This utility type extracts the props of a given React component or an HTML intrinsic element (like "button", "div", etc.).
+
+            <"button">: 
+                This specifies which component or HTML element you want to extract props from. In this case, it's the intrinsic "button" element.
+
+            HOW
+                HTML elements in React, such as <button>, have predefined props, like onClick, disabled, and so on.
+                ComponentProps<"button"> automatically generates the type definition for these props, so you don't need to manually define them. 
+                
+            EXAMPLE
+                type ButtonProps = ComponentProps<'button'>
+
+                ONLY SPEAD(...PROPS)
+                    const Button: React.FC<ButtonProps> = (props) => {
+                        return <button {...props}>{props.children}</button>    
+                    }
+
+                REST OP(...REST)
+                const Button: React.FC<ButtonProps> = ({type, autoFocus, ...rest}) => {
+                    return <button type={type}, autoFocus={autoFocus}, {...rest}>{props.children}</button>    
+                }
+                
+                <Button type="submit" autoFocus={true} defaultValue="test"/>
+
+            HELPER(UTILITY) TYPES
+                Predefined types that simplify common type manipulation.
+                
+                Syntax for Helper Types:
+                    Helper types typically use generics. For example:
+                        type MyType<T> = Partial<T>;
+
+                COMMONLY USED 
+                    Partial<T>: Makes all properties of a type optional.
+                        type Person = { name: string; age: number };
+                        type OptionalPerson = Partial<Person>;
+                        // { name?: string; age?: number }
+                    Required<T>: Makes all properties of a type required.
+                        type OptionalPerson = { name?: string; age?: number };
+                        type FullPerson = Required<OptionalPerson>;
+                        // { name: string; age: number }
+                    Readonly<T>: Makes all properties read-only.
+                        type Person = { name: string; age: number };
+                        type ReadonlyPerson = Readonly<Person>;
+                        // { readonly name: string; readonly age: number }
+                    Pick<T, K>: Picks specific keys from a type.
+                        type Person = { name: string; age: number; location: string };
+                        type NameAndAge = Pick<Person, "name" | "age">;
+                        // { name: string; age: number }
+                    Omit<T, K>: Excludes specific keys from a type.
+                        type Person = { name: string; age: number; location: string };
+                        type WithoutLocation = Omit<Person, "location">;
+                        // { name: string; age: number }
+                    Record<K, T>: Creates a type with keys K and values of type T.
+                        type RolePermissions = Record<"admin" | "editor" | "viewer", boolean>;
+                        // { admin: boolean; editor: boolean; viewer: boolean }
+                
+        INTERSECTION 
+            Way to combine multiple types into a single type including all properties and methods of each constituent type. (&)
+
+            EXAMPLE
+                Situation to determine the props for a regular element and then inrtersect with something extra for another element.
+
+                type = ButtonProps = {
+                    type: "button" | "submit" | "reset",
+                    color: "red" | "blue" | "green"
+                }
+                type SuperButtonProps = ButtonProps & {
+                    size: "md" | "lg"
+                }
+
+            EXAMPLE FOR INTERFACE
+                type SuperButtonProps extends ButtonProps {
+                    size: "md" | "lg"
+                }
+
+    IN EVENT HANDLERS
+        INLINE
+            Ts can infer the type of the parameters of inline handlers.
+
+            EXAMPLE
+            <button onClick = (e) => console.log("clicked")> 
+            TYPE: event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+
+        EXTRACTED
+            No longer infered, must define manual.
+
+            const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => console.log("clicked")
+
+    WITH STATE
+        Ts can infer the type with the default value. 
+        Manual definition of type can also be done.
+
+        EXAMPLE
+            useState<number>(3)
+
+        WITH NULL INITIATION
+            1)Make sure the type is defined and unioned with null
+                type User = {
+                    name:string
+                }
+                const [user, setUser] = useState<User | null>(null)
+            
+            2)Guard clause for when the state is actually null
+                const name = user?.name
+
+    WITH USEREF
+        const ref = useRef<HTMLButtonElement>(null)
+    
+    AS CONST
+        Makes an inferred type a literal typ
+        Makes the type a readonly
+
+    ASSERT
+        Explicitly giving a type to something ts has inferred.
+
+        type ButtonColor = "red" | "blue" | "green"
+
+        useEffect(() => {
+            const previousButtonColor = localStorage.getItem("buttonColor") as ButtonColor
+        }, [])
+
+    GENERICS
+        With react, must have a comma after defining the generic type. 
+            <T,> this is so ts does not confuse this with an html element
+
+        INLINE
+            function ConvertToArray <T> (contValue: T): T[] {  
+                ...              
+                }
+        EXTRACTED
+            type ButtonProps<T> = {
+                countValue:T,
+                countHistory: T[]    
+            }
+            export default function Button<T>({countValue, countHistory}: ButtonProps<T>)
+
+    EXPORT AND IMPORT
+        EXPORT
+            LIB folder  
+                types.ts 
+                    export type Color = "red" | "green" | "blue"
+
+        IMPORT 
+            import {type Color} from "@/lib/types"
+            
+
+    UNKNOWN
+        Some situations where data is unknown, ts will default to any(e.g. Fetching from an API)
+
+        .then((response) => response.json())
+        .then((data:unknown) => console.log(data))
+
+        ZOD
+            Following the example above, we can parse the data through zod to ensure it will be the particular form we thought it would be. 
+            
+    IN COMPONENT RETURN TYPE
+        Ts can infer the return type of a react element.
+            REACT.JSX.ELEMENT | JSX.ELEMENT 
+
+    WHERE TO REACT TYPES COME FROM 
+        React.ReactNode
+        React.CSSProperties
+
+        Nodemodules and that gets them from the repo definitely typed
+
+    TSCONFIG.JSON
+        
+        
+    ZOD
+        Validator of types and parser
+
+    TS-RESET
+        
+    
+PROJECT 4 - CORPCOMMENT
+    WHAT
+        write comment about something 
+        # to categorize the comment
+        # of characters limit
+        filter by #
+        Upvoting
+        Persisting data to server
+        get - post data 
+
+    TOOLS
+        TS
+        CONTEXT
+        ZUSTAND
+
+    VITE WITH TS FRESH LOOKAROUND
+        npm create vite@4.4.1 . 
+
+    .d.ts files
+        Declaration files that make declarations available
+
+    RADIX ICONS
+        npm install @radix-ui/react-icons@1.3.0
+
+    TS in state
+        Infers based on the initialValue
+
+        INFERED TYPE NEVER BASED ON EMPTY INITIAL STATE
+            Type 'TFeedbackItem' is not assignable to type 'never'.ts(2322)
+
+            PROBLEM
+                const [feedbackItems, setFeedbackItems] = useState([]);
+
+            ANSWER
+                const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
+
+                
+
+    TS IN e param of handler function
+        EXTRACTED
+            e: React.ChangeEvent<HTMLTextAreaElement>
+
+        INLINE
+            <textarea onChange((e) => ...)>...</textarea> -> ts can recognize it is a change event on a text area element.
+
+    EXPLICIT RETURN ON MAP
+        blabla.map((item) => ({ ->allows to return object or component without writing the word
+        }))
+
+    TS IN PROPS
+        Takes care of you
+            intellisense
+            no grammar mistakes
+        
+    LOADINGSTATE
+        isLoading state
+        conditionally render spinner
+
+    Ts in data methods
+        Depending on the data type method, ts could return undefined. In this cases we need to narrow it down and add guard clasuses so ts knows the undefined case has been handled. 
+
+    OPTIMISITC POSTING AND RENDER
+        update ui first
+        post data to server second
+
+    COMPONENT STRUCTURE
+        create folders to improve the folder structure of the app 
+            src
+                app.tsx
+                layout  
+                    header.tsx
+                    container.tsx
+                    footer.tsx
+                feedback
+                    all items related to this
+                ...rest
+    
+    indexOf() method
+        find position of first ocurrence of specific value in an array. 
+        
+        SYNTAX
+            array.indexOf(element, start[opt])
+
+        RETURN
+            index of first ocurrence
+            -1 if not found
+
+        EXAMPLE
+            How to remove duplicate items from the company list array 
+              const companyList = feedbackItems
+                .map((item) => item.company)
+                .filter((company, index, array) => array.indexOf(company) === index); //more derived state
+
+    HASHTAG FEATURE
+        hashtag list
+            hastag item
+                company name from feedback items
+                removed duplicate
+                inserted hasthtag
+        filter by hashtag item
+            create selectedCompany state
+            add condition to filter feedbacklist items based on this state
+            setSelectedFilter function on an onClick button event of the hashtag list items 
+                create function and pass it down from app -> #list -> #item 
+
+    ? OP WITH FILTERING A STATE
+        selectedFilter state ? filter the list : original list 
+
+    USEMEMO(memory efficient hook)
+        Avoid computation by storing calculations in memory
+    
+        usual dependencies(states used inside determine the dependencies) 
+            1)state worked on
+            2)state that can change item 1
+
+    Toggle feedback item
+        state to control toggle
+        conditionally style based on state
+        change state with event handler
+
+    Upvote feature
+        upvotelocalstate and setstate(initialize with upvote )
+        onClick event handler -> setstate
+        e.stopPropagation()
+        limit upvote
+            
+    validation when user submits form 
+        conditionally render styles on form depending on both states
+            green - correct format (conditions for valid)
+                state for valid
+                setstate true
+                setTimeout - to turn off state
+            
+            red - incorrect format
+                state for invalid
+                setstate true
+                setTimeout - to turn off state
+                return - we don't want the rest of code to execute
+
+    CUSTOM HOOK FOR CONTEXT
+        1)encapsulates the validation logic 
+        2)allows the validation logic to be reused
+        3)once we get context, we avoid initial null value scenario 
+
+    DOWNFALL OF CONTEXT
+        If even 1 thing in the values object changes, the whole lot of components will have to re render. 
+        
+    CREATION OF CUSTOM HOOK FOR DATA FETCHING
+         
+    
+P5 - RMTDEV
+    Shows all rmtdev jobs in the world
+
+    TO LEARN
+        React-query
+            Library:
+                State management
+                data - fetching
+            Simplifies:
+                handling async data with:
+                    caching
+                    background data sync
+                    automatic refetching    
+            Features
+                auto caches fetched data
+                keeps data fresh by refetching in background
+                refetches when deps change, comps remount, or net reqs
+                supports pagination and infinite scrolling when fetching 
+                allows updating ui before api resp for better ux 
+                simple way to update or post data to server
+                built in dev tools to inspect 
+
+
+    FEATURES
+        header
+            logo
+            bookmarks
+                list of bookmarks modal
+            Search bar
+        container    
+            Jobs(sidebar)
+                Job controls 
+                    counter
+                    relevant - recent filters
+                Job list
+                    caching previous job list result
+                Pagination
+            Job details page(job item content)
+                accessed via url parameter
+                Bookmark a job
+                caching specific job details result 
+        footer 
+            counter of tot jobs available 
+
+    INITIALIZE PROJECT
+        CLONE REPO  
+            git clone https://github.com/ByteGrad/starter-rmtdev.git .
+        
+    SEARCH 
+        Auto searching when typing
+
+        TARGET
+            resource in a pre built servert
+
+        WHERE
+            1)useEffect 
+                EXAMPLE
+                    useEffect(() => {
+                        if(!searchText) return //only fetch when input not empty will avoid fetch onloading b/c of this. 
+                        fetch("https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=react")
+                    },[searchText])
+                React-Query works with useEffect. 
+
+            2)EVENT HANDLER
+                fetch inside the handler
+                    auto avoid fetching on mount
+                    only fetches when provoked
+
+        LOCATION
+            Maintain all related states in same place(job list, search text) 
+            1)Initially in form
+            2)app 
+                state
+                useffect initial render funciton
+
+    PREVENTING PROP DRILLING
+        children prop when it is simpler, instead of context or zustand.
+
+    
+
+
+    LEARNED - SUMMARY
+        cacheing
+            storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
+        clone repo to here
+            git clone https://github.com/ByteGrad/starter-rmtdev.git .
+        sharing repo    
+            package.json to install node_modules and avoid uploading the massive folder 
+        icon to use action
+            wrap icon in a button 
+                example
+                    BookmarkIcon
+                    BookmarkButton
+        reusability even in small components
+            BookmarkIcon component 
+        logo to start page
+            wrap image or icon in anchor tag 
+        Getting data(fetching)
+            OnLoad
+                useEffect
+            onReaction
+                Event handler
+        Sending complex info as prop
+            If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
+        Typing API Resp
+            analyze what comes back and type the object of the response
+        Children prop to encapsulate html tags
+            create component that will use a div to wrap around children. This encapsulates logic. 
+        
+        
+            
+            
+                
+
+
+        
+                    
+
+    
+        
+    
+    
+            
+
+        
+
+
+
+                    
+
 
 
 
