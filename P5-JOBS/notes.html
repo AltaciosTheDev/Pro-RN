@@ -1009,6 +1009,13 @@ P5 - RMTDEV
             hook into the hashchange event and read it every time it changes
             remove the listener when the component unmounts
             assign id to state
+            create custom hook to encapsulate activeId logic
+            display particular job item details from job.id === url.hash
+                useActiveId
+                    useEffect to check when activeId changes
+                custom hook for useJobItem
+                    fetch the api with that id
+                    store the data received in active job item state
             
     
         2-Reading id from url to style and render info
@@ -1069,8 +1076,13 @@ P5 - RMTDEV
             Specify what it will be so the inferred type does not make a mistake or give you problems
         AS CONST
             prevents any type of infer and avoids needless errors
-        #operator
+        #unary plus operator
             Auto converts something to number
+        BASE_API_URL    
+            always store base api url in a constant to change only in 1 place
+        RETURN WHEN STATE NULL
+            guard clase when state initially is null, means to return immediately. 
+
         
             
         
