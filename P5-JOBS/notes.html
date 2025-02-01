@@ -985,7 +985,10 @@ P5 - RMTDEV
         isLoading var
         list and isloading are in sync, sometimes you may need to condition the render of list on a false isloading only
     
+    EXTRACT JOBLIST LOGIC TO CUSTOM HOOK
+        group all related logic and callign of logic to custom hook to declutter main app
 
+    
 
     LEARNED - SUMMARY
         cacheing
@@ -1016,6 +1019,13 @@ P5 - RMTDEV
             create component that will use a div to wrap around children. This encapsulates logic. 
         TERMINAL - PROBLEMS TAB
             Specifies each problem and where it is located
+        Custom hook for initial list state
+            Preferable to extract logic of:
+                main state(list)
+                related state(loading, error)
+                useEffect or place where it is being called
+                fetch and aysnc actions
+        
         
         
         

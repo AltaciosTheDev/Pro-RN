@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Background from "./Background";
 import Container from "./Container";
 import Footer from "./Footer";
@@ -12,29 +11,12 @@ import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 import JobList from "./JobList";
 import PaginationControls from "./PaginationControls";
+import { useJobItems } from "../lib/hooks";
+import { useState } from "react";
 
 function App() {
-  const [jobItems, setJobItems] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  console.log(jobItems);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    if (!searchText) return; //only fetch when input not empty will avoid fetch onloading b/c of this.
-
-    const fetchData = async () => {
-      const response = await fetch(
-        `https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=${searchText}`
-      );
-      const data = await response.json();
-      setIsLoading(false);
-      setJobItems(data.jobItems);
-    };
-    fetchData();
-  }, [searchText]);
+  const {jobItems, isLoading} = useJobItems(searchText)
 
   return (
     <>
