@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { JobItem } from "./types";
 
 //can re use all logic related to getting the jobitems and the loading
 export function useJobItems(searchText: string){
-    const [jobItems, setJobItems] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [jobItems, setJobItems] = useState<JobItem[]>([]);//cast when the inferred can get you in trouble(never[]) 
+    const [isLoading, setIsLoading] = useState(false);//no need to type b/c ts infers
+
+    const jobItemsSliced = jobItems.slice(0,7)
 
     useEffect(() => {
         setIsLoading(true);
@@ -21,9 +24,5 @@ export function useJobItems(searchText: string){
         fetchData();
       }, [searchText]);
 
-    return {
-        jobItems, 
-        setJobItems,
-        isLoading
-    }
+    return [jobItemsSliced, isLoading] as const //leaves no room for interpretation
 }

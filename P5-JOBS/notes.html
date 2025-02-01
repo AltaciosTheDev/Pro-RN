@@ -988,6 +988,12 @@ P5 - RMTDEV
     EXTRACT JOBLIST LOGIC TO CUSTOM HOOK
         group all related logic and callign of logic to custom hook to declutter main app
 
+    SLICE JOB ITEMS
+        Normal slice the jobItems to render only 7 
+
+    CAST TYPE B/C OF ARRAYS IN TS
+        as const -> prevents any type of infer 
+
     
 
     LEARNED - SUMMARY
@@ -1025,6 +1031,26 @@ P5 - RMTDEV
                 related state(loading, error)
                 useEffect or place where it is being called
                 fetch and aysnc actions
+        Custom hook rules
+            NOT IN 
+                loops
+                conditions
+                nested functions
+                after early return statement
+        Re naming a destructured prop
+            {prop: newName} = Object
+        Return object or array from custom hook?
+            Whatver you prefer
+                array
+                    Allows for renaming with whatever you write but the position matters
+                object
+                    must be the exact name of the property but renaming with :
+        Cast a type
+            Specify what it will be so the inferred type does not make a mistake or give you problems
+        AS CONST
+            prevents any type of infer and avoids needless errors
+        
+            
         
         
         
