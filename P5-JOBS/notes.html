@@ -977,24 +977,44 @@ P5 - RMTDEV
                 state
                 useffect initial render funciton
 
-    PREVENTING PROP DRILLING
-        children prop when it is simpler, instead of context or zustand.
-        have to type the children prop
+    JOBLIST
+        PREVENTING PROP DRILLING
+            children prop when it is simpler, instead of context or zustand.
+            have to type the children prop
 
-    LOADING STATE FOR JOBLIST
-        isLoading var
-        list and isloading are in sync, sometimes you may need to condition the render of list on a false isloading only
+        LOADING STATE FOR JOBLIST
+            isLoading var
+            list and isloading are in sync, sometimes you may need to condition the render of list on a false isloading only
+        
+        EXTRACT JOBLIST LOGIC TO CUSTOM HOOK
+            group all related logic and callign of logic to custom hook to declutter main app
+
+        SLICE JOB ITEMS
+            Normal slice the jobItems to render only 7 
+
+        CAST TYPE B/C OF ARRAYS IN TS
+            as const -> prevents any type of infer 
+
+    STORING JOB ID IN URL
+        Advantages
+            can share and data persists in url
+
+        REACT - VITE
+            No built in routing
+                React-Router
+                NextJs
+
+        1-Adding id to url
+            href the id as a has {#id}
+            hook into the hashchange event and read it every time it changes
+            remove the listener when the component unmounts
+            assign id to state
+            
     
-    EXTRACT JOBLIST LOGIC TO CUSTOM HOOK
-        group all related logic and callign of logic to custom hook to declutter main app
+        2-Reading id from url to style and render info
+            ...
+        
 
-    SLICE JOB ITEMS
-        Normal slice the jobItems to render only 7 
-
-    CAST TYPE B/C OF ARRAYS IN TS
-        as const -> prevents any type of infer 
-
-    
 
     LEARNED - SUMMARY
         cacheing
@@ -1049,6 +1069,8 @@ P5 - RMTDEV
             Specify what it will be so the inferred type does not make a mistake or give you problems
         AS CONST
             prevents any type of infer and avoids needless errors
+        #operator
+            Auto converts something to number
         
             
         
