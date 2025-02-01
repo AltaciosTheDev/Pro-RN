@@ -16,18 +16,23 @@ import PaginationControls from "./PaginationControls";
 function App() {
   const [jobItems, setJobItems] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log(jobItems);
 
   useEffect(() => {
+    setIsLoading(true);
+
+    if (!searchText) return; //only fetch when input not empty will avoid fetch onloading b/c of this.
+
     const fetchData = async () => {
       const response = await fetch(
         `https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=${searchText}`
       );
       const data = await response.json();
+      setIsLoading(false);
       setJobItems(data.jobItems);
     };
-    if (!searchText) return; //only fetch when input not empty will avoid fetch onloading b/c of this.
     fetchData();
   }, [searchText]);
 
@@ -47,7 +52,7 @@ function App() {
             <ResultsCount />
             <SortingControls />
           </SidebarTop>
-          <JobList jobItems={jobItems} />
+          <JobList jobItems={jobItems} isLoading={isLoading}/>
           <PaginationControls />
         </Sidebar>
         <JobItemContent />
