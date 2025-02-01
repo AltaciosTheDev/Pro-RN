@@ -1,20 +1,20 @@
+import { useActiveId, useJobItem } from "../lib/hooks";
+import { type JobItemContent } from "../lib/types";
 import BookmarkIcon from "./BookmarkIcon";
 
+
 export default function JobItemContent() {
-  return <EmptyJobContent/>
+    const activeId = useActiveId() //custom hook 
+    const jobItem = useJobItem(activeId)//custom hook 
+  //guard clause in cause activeId is null and useJobItem returns null
+  if (!jobItem) return <EmptyJobContent />;//type narrowing 
+
   return (
     <section className="job-details">
       <div>
-        <img
-          src="https://images.unsplash.com/photo-1610374792793-f016b77ca51a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1272&q=100"
-          alt="#"
-        />
+        <img src={jobItem.coverImgURL} alt="#" />
 
-        <a
-          className="apply-btn"
-          href="https://fictional9thtechwebsite.com/"
-          target="_blank"
-        >
+        <a className="apply-btn" href={jobItem.companyURL} target="_blank">
           Apply
         </a>
 
@@ -22,31 +22,28 @@ export default function JobItemContent() {
           <div className="job-info__left">
             <div className="job-info__badge">9T</div>
             <div className="job-info__below-badge">
-              <time className="job-info__time">2d</time>
+              <time className="job-info__time">{jobItem.daysAgo}d</time>
 
               <BookmarkIcon />
             </div>
           </div>
 
           <div className="job-info__right">
-            <h2 className="second-heading">Front End React Engineer</h2>
-            <p className="job-info__company">9th Tech</p>
-            <p className="job-info__description">
-              Join us as we pursue our disruptive new vision to make machine
-              data accessible, usable, and valuable to everyone.
-            </p>
+            <h2 className="second-heading">{jobItem.title}</h2>
+            <p className="job-info__company">{jobItem.company}</p>
+            <p className="job-info__description">{jobItem.description}</p>
             <div className="job-info__extras">
               <p className="job-info__extra">
                 <i className="fa-solid fa-clock job-info__extra-icon"></i>
-                Full-Time
+                {jobItem.duration}
               </p>
               <p className="job-info__extra">
                 <i className="fa-solid fa-money-bill job-info__extra-icon"></i>
-                $105,000+
+                {jobItem.salary}
               </p>
               <p className="job-info__extra">
                 <i className="fa-solid fa-location-dot job-info__extra-icon"></i>{" "}
-                Global
+                {jobItem.location}
               </p>
             </div>
           </div>
@@ -61,9 +58,9 @@ export default function JobItemContent() {
               </p>
             </div>
             <ul className="qualifications__list">
-              <li className="qualifications__item">React</li>
-              <li className="qualifications__item">Next.js</li>
-              <li className="qualifications__item">Tailwind CSS</li>
+              {jobItem.qualifications.map((qual) => (
+                <li className="qualifications__item">{qual}</li>
+              ))}
             </ul>
           </section>
 
@@ -75,8 +72,7 @@ export default function JobItemContent() {
               </p>
             </div>
             <ul className="reviews__list">
-              <li className="reviews__item">Nice building and food also.</li>
-              <li className="reviews__item">Great working experience.</li>
+              {jobItem.reviews.map((rev) => <li className="reviews__item">{rev}</li>)}            
             </ul>
           </section>
         </div>

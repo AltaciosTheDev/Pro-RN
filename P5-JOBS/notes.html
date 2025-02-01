@@ -1016,13 +1016,16 @@ P5 - RMTDEV
                 custom hook for useJobItem
                     fetch the api with that id
                     store the data received in active job item state
-            
-    
+
         2-Reading id from url to style and render info
-            ...
+            JobItemContent
+                accept prop
+                type prop
+                guard clause the jobItem prop if it is null, render emptyjobcontent
+                change the information to dynamic
+                relocate the custom hooks inside the component to avoid using props
         
-
-
+        
     LEARNED - SUMMARY
         cacheing
             storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
@@ -1082,7 +1085,11 @@ P5 - RMTDEV
             always store base api url in a constant to change only in 1 place
         RETURN WHEN STATE NULL
             guard clase when state initially is null, means to return immediately. 
-
+        Intersection types TS
+            when you have a type that can be based on another and want to inherit eveything the base has instead of writing it again.
+        Props or custom hook inside comp
+            Depends on how reusable the component will be.
+        
         
             
         

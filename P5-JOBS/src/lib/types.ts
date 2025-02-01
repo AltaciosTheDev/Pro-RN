@@ -7,3 +7,15 @@ export type JobItem = {
     relevanceScore: number,
     date: string
   }
+
+  //perfect use for intersection type 
+  export type JobItemContent = JobItem & {
+    description: string,
+    qualifications: string [],
+    reviews: string [],
+    duration: string
+    location: string
+    salary: string
+    coverImgURL: string,
+    companyURL: string
+  }

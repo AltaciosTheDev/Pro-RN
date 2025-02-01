@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { JobItem } from "./types";
+import { JobItem, JobItemContent } from "./types";
 import { BASE_API_URL } from "./constants";
 
 //can re use all logic related to getting the jobitems and the loading
@@ -64,7 +64,7 @@ export function useActiveId() {
 
 export function useJobItem(activeId: number | null) {
   //state to store the job
-  const [jobItem, setJobItem] = useState(null)
+  const [jobItem, setJobItem] = useState<JobItemContent | null>(null)
     
     //guard clause if id is null
     useEffect(() => {
