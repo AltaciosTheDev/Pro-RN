@@ -1038,7 +1038,29 @@ P5 - RMTDEV
         3)pass the prop isActive={job.id === isActive} // this will return true only for the active jobitem
 
     Results derived state custom hook
-        
+        refactor custom hooks to return objects instead of arrays
+
+    Debounce SearchText (useDebounce Custom Hook)
+        Problem
+            Firing off network requests with every key stroke, every onchange event.
+            This can reach the max requests of the API quick.
+        Solution
+            Every 0.5-1s for the fetch to fire when onChanged. 
+        WHAT
+            prog technique to limit rate at which a func executes
+        WHY
+            improve performance and efficiency by reducing # of times a func is called.
+        CASES
+            search input
+            window resize
+            scroll events
+
+        HOW
+            create debouncedSearchText
+            use it to run useJobItems(debouncedSearchState)
+            useEffect that will wait 1 second depending on searchText to change debouncedSearchText with searchText
+            clear the timeout with its id
+            extract logic with custom hook
 
         
     LEARNED - SUMMARY
@@ -1107,7 +1129,11 @@ P5 - RMTDEV
         Type Narrowing | guard clauses
             Usually end up eliminating the possibility of a type being null or undefined. 
             When faced with trying to access its properties can type narrow or obj?.prop
-        
+        Debouncing
+            Prog technique to limit the rate at which a function is executed.
+            Ensures func ! called too quickly, especially in events of rapid succession
+
+
             
         
         

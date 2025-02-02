@@ -88,4 +88,18 @@ export function useJobItem(activeId: number | null) {
     },[activeId])//when comp first mounts and when activeId changes
 
     return {jobItem, isLoading}
+
+}
+
+export function useDebounce(value, delay){
+  const [debouncedValue, setDebouncedValue] = useState(value) 
+
+  useEffect(() => {
+    const timerId = setTimeout(() => setDebouncedValue(value),delay)
+
+    return () => clearTimeout(timerId)
+
+  },[value,delay])
+
+  return debouncedValue
 }
