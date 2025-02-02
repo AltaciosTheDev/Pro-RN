@@ -16,7 +16,7 @@ import { useState } from "react";
 
 function App() {
   const [searchText, setSearchText] = useState("");
-  const [jobItems, isLoading, totalNumberOfResults] = useJobItems(searchText) //custom hook 
+  const {jobItemsSliced:jobItems, isLoading, totalNumberOfResults} = useJobItems(searchText) //custom hook 
 
   return (
     <>

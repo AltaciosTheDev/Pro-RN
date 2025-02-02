@@ -5,7 +5,7 @@ import Spinner from "./Spinner";
 
 export default function JobItemContent() {
   const activeId = useActiveId(); //custom hook
-  const [jobItem, isLoading] = useJobItem(activeId); //custom hook
+  const {jobItem, isLoading} = useJobItem(activeId); //custom hook
 
   //guard clause in cause activeId is null and useJobItem returns null
   if (!jobItem) return <EmptyJobContent />; //type narrowing

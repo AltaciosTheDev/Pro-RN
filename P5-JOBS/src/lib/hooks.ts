@@ -33,7 +33,7 @@ export function useJobItems(searchText: string){
       //call again if form changes
       }, [searchText]);
 
-    return [jobItemsSliced, isLoading, totalNumberOfResults] as const //leaves no room for interpretation
+    return {jobItemsSliced, isLoading, totalNumberOfResults}//leaves no room for interpretation
 }
 
 export function useActiveId() {
@@ -87,5 +87,5 @@ export function useJobItem(activeId: number | null) {
     //call again is activeId changes
     },[activeId])//when comp first mounts and when activeId changes
 
-    return [jobItem, isLoading] as const
+    return {jobItem, isLoading}
 }
