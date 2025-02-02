@@ -1025,10 +1025,20 @@ P5 - RMTDEV
                 change the information to dynamic
                 relocate the custom hooks inside the component to avoid using props
         
-        loading state for job item content
-            if !jobitem return emptyjobcontent
-            if isloading return spinner
-            if !isloading then return jobitem
+    loading state for job item content
+        if !jobitem return emptyjobcontent
+        if isloading return spinner
+        if !isloading then return jobitem
+
+    Active Item in List
+        How to know which item is active to style it accordingly.
+
+        1)Conditionally render "job-item--active" class 
+        2)Re use the useActiveId hook in the JobList component where you are mapping
+        3)pass the prop isActive={job.id === isActive} // this will return true only for the active jobitem
+
+    
+
         
     LEARNED - SUMMARY
         cacheing
