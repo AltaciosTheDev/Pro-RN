@@ -65,16 +65,18 @@ export function useActiveId() {
 export function useJobItem(activeId: number | null) {
   //state to store the job
   const [jobItem, setJobItem] = useState<JobItemContent | null>(null)
+  const [isLoading, setIsLoading] = useState(false);//no need to type b/c ts infers
     
     //guard clause if id is null
     useEffect(() => {
       if(!activeId) return //remember guard clauses when state can be null initially
-  
+      
       //get data
       const fetchData = async () => {
-    
+        setIsLoading(true)
         const response = await fetch(`${BASE_API_URL}/${activeId}`)
         const data = await response.json()
+        setIsLoading(false);
         //store data
         setJobItem(data.jobItem)
   
@@ -84,5 +86,5 @@ export function useJobItem(activeId: number | null) {
     //call again is activeId changes
     },[activeId])//when comp first mounts and when activeId changes
 
-    return jobItem
+    return [jobItem, isLoading] as const
 }
