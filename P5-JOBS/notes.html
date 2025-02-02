@@ -1061,6 +1061,9 @@ P5 - RMTDEV
             useEffect that will wait 1 second depending on searchText to change debouncedSearchText with searchText
             clear the timeout with its id
             extract logic with custom hook
+        GENERICS for debounce
+            export function useDebounce<T>(value:T, delay = 500):T{...}
+            
 
         
     LEARNED - SUMMARY
@@ -1132,8 +1135,10 @@ P5 - RMTDEV
         Debouncing
             Prog technique to limit the rate at which a function is executed.
             Ensures func ! called too quickly, especially in events of rapid succession
-
-
+        TS DEFAULT VALUE
+            when using a default as a param, no need to type. Ts will infer type and use it in case nothing is given.
+        Perfect case for Generics
+            Debouncing function.
             
         
         

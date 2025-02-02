@@ -16,7 +16,7 @@ import { useState } from "react";
 
 function App() {
   const [searchText, setSearchText] = useState("");
-  const debouncedSearchText = useDebounce(searchText, 700)
+  const debouncedSearchText = useDebounce<string>(searchText, 500)
   const {jobItemsSliced:jobItems, isLoading, totalNumberOfResults} = useJobItems(debouncedSearchText) //custom hook 
 
 
