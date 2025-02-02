@@ -6,16 +6,17 @@ import Spinner from "./Spinner";
 export default function JobItemContent() {
   const activeId = useActiveId(); //custom hook
   const {jobItem, isLoading} = useJobItem(activeId); //custom hook
+  
+  //loading case
+  if (isLoading) return <LoadingJobContent/>
 
   //guard clause in cause activeId is null and useJobItem returns null
   if (!jobItem) return <EmptyJobContent />; //type narrowing
 
-  //loading case
-  if (isLoading) return <LoadingJobContent/>
 
   return (
     <section className="job-details">
-      {!isLoading && (
+      {(
         <div>
           <img src={jobItem.coverImgURL} alt="#" />
 
@@ -63,7 +64,7 @@ export default function JobItemContent() {
                 </p>
               </div>
               <ul className="qualifications__list">
-                {jobItem.qualifications.map((qual) => (
+                {jobItem.qualifications.map((qual: string) => (
                   <li key={qual} className="qualifications__item">{qual}</li>
                 ))}
               </ul>
@@ -77,7 +78,7 @@ export default function JobItemContent() {
                 </p>
               </div>
               <ul className="reviews__list">
-                {jobItem.reviews.map((rev) => (
+                {jobItem.reviews.map((rev: string) => (
                   <li key={rev} className="reviews__item">{rev}</li>
                 ))}
               </ul>

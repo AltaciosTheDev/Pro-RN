@@ -1,6 +1,26 @@
 import { useEffect, useState } from "react";
-import { JobItem, JobItemContent } from "./types";
+import { JobItem } from "./types";
 import { BASE_API_URL } from "./constants";
+import { useQuery } from "@tanstack/react-query";
+
+export function useJobItem(id:number | null){
+  const {data, isLoading} = useQuery(['jobItem', id], 
+    async () => {
+      const response = await fetch(`${BASE_API_URL}/${id}`)
+      const data = await response.json()
+      return data
+    },
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      enabled: !!id, //does not run ato / notVar = false , toggle that = true.
+      onError: () => {} 
+    }
+  )
+  const jobItem = data?.jobItem
+  return {jobItem, isLoading}
+}
+
 
 //can re use all logic related to getting the jobitems and the loading
 export function useJobItems(searchText: string){
@@ -63,33 +83,6 @@ export function useActiveId() {
   return activeId
 }
 
-export function useJobItem(activeId: number | null) {
-  //state to store the job
-  const [jobItem, setJobItem] = useState<JobItemContent | null>(null)
-  const [isLoading, setIsLoading] = useState(false);//no need to type b/c ts infers
-    
-    //guard clause if id is null
-    useEffect(() => {
-      if(!activeId) return //remember guard clauses when state can be null initially
-      
-      //get data
-      const fetchData = async () => {
-        setIsLoading(true)
-        const response = await fetch(`${BASE_API_URL}/${activeId}`)
-        const data = await response.json()
-        setIsLoading(false);
-        //store data
-        setJobItem(data.jobItem)
-  
-      }
-      fetchData()
-  
-    //call again is activeId changes
-    },[activeId])//when comp first mounts and when activeId changes
-
-    return {jobItem, isLoading}
-
-}
 
 export function useDebounce<T>(value:T, delay = 500):T{
   const [debouncedValue, setDebouncedValue] = useState(value) 
@@ -103,3 +96,30 @@ export function useDebounce<T>(value:T, delay = 500):T{
 
   return debouncedValue
 }
+// export function useJobItem(activeId: number | null) {
+//   //state to store the job
+//   const [jobItem, setJobItem] = useState<JobItemContent | null>(null)
+//   const [isLoading, setIsLoading] = useState(false);//no need to type b/c ts infers
+    
+//     //guard clause if id is null
+//     useEffect(() => {
+//       if(!activeId) return //remember guard clauses when state can be null initially
+      
+//       //get data
+//       const fetchData = async () => {
+//         setIsLoading(true)
+//         const response = await fetch(`${BASE_API_URL}/${activeId}`)
+//         const data = await response.json()
+//         setIsLoading(false);
+//         //store data
+//         setJobItem(data.jobItem)
+  
+//       }
+//       fetchData()
+  
+//     //call again is activeId changes
+//     },[activeId])//when comp first mounts and when activeId changes
+
+//     return {jobItem, isLoading}
+
+// }

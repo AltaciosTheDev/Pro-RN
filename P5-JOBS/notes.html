@@ -1064,7 +1064,76 @@ P5 - RMTDEV
         GENERICS for debounce
             export function useDebounce<T>(value:T, delay = 500):T{...}
             
+    Change Fetch to React-Query
+        PROBLEM
+            Re-fetch jobs in which we have already clicked
+        EXPECTED
+            Should load them fast if they have already been clicked after loading page
+        2 solutions to this problem
+            vercel swr library 
+            tanstack react query
+        FEATURES
+            Fetches from a given source api 
+            caches the data so that subsequent requests don't need to refetch unless necessary
+            auto refetches data in background when user revisits
+            provides status indicator
+                loading
+                success
+                error
+        SYNTAX
+            const { data, error, isLoading, isError } = useQuery({
+                queryKey: ["posts"],
+                queryFn: fetchPosts,
+            });
 
+            const fetchPosts = async () => {
+                const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+                return response.data;
+            };
+                
+        Required Parameters
+            queryKey	Array	    Unique key identifying the query (used for caching, refetching).
+            queryFn	    Function	A function that fetches and returns data.
+        
+        Optional Parameters
+            enabled	                Boolean	    true	                If false, the query won’t run automatically.
+            staleTime	            Number	    0	                    Time (ms) before cached data is considered "stale" (triggers refetch).
+            cacheTime	            Number	    5 * 60 * 1000 (5 min)	Time (ms) before inactive cached data is removed.
+            retry	                `Number	    Function`	            3
+            refetchOnWindowFocus	Boolean	    true	                Whether to refetch when the window regains focus.
+            refetchInterval	        Number	    false	                Automatically refetch data every X ms.
+            select	                Function	undefined	            Allows transforming the data before returning it.
+
+        RETURNS
+            Property	Type	    Description
+            data	    any	        The fetched data (or transformed data if select is used).
+            isLoading	Boolean	    true while fetching the initial data.
+            isError	    Boolean	    true if the query failed.
+            error	    Error	    Contains the error object if the query fails.
+            refetch	    Function	A function to manually trigger a refetch.
+
+        PROVIDER
+            import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+            const queryClient = new QueryClient()
+
+
+            ReactDOM.createRoot(document.getElementById("root")!).render(
+                <React.StrictMode>
+                    <QueryClientProvider client={queryClient}>
+                        <App />
+                    </QueryClientProvider>
+                </React.StrictMode>
+            )
+            
+        
+
+                                            
+            
+                
+
+            
+        
         
     LEARNED - SUMMARY
         cacheing
