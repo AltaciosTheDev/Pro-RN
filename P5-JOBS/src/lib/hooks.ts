@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import { JobItem } from "./types";
+import { JobItem, JobItemContent } from "./types";
 import { BASE_API_URL } from "./constants";
 import { useQuery } from "@tanstack/react-query";
 
-const fetchJobItem = async (id:number) => {
+type JobItemApiResponse = {
+  public: boolean,
+  jobItem: JobItemContent
+}
+
+const fetchJobItem = async (id:number) : Promise<JobItemApiResponse> => {
   //not here to avoid cluttering this part up 
   const response = await fetch(`${BASE_API_URL}/${id}`)
   const data = await response.json()
@@ -11,7 +16,7 @@ const fetchJobItem = async (id:number) => {
 }
 
 export function useJobItem(id:number | null){
-  const {data, isLoading} = useQuery(['jobItem', id], 
+  const {data, isInitialLoading} = useQuery(['jobItem', id], 
     //() => (fetchJobItem(id)), //guard clauses with ts to keep in mind
     () => (id ? fetchJobItem(id) : null), //guard clauses with ts to keep in mind
     {
@@ -21,7 +26,8 @@ export function useJobItem(id:number | null){
       onError: () => {} 
     }
   )
-  const jobItem = data?.jobItem
+  const jobItem = data?.jobItem //optional chaining returns undefined it prop does not exist instead of crashing. 
+  const isLoading = isInitialLoading
   return {jobItem, isLoading}
 
 }

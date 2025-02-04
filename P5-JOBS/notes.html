@@ -1126,6 +1126,46 @@ P5 - RMTDEV
                 </React.StrictMode>
             )
 
+        EXTRACTED FUNCTION OF USE QUERY & ADDED TYPE NARROWING
+            const fetchJobItem = async (id:number) => {
+            //not here to avoid cluttering this part up 
+            const response = await fetch(`${BASE_API_URL}/${id}`)
+            const data = await response.json()
+            return data
+            }
+
+            () => (id ? fetchJobItem(id) : null)
+
+        TYPE RETURN VALUE OF FETCHER FUNCTION 
+            PROBLEM
+                data returned by use query is any(HUGE PROBLEM) 
+                any property of data will also be any and we can try to access any prop even if it does not exist
+                so what we return as an object will also be any 
+            SOLUTION
+                type the returned value of the extracted function but it must be correct based on the returned data
+                
+            SYNTAX
+                type JobItemApiResponse = {
+                    public: boolean,
+                    jobItem: JobItemContent
+                }
+                
+                const fetchJobItem = async (id:number) : Promise<JobItemApiResponse> => {
+                    //not here to avoid cluttering this part up 
+                    const response = await fetch(`${BASE_API_URL}/${id}`)
+                    const data = await response.json()
+                    return data
+                }
+        FIXING INITIAL LOADING STATE OF JOB ITEM CONTENT
+            PROBLEM
+                When nothing has been typed, isLoading is true so spinner is always shown. 
+                B/c of how react query works, isLoaing will be true until data appears and is fetched. 
+            SOLUTION
+                
+        
+        
+
+                                    
                                             
             
                 
@@ -1206,6 +1246,18 @@ P5 - RMTDEV
             when using a default as a param, no need to type. Ts will infer type and use it in case nothing is given.
         Perfect case for Generics
             Debouncing function.
+        Dealing with a nested paramete with Union type
+            Can work around it by narrowing the type and removing the case when it is a nullable / falsy type
+        Optional chanining
+            ?. prevents errors when nested properties might be null or undefined    
+            When:
+                working with nested obj that might be undefined
+                api responses where fields might be missing
+                checking if method exists before calling.
+        TYPING API RESPONSES
+            2 parts:
+                1)type of response
+                2)Promise<type of response>
             
         
         
