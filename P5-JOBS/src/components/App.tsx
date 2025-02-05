@@ -20,8 +20,8 @@ function App() {
   const {jobItems, isLoading} = useJobItems(debouncedSearchText) //custom hook 
 
   //derived information will be handled where it is implemented
-  const totalNumberOfResults = jobItems.length
-  const jobItemsSliced = jobItems.slice(0,7)
+  const totalNumberOfResults = jobItems?.length || 0 //guard clause in undefined case
+  const jobItemsSliced = jobItems?.slice(0,7) || []//guard clause
 
   return (
     <>

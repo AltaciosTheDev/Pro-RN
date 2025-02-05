@@ -39,81 +39,123 @@ export function useJobItem(id:number | null){
 
 }
 
-
-//can re use all logic related to getting the jobitems and the loading
-export function useJobItems(searchText: string){
-    //state to store jobs
-    const [jobItems, setJobItems] = useState<JobItem[]>([]);//cast when the inferred can get you in trouble(never[]) 
-    const [isLoading, setIsLoading] = useState(false);//no need to type b/c ts infers
-    
-    //const totalNumberOfResults = jobItems.length
-    //first page
-    //const jobItemsSliced = jobItems.slice(0,7)
-
-    //side effects here
-    useEffect(() => {
-        //set loading
-        setIsLoading(true);
-    
-        //guard clase for empty form
-        if (!searchText) return; //only fetch when input not empty will avoid fetch onloading b/c of this.
-    
-        //get data
-        const fetchData = async () => {
-          const response = await fetch(
-            `${BASE_API_URL}?search=${searchText}`
-          );
-          const data = await response.json();
-          setIsLoading(false);
-          setJobItems(data.jobItems);
-        };
-        fetchData();
-      //call again if form changes
-      }, [searchText]);
-
-    return {jobItems, isLoading}//leaves no room for interpretation
+//----------------------
+// type
+type JobItemsApiResponse = {
+  public: boolean,
+  sorted: boolean,
+  jobItems: JobItem[]
 }
 
+//function
+const fetchJobItems = async (searchText:string): Promise<JobItemsApiResponse> => { //async funcs always return promises
+  const response = await fetch(
+    `${BASE_API_URL}?search=${searchText}`
+  );
+  const data = await response.json();
+  return data
+};
+
+// -- refactor to react-query 
+
+export function useJobItems(searchText: string){
+  //state to store jobs
+  const {data, isInitialLoading} = useQuery(['job-items', searchText], //var it depends on 
+    () => fetchJobItems(searchText),
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      enabled: !!searchText, //does not run ato / notVar = false , toggle that = true.
+      onError: (error) => {
+        console.log(error)//error handling will be centralized here 
+      } 
+    }
+  )
+  const jobItems = data?.jobItems //optional chaining returns undefined it prop does not exist instead of crashing. 
+  const isLoading = isInitialLoading
+  return {jobItems, isLoading}
+}
+
+//------------------------------
+
 export function useActiveId() {
-
-  //state to store id
-    const [activeId, setActiveId] = useState<number | null>(null)
-    
-    //a tag will store id in url
-    //listen and react when the hash changes
-    useEffect(() => {
-      const handleHashChange = () => {
-        const id = +window.location.hash.slice(1)//converts to number
-        //store new value in state
-        setActiveId(id)
-      }
-      handleHashChange()
-
-      //call for function
-      window.addEventListener("hashchange",handleHashChange)
   
-      //clean this event listener
-      return () => {
-        window.removeEventListener("hashchange", handleHashChange)
-      }
-    },[])
-
+  //state to store id
+  const [activeId, setActiveId] = useState<number | null>(null)
+  
+  //a tag will store id in url
+  //listen and react when the hash changes
+  useEffect(() => {
+    const handleHashChange = () => {
+      const id = +window.location.hash.slice(1)//converts to number
+      //store new value in state
+      setActiveId(id)
+    }
+    handleHashChange()
+    
+    //call for function
+    window.addEventListener("hashchange",handleHashChange)
+    
+    //clean this event listener
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange)
+    }
+  },[])
+  
   return activeId
 }
 
 
 export function useDebounce<T>(value:T, delay = 500):T{
   const [debouncedValue, setDebouncedValue] = useState(value) 
-
+  
   useEffect(() => {
     const timerId = setTimeout(() => setDebouncedValue(value),delay)
-
+    
     return () => clearTimeout(timerId)
 
   },[value,delay])
-
+  
   return debouncedValue
 }
+
+
+// //can re use all logic related to getting the jobitems and the loading
+// export function useJobItems(searchText: string){
+//     //state to store jobs
+//     const [jobItems, setJobItems] = useState<JobItem[]>([]);//cast when the inferred can get you in trouble(never[]) 
+//     const [isLoading, setIsLoading] = useState(false);//no need to type b/c ts infers
+    
+//     //const totalNumberOfResults = jobItems.length
+//     //first page
+//     //const jobItemsSliced = jobItems.slice(0,7)
+
+//     //side effects here
+//     useEffect(() => {
+//         //set loading
+//         setIsLoading(true);
+    
+//         //guard clase for empty form
+//         if (!searchText) return; //only fetch when input not empty will avoid fetch onloading b/c of this.
+    
+//         //get data
+//         const fetchData = async () => {
+//           const response = await fetch(
+//             `${BASE_API_URL}?search=${searchText}`
+//           );
+//           const data = await response.json();
+//           setIsLoading(false);
+//           setJobItems(data.jobItems);
+//         };
+//         fetchData();
+//       //call again if form changes
+//       }, [searchText]);
+
+//     return {jobItems, isLoading}//leaves no room for interpretation
+// }
+
+
+
 // export function useJobItem(activeId: number | null) {
 //   //state to store the job
 //   const [jobItem, setJobItem] = useState<JobItemContent | null>(null)
