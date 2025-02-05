@@ -46,9 +46,9 @@ export function useJobItems(searchText: string){
     const [jobItems, setJobItems] = useState<JobItem[]>([]);//cast when the inferred can get you in trouble(never[]) 
     const [isLoading, setIsLoading] = useState(false);//no need to type b/c ts infers
     
-    const totalNumberOfResults = jobItems.length
+    //const totalNumberOfResults = jobItems.length
     //first page
-    const jobItemsSliced = jobItems.slice(0,7)
+    //const jobItemsSliced = jobItems.slice(0,7)
 
     //side effects here
     useEffect(() => {
@@ -71,7 +71,7 @@ export function useJobItems(searchText: string){
       //call again if form changes
       }, [searchText]);
 
-    return {jobItemsSliced, isLoading, totalNumberOfResults}//leaves no room for interpretation
+    return {jobItems, isLoading}//leaves no room for interpretation
 }
 
 export function useActiveId() {

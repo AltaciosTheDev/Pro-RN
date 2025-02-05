@@ -17,8 +17,11 @@ import { useState } from "react";
 function App() {
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce<string>(searchText, 500)
-  const {jobItemsSliced:jobItems, isLoading, totalNumberOfResults} = useJobItems(debouncedSearchText) //custom hook 
+  const {jobItems, isLoading} = useJobItems(debouncedSearchText) //custom hook 
 
+  //derived information will be handled where it is implemented
+  const totalNumberOfResults = jobItems.length
+  const jobItemsSliced = jobItems.slice(0,7)
 
   return (
     <>
@@ -36,7 +39,7 @@ function App() {
             <ResultsCount totalNumberOfResults={totalNumberOfResults}/>
             <SortingControls />
           </SidebarTop>
-          <JobList jobItems={jobItems} isLoading={isLoading}/>
+          <JobList jobItems={jobItemsSliced} isLoading={isLoading}/>
           <PaginationControls />
         </Sidebar>
         <JobItemContent />

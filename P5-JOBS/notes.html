@@ -1164,7 +1164,16 @@ P5 - RMTDEV
                 isInitialLoading, return value of useQuery that comes by default
 
         ERROR HANDLING WITH FETCHING DATA
+            just normal logic for handling requests
+
+        PURIFY CUSTOM HOOK  
+            Removed opinionated logic to make it more purposeful for other implementations.
             
+            1)stop splicing inside the hook
+            2)return the pure results
+            3)let additional logic be handled by how the hook is used in that particular place
+
+        
         
         
 
