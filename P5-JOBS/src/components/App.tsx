@@ -13,10 +13,11 @@ import JobList from "./JobList";
 import PaginationControls from "./PaginationControls";
 import {useDebounce, useJobItems } from "../lib/hooks";
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [searchText, setSearchText] = useState("");
-  const debouncedSearchText = useDebounce<string>(searchText, 500)
+  const debouncedSearchText = useDebounce<string>(searchText, 200)
   const {jobItems, isLoading} = useJobItems(debouncedSearchText) //custom hook 
 
   //derived information will be handled where it is implemented
@@ -45,6 +46,8 @@ function App() {
         <JobItemContent />
       </Container>
       <Footer />
+
+      <Toaster position={"top-right"}/>
     </>
   );
 }
