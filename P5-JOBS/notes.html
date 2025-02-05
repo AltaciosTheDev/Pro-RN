@@ -1161,7 +1161,10 @@ P5 - RMTDEV
                 When nothing has been typed, isLoading is true so spinner is always shown. 
                 B/c of how react query works, isLoaing will be true until data appears and is fetched. 
             SOLUTION
-                
+                isInitialLoading, return value of useQuery that comes by default
+
+        ERROR HANDLING WITH FETCHING DATA
+            
         
         
 
@@ -1258,7 +1261,9 @@ P5 - RMTDEV
             2 parts:
                 1)type of response
                 2)Promise<type of response>
-            
+        ERROR HANLDING WITH FETCH
+            500 type errors, browser behind the scenes manually throws the error only when request is not complete(500)
+            We have to mimic this behavior for other erros !200 status or !status.ok
         
         
             

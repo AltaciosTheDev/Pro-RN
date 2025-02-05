@@ -11,6 +11,11 @@ type JobItemApiResponse = {
 const fetchJobItem = async (id:number) : Promise<JobItemApiResponse> => {
   //not here to avoid cluttering this part up 
   const response = await fetch(`${BASE_API_URL}/${id}`)
+  if(!response.ok) {
+    const errorData = await response.json()
+    throw new Error(errorData.description)
+  }
+
   const data = await response.json()
   return data
 }
@@ -23,7 +28,9 @@ export function useJobItem(id:number | null){
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       enabled: !!id, //does not run ato / notVar = false , toggle that = true.
-      onError: () => {} 
+      onError: (error) => {
+        console.log(error)//error handling will be centralized here 
+      } 
     }
   )
   const jobItem = data?.jobItem //optional chaining returns undefined it prop does not exist instead of crashing. 
