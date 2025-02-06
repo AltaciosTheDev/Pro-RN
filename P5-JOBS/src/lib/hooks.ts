@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { JobItem, JobItemContent } from "./types";
 import { BASE_API_URL } from "./constants";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { handleError } from "./utils";
 
 type JobItemApiResponse = {
   public: boolean,
@@ -24,14 +24,12 @@ const fetchJobItem = async (id:number) : Promise<JobItemApiResponse> => {
 export function useJobItem(id:number | null){
   const {data, isInitialLoading} = useQuery(['jobItem', id], 
     //() => (fetchJobItem(id)), //guard clauses with ts to keep in mind
-    () => (id ? fetchJobItem(id) : null), //guard clauses with ts to keep in mind
+    () => id ? fetchJobItem(id) : null, //guard clauses with ts to keep in mind
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       enabled: !!id, //does not run ato / notVar = false , toggle that = true.
-      onError: (error) => {
-        console.log(error)//error handling will be centralized here 
-      } 
+      onError: handleError
     }
   )
   const jobItem = data?.jobItem //optional chaining returns undefined it prop does not exist instead of crashing. 
@@ -72,9 +70,7 @@ export function useJobItems(searchText: string){
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       enabled: !!searchText, //does not run ato / notVar = false , toggle that = true.
-      onError: (error) => {
-        toast.error(error.message)
-      } 
+      onError: handleError //passes the error automatically 
     }
   )
   const jobItems = data?.jobItems //optional chaining returns undefined it prop does not exist instead of crashing. 

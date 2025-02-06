@@ -1184,6 +1184,28 @@ P5 - RMTDEV
                     in the app component positioned absolute
 
             toast.error(message)
+
+        ERROR IN REACT QUERY FUNCTION
+            PROBLEM
+                Type of error of the parameter given is unknown
+            SOLUTION
+                Type narrow it so ts is sure of the type. 
+
+            EXAMPLE
+                onError: (error: unknown) => { //dont really know what will come from the error thrown
+
+                //veriy the error type
+                if(error instanceof Error){
+                toast.error(error.message)
+                }
+            } 
+
+            In latest react query, type of error is Error object of js.
+
+        
+                    
+
+
         
 
                                     
