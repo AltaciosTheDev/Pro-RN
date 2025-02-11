@@ -24,7 +24,8 @@ function App() {
 
   //derived information will be handled where it is implemented
   const totalNumberOfResults = jobItems?.length || 0 //guard clause in undefined case
-  const jobItemsSliced = jobItems?.slice(0,7) || []//guard clause
+  const totalNumberOfPages = Math.ceil(totalNumberOfResults / 7)
+  const jobItemsSliced = jobItems?.slice(currentPage * 7 - 7, currentPage * 7  ) || []//guard clause
 
   //event handlers or functions to update state 
   const handleChangePage = (direction: "next" | "previous") => {
@@ -53,7 +54,7 @@ function App() {
             <SortingControls />
           </SidebarTop>
           <JobList jobItems={jobItemsSliced} isLoading={isLoading}/>
-          <PaginationControls onClick={handleChangePage} currentPage={currentPage}/>
+          <PaginationControls totalNumberOfPages={totalNumberOfPages} onClick={handleChangePage} currentPage={currentPage}/>
         </Sidebar>
         <JobItemContent />
       </Container>
