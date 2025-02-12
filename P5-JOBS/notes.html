@@ -1235,6 +1235,42 @@ P5 - RMTDEV
             create totalnumberofpages variables
                 const totalNumberOfPages = Math.ceil(totalNumberOfResults / 7)
             conditionally render the next page button
+        CLIENT SIDE PAGINATION OR SERVER SIDE
+            client side pagination 
+                client has access to all the info and decides what to render
+            server side pagination 
+                the client receives only the page the server sends 
+            when to choose
+                if it is thousand of results, server paginaton would be better
+                it is a waste to load all that information in the client
+                performance would be slow
+        EXTRACTING PAGE CONSTANT
+            Perfect opportunity for using a constant and storing it in constants.ts
+    SORTING FEATURE
+        CREATE STATE TO MANAGE SORT
+            const [sortBy, setSortBy] = useState("relevant")
+        CREATE SORT CHANGE HANDLER
+              const handleChangeSortBy = (newSortBy: "relevant" | "recent") => {
+                    setSortBy(newSortBy)
+                }
+        PASSING VALUES TO SORT COMPONENT
+            handlefunctions so buttons can change it
+            sortBy state to know which one is active
+        LITERAL TYPE THE STATE TO SO TS INFERS THE TYPE BETTER
+            PROBLEM
+                the sort method needed to know the conditions
+            SOLUTION   
+                <"relevant" | "recent">
+                This way the sort method knows whaat is happening and what are the possible values. 
+        SLICE THE SORTED
+            const jobItemsSortedAndSliced =jobItemsSorted?.slice
+        BEHAVIOR WHEN CHANGING SORT MID PAGE
+            add setCurrentPage(1) to the hadleChangeSortBy function
+        
+                            
+        
+            
+
         
 
             
