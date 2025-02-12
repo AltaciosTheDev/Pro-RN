@@ -1266,7 +1266,8 @@ P5 - RMTDEV
             const jobItemsSortedAndSliced =jobItemsSorted?.slice
         BEHAVIOR WHEN CHANGING SORT MID PAGE
             add setCurrentPage(1) to the hadleChangeSortBy function
-        
+        MUTABLE VS CREATING NEW ARRAY 
+            [...jobItems] is better to avoid affecting other areas original is used 
                             
         
             

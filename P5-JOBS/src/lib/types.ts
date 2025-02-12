@@ -21,3 +21,5 @@ export type JobItem = {
   }
 
 export type SortBy = "relevant" | "recent"
+
+export type PageDirection = "next" | "previous"
