@@ -41,6 +41,9 @@ function App() {
       currentPage * RESULTS_PER_PAGE - RESULTS_PER_PAGE,
       currentPage * RESULTS_PER_PAGE
     ) || []; //guard clause
+
+
+
   //handleChangeSort
   const handleChangeSortBy = (newSortBy: SortBy) => {
     setCurrentPage(1)

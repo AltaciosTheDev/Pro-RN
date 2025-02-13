@@ -1270,6 +1270,32 @@ P5 - RMTDEV
             [...jobItems] is better to avoid affecting other areas original is used 
         REUSABLE SORTING BUTTON COMPONENT
             
+    BOOKMARK FEATURE 
+        KEEP TRACK OF ID 
+            CREATE STATE FOR THE BOOKMARKED IDs
+                const [bookmarkIds, setBookmarkIds] = useState([])
+            FUNCTION TO TOGGLE BOOKMARK INTO THE BOOKMARK IDs ARRAY 
+                conditional based on if the bookmarks include the passed id
+            PASS THE FUNCTION DOWN TO THE BOOKMARK ICON
+                going to use Context for this, too much prop drilling.
+
+                WHY USE CONTEXT HERE
+                    Component in multiple places, makes it risky and complicated.
+
+                1)create BookmarksContextProvider component
+                2)created BookmakrsContext context
+                3)exported BookamrksContext 
+                4)provided values to share to the BookamrksContext
+                5)Wrapped appp around with BookmarksContextProvider component
+                6)consume useContext with the contextProvider
+                7)pass the id as prop everywhere the bookmark icon is invoked
+            CONDITIONALLY STYLE FILLED CLASS ON ID BEING IN BOOKMARKS ARRAY 
+                
+        save id 
+        persists to ls
+        refresh 
+        check if they are in ls 
+        fetch if not 
         
             
 
