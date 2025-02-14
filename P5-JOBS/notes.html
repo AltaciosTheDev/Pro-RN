@@ -1290,7 +1290,10 @@ P5 - RMTDEV
                 6)consume useContext with the contextProvider
                 7)pass the id as prop everywhere the bookmark icon is invoked
             CONDITIONALLY STYLE FILLED CLASS ON ID BEING IN BOOKMARKS ARRAY 
-                
+                className={bookmarkIds.includes(id) ? "filled" : ""}
+        EVENT BUBLING - STOP PROPAGATING WHEN BOOMARKING AVOID FETCHING THAT ITEM
+            e.stopPropagation()
+            e.preventDefault() -> anchors and forms
         save id 
         persists to ls
         refresh 
