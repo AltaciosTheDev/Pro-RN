@@ -1299,9 +1299,19 @@ P5 - RMTDEV
             1)ADD TO LS
                 UseEffect to store new id in bookmarks every time bookmarks state changes
             2)RETRIEVE FROM LS 
-                ON MOUNT
-                    check ls to see if there is anything
-                    json parse                    
+                check ls to see if there is anything
+                json parse                 
+                provide function to usestate to parse only on comp mount
+            3)CREATE LOCALSTORAGE CUSTOM HOOK 
+                1)create hook in the hooks file 
+                2)move the code already existing in the previos file
+                3)invoke the custom hook(this shows you how you are going to use it)
+                4)inside the hook remember to make it multi purpose if it is going to be re used
+                    a)change variables and values to multipurpose names
+                    b)provide values that going to be changed later.
+            4)TYPING CUSTOM HOOKS (generics)
+                
+                
 
     PROVIDING FUNCTION FOR USE STATE
         WHY

@@ -185,3 +185,20 @@ export function useDebounce<T>(value:T, delay = 500):T{
 //     return {jobItem, isLoading}
 
 // }
+
+export function useLocalStorage (key:string, initialValue) {
+  //read from LS
+  const [value, setValue] = useState(() => (
+    JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue))  //stringified array b/c that is what json expects
+  ))
+
+  //writing to LS
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value))
+  },[value,key])
+
+  return [
+    value, 
+    setValue
+  ]
+}
