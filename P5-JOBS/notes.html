@@ -1294,8 +1294,22 @@ P5 - RMTDEV
         EVENT BUBLING - STOP PROPAGATING WHEN BOOMARKING AVOID FETCHING THAT ITEM
             e.stopPropagation()
             e.preventDefault() -> anchors and forms
-        save id 
-        persists to ls
+        
+        PERSISTS DATA IN LS 
+            1)ADD TO LS
+                UseEffect to store new id in bookmarks every time bookmarks state changes
+            2)RETRIEVE FROM LS 
+                ON MOUNT
+                    check ls to see if there is anything
+                    json parse                    
+
+    PROVIDING FUNCTION FOR USE STATE
+        WHY
+            initial value results too expensive to computate
+            you want to make sure value function only runs once ON MOUNT
+        
+        
+
         refresh 
         check if they are in ls 
         fetch if not 
