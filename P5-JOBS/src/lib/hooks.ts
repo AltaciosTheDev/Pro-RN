@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { JobItem, JobItemContent } from "./types";
 import { BASE_API_URL } from "./constants";
 import { useQuery } from "@tanstack/react-query";
 import { handleError } from "./utils";
+import { BookmarksContext } from "../contexts/BookmarksContextProvider";
 
 type JobItemApiResponse = {
   public: boolean,
@@ -186,7 +187,7 @@ export function useDebounce<T>(value:T, delay = 500):T{
 
 // }
 
-export function useLocalStorage (key:string, initialValue) {
+export function useLocalStorage<T> (key:string, initialValue:T): [T,React.Dispatch<React.SetStateAction<T>>] {
   //read from LS
   const [value, setValue] = useState(() => (
     JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue))  //stringified array b/c that is what json expects
@@ -201,4 +202,13 @@ export function useLocalStorage (key:string, initialValue) {
     value, 
     setValue
   ]
+}
+
+export function useBookmarksContext() {
+  const context = useContext(BookmarksContext)
+  if(!context){
+    throw new Error("useContext(BookmarksContext) must be used within a BookmarksContextProvider")
+  }
+  
+  return context 
 }

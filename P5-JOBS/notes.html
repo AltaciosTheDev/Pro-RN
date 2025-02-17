@@ -535,7 +535,7 @@ TYPESCRIPT IN REACT
                 React.ReactNode
                 React.CSSProperties
                 React.ReactElement
-                React.Dispatch<React.SetStateAction<number>>
+                React.Dispatch<React.SetStateAction<T>>
                 React.MouseEvent<HTMLButtonElement, MouseEvent>
                 <HTMLButtonElement>
                 REACT.JSX.ELEMENT
@@ -1309,9 +1309,34 @@ P5 - RMTDEV
                 4)inside the hook remember to make it multi purpose if it is going to be re used
                     a)change variables and values to multipurpose names
                     b)provide values that going to be changed later.
-            4)TYPING CUSTOM HOOKS (generics)
+        GENERIC TYPING (CUSTOM HOOK)
+            Specific example for a custom hook to save data to LocalStorage
+            TUPLE
+                array with specific number of elements
+                array with specific type for each element
+            TYPING GENERIC
+                <T>
+                initialValue: T
+                Return Value
+                    :[T, React.Dispatch<React.SetStateAction<T>>]
+                useLocalStorage<number[]>
+        CONTEXT API TYPING (CUSTOM HOOK)
+            children: React.ReactNode
+            done before
+            type normally
+            normal type of an object if it is returning an object and type all of its properties as they should be with their specific types. 
+            guard clause the null type of the context when null, you won't be able to destructure props that don't exist in null
+            context will only be null when used outside the provider but ts takes that case into consideration
+        CREATING CUSTOM HOOK FOR USING CONTEXT
+            WHY
+                Reusable hook to check for a useContext hook being use outside the provider
+            HOW
+                1)calls context 
+                2)guard clauses negative case and throws error
+                3)returns context in case it is positive
+                4)context can be safely destructured from calling the custom hook
                 
-                
+
 
     PROVIDING FUNCTION FOR USE STATE
         WHY
