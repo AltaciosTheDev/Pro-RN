@@ -1,7 +1,7 @@
-export default function Sidebar({ children }) {
-  return <div className="sidebar">{children}</div>;
+export default function Sidebar() {
+  return <div className="sidebar"></div>;
 }
 
-export function SidebarTop({ children }) {
-  return <div className="sidebar__top">{children}</div>;
+export function SidebarTop() {
+  return <div className="sidebar__top"></div>;
 }

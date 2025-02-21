@@ -1,11 +1,7 @@
-export default function Header({children}) {
+export default function Header() {
   return (
     <header className="header">
-      {children}
+      <div className="header__top"> </div>
     </header>
   );
-}
-
-export function HeaderTop({children}){
-  return <div className="header__top"> {children}</div>
 }

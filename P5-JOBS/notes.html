@@ -903,53 +903,74 @@ PROJECT 4 - CORPCOMMENT
          
     
 P5 - RMTDEV
-    Shows all rmtdev jobs in the world
+--------------
 
-    TO LEARN
-        React-query
-            Library:
-                State management
-                data - fetching
-            Simplifies:
-                handling async data with:
-                    caching
-                    background data sync
-                    automatic refetching    
-            Features
-                auto caches fetched data
-                keeps data fresh by refetching in background
-                refetches when deps change, comps remount, or net reqs
-                supports pagination and infinite scrolling when fetching 
-                allows updating ui before api resp for better ux 
-                simple way to update or post data to server
-                built in dev tools to inspect 
+TO LEARN(NEW TOPICS)
+    1)React Query 
+    2)Cache
+    3)Debounce
+
+FEATURES(SECTIONS)
+    1)Search jobs
+    2)Job List
+    3)Job Details
+    4)Pagination
+    5)Sorting
+    6)Bookmarks
+
+INITIALIZE PROJECT
+    CLONE REPO  
+        git clone https://github.com/ByteGrad/starter-rmtdev.git .
+
+        NO .
+            Creates folder with repo name.
+
+        WITH .
+            Unloads the files of the repo in the folder we are located in the terminal.
+
+1)SEARCH
+    1)Fetch jobItems on search
+    2)Debounce Search
+        Applies a delay to the fetching to avoid excessive calls to the api.
+2)JOB LIST
+    1)jobItems state
+        Create state to store data, needed to update ui on re renders based on changes.
+    2)Render the jobItems list
+    3)Loading(Spinner)
+    4)Display 7
+3)JOB DETAILS
+    1)jobITemDetails state
+        Create state to store data, needed to update ui on re renders based on changes.
+    2)Store jobId in URL
+        WHY
+            Allow the jobId to persist and load jobDetails on initial load without searching.
+        WHAT ABOUT LS
+            Local storage is device-specific—it does not work for sharing links.
+    3)Fetch jobItemDetails on jobItem click
+    4)Cache jobItemDetails
+        To avoid unnecessary fetches of data already loaded beforehand.
+    5)Blank state
+    6)Loading(Spinner)
+4)PAGINATION
+    1)Hide previous button on initial page
+    2)Hide next button on last page
+5)SORTING
+    1)Relevant | Recent will sort the list and cause a re render b/c it changed state. 
+6)BOOKMARKS
+    2)BookmarkedIds state
+        Create state to store data, needed to update ui on re renders based on changes.
+    2)Conditionally style bookmark icon
+        If bookmarkIds.includes(id) activate bookmarked class
+    3)Include jobItem in bookmarks popover
+        If bookmarksIds.includes(id) then include 
+    4)Close popover
+        Clicking outside of the popover should close it.
+    
 
 
-    FEATURES
-        header
-            logo
-            bookmarks
-                list of bookmarks modal
-            Search bar
-        container    
-            Jobs(sidebar)
-                Job controls 
-                    counter
-                    relevant - recent filters
-                Job list
-                    caching previous job list result
-                Pagination
-            Job details page(job item content)
-                accessed via url parameter
-                Bookmark a job
-                caching specific job details result 
-        footer 
-            counter of tot jobs available 
 
-    INITIALIZE PROJECT
-        CLONE REPO  
-            git clone https://github.com/ByteGrad/starter-rmtdev.git .
-        
+
+
     SEARCH 
         Auto searching when typing
 

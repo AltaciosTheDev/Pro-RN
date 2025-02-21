@@ -1,16 +1,10 @@
-import JobListItem from "./JobListItem";
 
-export function JobList({ jobItems }) {
+export function JobList() {
   return (
     <ul className="job-list">
-      {jobItems.map((job) => (
-        <JobListItem
-          key={job.id}
-          jobItem={job}
-        />
-      ))}
     </ul>
   );
 }
 
 export default JobList;
+//reused in joblist and bookmarks
