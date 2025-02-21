@@ -38,8 +38,66 @@ PROJECT 1 - FANCY COUNTER
     PAKCHAGE JSON
         All important information about the project(versions, commands, dependencies)
 
-    ESLINT
-        Can install extension but config file will take precedence.
+    LINTING 
+        Process of analyzing code to detect errors. 
+
+        LINTER
+            Tool that scans code for:
+                1)syntax errors
+                2)unused variables
+                3)inconsistent formatting
+                4)potential bugs
+
+        ESLINT
+            Popular Js linter.
+
+            1️⃣ eslint-plugin-react
+                1)Checks for common React mistakes
+                2)Warns about missing props validation
+                3)Ensures proper JSX syntax
+
+                EXAMPLE
+                    ⚠️ "props" is missing a prop-type definition.
+
+            2️⃣ eslint-plugin-react-hooks
+                1)Ensures React Hooks rules are followed
+                
+                EXAMPLE
+                    ⚠️ React Hook "useState" is called in function "useCounter" which is neither a React function component nor a custom React Hook function.
+
+            3️⃣ eslint-plugin-react-refresh
+                Helps with Fast Refresh in React development
+                Ensures hot reloading works properly
+
+            EXAMPLE
+                const x = 10
+                console.log("Hello, world!")
+
+                ESLinter will flag:
+                    Missing semicolon (;)
+                    Unused variable (x is declared but never used)
+
+                📝 TL;DR (Summary Table)
+                    Feature	                            ESLint (with plugins)	TypeScript
+                    🐛 Detects errors	                ✅ Yes	               ✅ Yes
+                    🔠 Enforces correct types	        ❌ No	               ✅ Yes
+                    📌 Code style rules	                ✅ Yes	               ❌ No
+                    ⚡ IntelliSense improvements	       ❌ No	                  ✅ Yes
+                    🛠️ React hooks & best practices	 ✅ Yes (with plugins)	❌ No
+                    🏗️ Object & function structure    	 ❌ No	                ✅ Yes
+
+            CONFIG FILE VS EXT
+                Can install extension but config file will take precedence.
+
+        PLUGIN VS EXT
+            PLUGIN
+                works inside a tool or framework and extends func for an existing system.
+
+                EXAMPLE
+                    ESlint plugin for react(esling-plugin-react)
+
+            EXT
+                Works on standalone
 
     HOW CAN PEOPLE GET NODE_MODULES
         npm install
@@ -56,6 +114,42 @@ PROJECT 1 - FANCY COUNTER
 
     AUTO IMPORTS
         ctrl+enter -> should pop up intellisense
+
+    INTELLISENSE
+        Smart code autocompletion feature found in code editors.
+        Provides context aware suggestions. 
+
+        EXAMPLE
+            console. -> what comes next that is intellisense
+
+    AUTOCOMPLETE
+        Suggests possible keywords, variable names and functions as you type.
+
+    SYNTAX HIGHLIGHTING
+        Colors different parts of code to improve readability. 
+
+
+    @types/react & @types/react-dom
+        Typescript type definitions for react and react dom 
+
+        WHY
+            React is written in js so ts does not inherently know its types.
+            Many libraries (like React) do not come with built-in TypeScript support, so their types are provided separately via DefinitelyTyped (@types/* packages).
+        
+        HOW
+            Provides types for functions like usestate,useeffect, jsx children.
+
+    DefinitelyTyped(@types/*)
+        Open Source repo that offers ts type definitions for js libraries that dont have built in ts support. 
+
+         Common @types/* Packages
+            Package	            Purpose
+            @types/react	    Adds TypeScript support for React
+            @types/react-dom	Adds TypeScript support for ReactDOM
+            @types/node	        Provides TypeScript types for Node.js APIs (e.g., fs, path)
+            @types/express	    Provides TypeScript types for Express.js
+            @types/lodash	    Provides TypeScript types for Lodash functions
+
 
 PROEJECT 2 - WORD ANALYTICS
     TO LEARN
@@ -412,6 +506,19 @@ PROJECT 3 - TREKBAG
             SMALL,MID,LARGE PROJECTS 
             AVANCED MIDDLEWARE like persist for localstorage
             
+TYPESCRIPT IN NODE
+    @types/node
+        Ts type definition for node apis
+            fs
+            path
+            http
+            global variables(__dirname, process)
+        ts-node
+            ts execution engine for node 
+
+            BENEFIT
+                Allows to run .ts files directly without the need to compile them into js
+
 TYPESCRIPT IN REACT
     IN COMPONENT PROPS:
         MAINTAINS CONSISTENCY IN PROPS GIVEN AND NEEDED
@@ -787,8 +894,7 @@ PROJECT 4 - CORPCOMMENT
 
             ANSWER
                 const [feedbackItems, setFeedbackItems] = useState<TFeedbackItem[]>([]);
-
-                
+               
 
     TS IN e param of handler function
         EXTRACTED
@@ -903,8 +1009,25 @@ PROJECT 4 - CORPCOMMENT
          
     
 P5 - RMTDEV
-    Shows all rmtdev jobs in the world
+    RESTART
+        Too learn we have to re do our work several times.
 
+        APPROACHES
+            MERGE
+                o---o---o---o---(commit 10)---X---X---X---X---X  (old work, removed)
+                          \
+                           o---o---o---o---o (new work on branch-2)
+                                 \ 
+                                  MERGE COMMIT (branch-2 merged into main)
+                
+            REBASE(choosen)
+                o---o---o---o---(commit 10)---o---o---o---o---o (new work, rebased onto main)
+
+                ✅ No need to reset main manually
+                ✅ rebase automatically replaces old commits with the new ones
+                ✅ Results in a clean, linear history
+    
+            
     TO LEARN
         React-query
             Library:
@@ -923,6 +1046,9 @@ P5 - RMTDEV
                 allows updating ui before api resp for better ux 
                 simple way to update or post data to server
                 built in dev tools to inspect 
+
+
+
 
 
     FEATURES
@@ -1309,6 +1435,7 @@ P5 - RMTDEV
                 4)inside the hook remember to make it multi purpose if it is going to be re used
                     a)change variables and values to multipurpose names
                     b)provide values that going to be changed later.
+
         GENERIC TYPING (CUSTOM HOOK)
             Specific example for a custom hook to save data to LocalStorage
             TUPLE
@@ -1320,6 +1447,7 @@ P5 - RMTDEV
                 Return Value
                     :[T, React.Dispatch<React.SetStateAction<T>>]
                 useLocalStorage<number[]>
+
         CONTEXT API TYPING (CUSTOM HOOK)
             children: React.ReactNode
             done before
@@ -1327,7 +1455,8 @@ P5 - RMTDEV
             normal type of an object if it is returning an object and type all of its properties as they should be with their specific types. 
             guard clause the null type of the context when null, you won't be able to destructure props that don't exist in null
             context will only be null when used outside the provider but ts takes that case into consideration
-        CREATING CUSTOM HOOK FOR USING CONTEXT
+        
+            CREATING CUSTOM HOOK FOR USING CONTEXT
             WHY
                 Reusable hook to check for a useContext hook being use outside the provider
             HOW
@@ -1336,18 +1465,30 @@ P5 - RMTDEV
                 3)returns context in case it is positive
                 4)context can be safely destructured from calling the custom hook
                 
+        PROVIDING FUNCTION FOR USE STATE
+            WHY
+                initial value results too expensive to computate
+                you want to make sure value function only runs once ON MOUNT
 
+        CREATING POPUP MODAL AND REUSING CUSTOM HOOK 
+            POP UP OPEN AND CLOSE
+                1)Invoke component
+                2)manage state to control the behavior
+                    state initially false(so easy wow , dont forget this come on)
+                3)toggleIsOpen by providing a function to the button
+            INCLUDE LIST OF JOB ITEMS THAT HAVE BEEN BOOKMARKED
+                1)Re use <JobItems/> component 
+                2)Re use bookmarks context with bookmarked Ids 
+                    HOW TO ACCESS FULL JOBITEM DATA
+                        PROB
+                            cant really access based on the id b/c on initial load, there is nothing fetched.
+                        SOLU
+                            will have to fetch each ind jobItem based on the id
+                    
 
-    PROVIDING FUNCTION FOR USE STATE
-        WHY
-            initial value results too expensive to computate
-            you want to make sure value function only runs once ON MOUNT
         
-        
 
-        refresh 
-        check if they are in ls 
-        fetch if not 
+    
         
             
 
