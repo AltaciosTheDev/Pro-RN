@@ -1,3 +1,5 @@
 export default function PaginationControls() {
-  return <section className="pagination"></section>;
+  return <section className="pagination">
+    
+  </section>;
 }
