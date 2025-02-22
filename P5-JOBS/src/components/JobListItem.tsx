@@ -1,15 +1,20 @@
-
-//badgeLetters
-//company
-//daysAgo
-//id
-//relevanceScore
-//title
-
 import BookmarkIcon from "./BookmarkIcon";
 
-export default function JobListItem({jobItem}) {
-  const {badgeLetters,company,daysAgo,title} = jobItem
+type JobItem = { 
+  id: number,
+  badgeLetters: string,
+  title: string
+  company: string,
+  daysAgo: number,
+  relevanceScore: number,
+}
+
+type JobListItemProps = {
+  jobItem: JobItem
+}
+
+export default function JobListItem({jobItem}: JobListItemProps) {
+  const {badgeLetters, company, daysAgo, title} = jobItem
   return (
     <li className="job-item">
       <a className="job-item__link">

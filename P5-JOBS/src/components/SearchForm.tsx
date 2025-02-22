@@ -10,7 +10,7 @@ export default function SearchForm({searchText,setSearchText}) {
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`fetching ${e.target.value}`)
+    console.log(e.target.value)
     setSearchText(e.target.value)
     
   }
