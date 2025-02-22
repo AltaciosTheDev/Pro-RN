@@ -955,6 +955,16 @@ INITIALIZE PROJECT
                 !res.ok
                     Throw Error
                 setJobItems state to data.jobItems from fetch
+    Showing jobItems(search results)
+        List state up
+            Move searchText & jobItems to App
+        Render jobItems
+            Prop Drill
+                App -> Container -> Sidebar -> jobLst
+            jobList
+                map jobList and return a <jobListItem/> for every item
+            jobListItem
+                render jobItem info
 
     Debounce Search
         Applies a delay to the fetching to avoid excessive calls to the api.

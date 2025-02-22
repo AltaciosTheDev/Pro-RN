@@ -1,12 +1,9 @@
 import JobListItem from "./JobListItem";
 
-export function JobList() {
+export function JobList({jobItems}) {
   return (
     <ul className="job-list">
-      <JobListItem/>
-      <JobListItem/>
-      <JobListItem/>
-      <JobListItem/>
+      {jobItems.map((jobItem) => <JobListItem key={jobItem.id} jobItem={jobItem}/>)}
     </ul>
   );
 }
