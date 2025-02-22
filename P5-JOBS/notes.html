@@ -968,8 +968,21 @@ INITIALIZE PROJECT
     Typing 
         jobItem and jobListItem
     Prevent Prop Drilling
-        Childrin Pattern
-    
+        Children Pattern
+            Typing all components using children
+                children: React.ReactNode
+    Loading 
+        State
+            const [isLoading, setIsLoading] = useState(false)
+        WHERE 
+            Before fetch
+                true
+            After success fetch
+                false
+        CONDITIONALLY RENDER SPINNER
+            {isLoading && <Spinner/>}    -> Only shows spinner if it is loading
+            {!isLoading && jobItems.map  -> Only shows ListItems if fetch is no longer fetching
+            
 
     
     Debounce Search
@@ -1085,6 +1098,11 @@ INITIALIZE PROJECT
             Ts type that represents a value that never occurs. 
             Expression will never produce a value.
             Ts will infer this value when initializing an empty array [].
+        Loading state
+            isLoading && <Spinner/>
+                Always needed
+            !isLoading && Data.map
+                Prevents niche cases of previous fetch data existing and new fetch being loaded
         Sending complex info as prop
             If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
         Typing API Resp
