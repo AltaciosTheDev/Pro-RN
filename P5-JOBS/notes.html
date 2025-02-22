@@ -928,7 +928,7 @@ INITIALIZE PROJECT
         WITH .
             Unloads the files of the repo in the folder we are located in the terminal.
 
-1)SEARCH
+1.1)SEARCH
     Search Component(Controlled Input)
         OnSubmit Handler
             Create handleSubmit function
@@ -954,8 +954,8 @@ INITIALIZE PROJECT
             fetchJobItems async function
                 !res.ok
                     Throw Error
-                setJobItems state to data.jobItems from fetch
-    Showing jobItems(search results)
+              setJobItems state to data.jobItems from fetch
+1.2)Showing jobItems(search results)
         List state up
             Move searchText & jobItems to App
         Render jobItems
@@ -1024,13 +1024,40 @@ INITIALIZE PROJECT
         setSearchText: React.Dispatch<React.SetStateFunction<string>>
     Debounce Search
         Applies a delay to the fetching to avoid excessive calls to the api.
-2)JOB LIST
-    1)jobItems state
-        Create state to store data, needed to update ui on re renders based on changes.
-    2)Render the jobItems list
-    3)Loading(Spinner)
-    4)Display 7
-3)JOB DETAILS
+2)JOB DETAILS
+    Keep track of active job Id
+        WHY 
+            1)style based on active job
+            2)share current id for page to load in that state
+        URL HASH
+            fulfills requirements to share and load.
+            state will lose its value on initial load.
+
+            WRITING
+                <a href={`#${jobItem.id}`}
+                HOW
+                    Window.location.href gets or sets the url.
+                    Anchor tags href prop has access to the window.location.href   
+            READING
+                Tap into hashchange event with an event listener.
+                WHERE
+                    UseEffect
+                HOW
+                    window.addEventListener("hashchange", () => {...})
+
+        STATE
+            const [activeId, setActiveId] = useState<number | null>(null) 
+            WHERE
+                app, b/c jobList and jobItemContent need it
+            WHY
+                Hash alone won't cause re renders, it is for data persistance only.
+            
+                
+
+        
+    
+
+
     1)jobITemDetails state
         Create state to store data, needed to update ui on re renders based on changes.
     2)Store jobId in URL
@@ -1167,7 +1194,29 @@ INITIALIZE PROJECT
         Key Prop
             Funny enough, it must be given but react won't pass it. 
             It won't be received on the component definition side. 
-        
+        Window object
+            Global namespace with global variables and functions as properties.
+            
+            1)size and position
+            2)document and DOM access
+                .document  -> html DOM
+                .location  -> current URL(protocol, hosty)
+                    1).href      -> get or set URL  
+                    2).reload()  -> reload page
+                    3).assign()  -> navigate to new URL
+                    4).replace() -> replaces in url in history, no back option  
+                .history   -> browser session history
+                .navigator -> browser and device info
+        Window.location.hash
+            Fragment identifier in a URL, part after the #.
+            Write
+                window.location.has = "jobId"
+            Read
+                const id=window.location.hash.substring(1)
+            Reacting to hash change
+                window.addEventListener("hashchange", () => {...})
+        Returning function in useEffect
+            Remember to clean up after side effects
         Sending complex info as prop
             If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
         Typing API Resp
