@@ -1,8 +1,4 @@
-
-
 export default function SearchForm({searchText,setSearchText}) {
-  
-  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -14,7 +10,6 @@ export default function SearchForm({searchText,setSearchText}) {
     setSearchText(e.target.value)
     
   }
-
 
   return (
     <form onSubmit={handleSubmit} action="#" className="search">

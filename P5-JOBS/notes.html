@@ -982,8 +982,29 @@ INITIALIZE PROJECT
         CONDITIONALLY RENDER SPINNER
             {isLoading && <Spinner/>}    -> Only shows spinner if it is loading
             {!isLoading && jobItems.map  -> Only shows ListItems if fetch is no longer fetching
-    Jobitem Type
-        
+    Type
+        JobItem
+            exported to types file
+        JobList
+            Jobitems: JobItem []
+            isLoading: boolean
+        JobListItem
+            jobItem: JobItem
+    useJobItems custom Hook
+        Objective
+            Group all logic related to this feature in a single place
+        Benefit
+            1)De clutter main app or files unnecessary for this
+            2)If implementation wants to be changed, only 1 place to work on
+                useEffect
+                React-Query
+                Other libraries
+            3)Re use logic
+    Slice jobItems into a Page
+        jobItems.slice(0,7)
+
+        WHERE
+            useJobItems custom hook
 
     
     Debounce Search
@@ -1104,6 +1125,12 @@ INITIALIZE PROJECT
                 Always needed
             !isLoading && Data.map
                 Prevents niche cases of previous fetch data existing and new fetch being loaded
+        How custom hooks work
+            Same as without it
+            HOW
+                By following proper hook logic, we guarantee it will work as if it is not there
+        Return obj or array from hook
+            
         Sending complex info as prop
             If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
         Typing API Resp

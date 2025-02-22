@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import Background from "./Background";
 import Container from "./Container";
 import Footer from "./Footer";
@@ -12,30 +11,14 @@ import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 import PaginationControls from "./PaginationControls";
 import JobList from "./JobList";
+import { useJobItems } from "../lib/hooks";
+import { useState } from "react";
+import { ITEMS_PER_PAGE } from "../lib/constants";
 
 function App() {
+  //states
   const [searchText, setSearchText] = useState<string>("");
-  const [jobItems, setJobItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    if (!searchText) return;
-    
-    const fetchJobItems = async () => {
-      setIsLoading(true)
-      const response = await fetch(
-        `https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=${searchText}`
-      );
-      if (!response.ok) {
-        throw new Error();
-      }
-      const data = await response.json();
-      console.log(data.jobItems);
-      setIsLoading(false)
-      setJobItems(data.jobItems);
-    };
-    fetchJobItems();
-  }, [searchText]);
+  const {jobItemsSliced, isLoading} = useJobItems(searchText)
 
   return (
     <>
@@ -53,7 +36,7 @@ function App() {
             <ResultsCount />
             <SortingControls />
           </SidebarTop>
-          <JobList jobItems={jobItems} isLoading={isLoading}/>
+          <JobList jobItems={jobItemsSliced} isLoading={isLoading}/>
           <PaginationControls />
         </Sidebar>
         <JobItemContent />
