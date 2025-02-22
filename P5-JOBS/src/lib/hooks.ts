@@ -2,6 +2,25 @@ import { useEffect, useState } from "react";
 import { ITEMS_PER_PAGE } from "./constants";
 import { JobItem } from "./types";
 
+export function useActiveId() {
+    const [activeId, setActiveId] = useState<number | null>(+window.location.hash.substring(1) || null) //if no stored job, null.
+
+      console.log(activeId)
+    
+      useEffect(() => {
+        const handleHashChange = () => {
+          setActiveId(+window.location.hash.substring(1))
+        }
+        handleHashChange()
+        window.addEventListener("hashchange", handleHashChange)
+        return () => {
+          window.removeEventListener("hashchange", handleHashChange)
+        }
+      },[])
+
+    return activeId
+}
+
 export function useJobItems (searchText: string) {
     const [jobItems, setJobItems] = useState<JobItem[]>([]);
     const [isLoading, setIsLoading] = useState(false)
@@ -30,3 +49,4 @@ export function useJobItems (searchText: string) {
 
   return [jobItemsSliced,isLoading] as const
 }
+

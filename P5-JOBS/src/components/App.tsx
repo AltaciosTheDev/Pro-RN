@@ -11,7 +11,7 @@ import ResultsCount from "./ResultsCount";
 import SortingControls from "./SortingControls";
 import PaginationControls from "./PaginationControls";
 import JobList from "./JobList";
-import { useJobItems } from "../lib/hooks";
+import { useActiveId, useJobItems } from "../lib/hooks";
 import { useEffect, useState } from "react";
 
 
@@ -19,20 +19,8 @@ function App() {
   //states
   const [searchText, setSearchText] = useState<string>("");
   const [jobItemsSliced, isLoading] = useJobItems(searchText)
-  const [activeId, setActiveId] = useState<number | null>(+window.location.hash.substring(1) || null) //if no stored job, null.
-  
-  console.log(activeId)
+  const activeId = useActiveId()
 
-  useEffect(() => {
-    const handleHashChange = () => {
-      setActiveId(+window.location.hash.substring(1))
-    }
-    handleHashChange()
-    window.addEventListener("hashchange", handleHashChange)
-    return () => {
-      window.removeEventListener("hashchange", handleHashChange)
-    }
-  },[])
 
   return (
     <>
