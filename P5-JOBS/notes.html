@@ -929,8 +929,33 @@ INITIALIZE PROJECT
             Unloads the files of the repo in the folder we are located in the terminal.
 
 1)SEARCH
-    1)Fetch jobItems on search
-    2)Debounce Search
+    Search Component(Controlled Input)
+        OnSubmit Handler
+            Create handleSubmit function
+            e.preventDefault
+            e: React.FormEvent<HtmlFormElement>
+        searchText state
+            const [searchText, setSearchText] = useState<string>("")
+        onChange function
+            e: React.ChangeEvent<HtmlInputElement>
+            setSearchText(e.target.value)
+        Input Element
+            value={searchText}
+
+
+    Fetch jobItems on search
+        REQUIREMENT
+            Should fetch every time the input detechs a change, NOT depending if state changes
+        HOW 
+            fetch inside onChange function
+
+        
+        Fetch
+            
+
+
+
+    Debounce Search
         Applies a delay to the fetching to avoid excessive calls to the api.
 2)JOB LIST
     1)jobItems state
