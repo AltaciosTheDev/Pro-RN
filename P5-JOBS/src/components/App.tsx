@@ -13,12 +13,12 @@ import PaginationControls from "./PaginationControls";
 import JobList from "./JobList";
 import { useJobItems } from "../lib/hooks";
 import { useState } from "react";
-import { ITEMS_PER_PAGE } from "../lib/constants";
+
 
 function App() {
   //states
   const [searchText, setSearchText] = useState<string>("");
-  const {jobItemsSliced, isLoading} = useJobItems(searchText)
+  const [jobItemsSliced, isLoading] = useJobItems(searchText)
 
   return (
     <>

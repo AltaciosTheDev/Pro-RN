@@ -1005,7 +1005,17 @@ INITIALIZE PROJECT
 
         WHERE
             useJobItems custom hook
-
+    JobItems to Tuple
+        WHY
+            Where prop is sent
+                Receives type as union number | string
+            Where prop is used
+                Props is defined as what it should be ideally
+        PROB
+            Both come into conflict and must be addressed
+        SOLU
+            Tuple will provide ideal type for each
+                return [jobItemsSliced,isLoading] as const
     
     Debounce Search
         Applies a delay to the fetching to avoid excessive calls to the api.
@@ -1129,7 +1139,28 @@ INITIALIZE PROJECT
             Same as without it
             HOW
                 By following proper hook logic, we guarantee it will work as if it is not there
+
         Return obj or array from hook
+            OBJ 
+                Objects are better when returning multiple values that might be referenced by name (e.g., { data, error, isLoading }).
+
+            ARRAY
+                PROBLEM
+                    If you return an array, TypeScript might infer it as a generic array (any[]), which could cause issues. For example:
+
+                    function useCustomHook() {
+                        return [42, "Hello"];  // TypeScript infers this as (number | string)[]
+                    }
+                    const [num, str] = useCustomHook();
+                    TypeScript won’t enforce that num is a number and str is a string.
+            SOLUTION
+                Using as const to Infer a Tuple
+                    function useCustomHook() {
+                        return [42, "Hello"] as const;  // Tuple type: readonly [42, "Hello"]
+                    }
+                    The first value is always 42 (number).
+                    The second value is always "Hello" (string).
+
             
         Sending complex info as prop
             If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 

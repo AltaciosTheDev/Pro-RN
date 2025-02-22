@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { ITEMS_PER_PAGE } from "./constants";
+import { JobItem } from "./types";
 
 export function useJobItems (searchText: string) {
-    const [jobItems, setJobItems] = useState([]);
+    const [jobItems, setJobItems] = useState<JobItem[]>([]);
     const [isLoading, setIsLoading] = useState(false)
 
     //derived states
@@ -27,8 +28,5 @@ export function useJobItems (searchText: string) {
     fetchJobItems();
   }, [searchText]);
 
-  return {
-    jobItemsSliced,
-    isLoading
-  }
+  return [jobItemsSliced,isLoading] as const
 }
