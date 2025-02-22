@@ -941,19 +941,20 @@ INITIALIZE PROJECT
             setSearchText(e.target.value)
         Input Element
             value={searchText}
-
-
     Fetch jobItems on search
         REQUIREMENT
-            Should fetch every time the input detechs a change, NOT depending if state changes
-        HOW 
-            fetch inside onChange function
-
-        
-        Fetch
-            
-
-
+            Should fetch every time the input detects a change, NOT depending if state changes
+        WHERE
+            useEffect
+                Guard Clause
+                    !searchText return -> avoid fetching on an empty state in the initial render
+                Dependency
+                    searchText -> Fetches on the re render caused by the state change with the most recent value
+        ANATOMY
+            fetchJobItems async function
+                !res.ok
+                    Throw Error
+                setJobItems state to data.jobItems from fetch
 
     Debounce Search
         Applies a delay to the fetching to avoid excessive calls to the api.
@@ -1045,11 +1046,29 @@ INITIALIZE PROJECT
             BookmarkIcon component 
         logo to start page
             wrap image or icon in anchor tag 
-        Getting data(fetching)
-            OnLoad
+        FETCHING BASED ON PURPOSE
+            onLoad
                 useEffect
+                    state as dependency
+                        state changes:
+                            1)component re renders
+                            2)state is given as input value
+                            3)useEffect runs again and fetches based on most recent state value
             onReaction
-                Event handler
+                onChange(equivalent event)
+        Params
+            Query
+                resource located, need to filter further
+                example
+                    search
+                    sortBy
+                    limit
+            Path(Route)
+                locate specific resoure
+        Never Type
+            Ts type that represents a value that never occurs. 
+            Expression will never produce a value.
+            Ts will infer this value when initializing an empty array [].
         Sending complex info as prop
             If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
         Typing API Resp
