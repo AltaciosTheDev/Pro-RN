@@ -1044,6 +1044,13 @@ INITIALIZE PROJECT
                     UseEffect
                 HOW
                     window.addEventListener("hashchange", () => {...})
+        Initially call to handlehaschange
+            if there is something in the hash
+            useEffect runs the function without need for hashchange event
+
+            PRO
+                Avoids need to set initial value | null in state
+
 
         STATE
             const [activeId, setActiveId] = useState<number | null>(null) 
@@ -1072,7 +1079,28 @@ INITIALIZE PROJECT
                 useJobItemContent(activeId: number | null)
                     typenarrow the null cause with guard clasue
                     only number type is left to deal with
+    type JobItemContent
+        perfect example of type intersection
+            export type JobItemContent = JobItem & {
+            ... extra
+        }
+        Initial type for JobItemContet useState
+            JobItemContent | null
+            WHY
+                When initialized, there is a scenario in which the fetch is not run b/c activId is not there and has not changed. 
+                    In this situation we work with null.
+
+            Guard clause
+                Rememember to always guard clause a null state
+            Prop does not exist on type never Error
+                Error message when state is initialized empty and is not unioned with the actual type
+        Importing same name type as component
+            import {type JobItemContent}
+    Render JobItemContent
+        Render EmptyJobContent
+            if !JobItemContent return <EmptyJobContent/>
         
+            
                 
 
         
@@ -1239,6 +1267,19 @@ INITIALIZE PROJECT
                 window.addEventListener("hashchange", () => {...})
         Returning function in useEffect
             Remember to clean up after side effects
+        Types consistency is enforced
+            A type  defined before (activeID = number | null) will force you to keep that same type and work around it. (useJobIems(activeID))
+        Excellent useCase for Type Intersection
+            Types where you fetch surface info on list
+            And then fetch details for the details page
+        Importing same name type as component
+            import {type JobItemContent}
+        State<type | null> and Type Narrow
+            Awlays make sure you contemplate the null case of the state first
+            When you look for something inside state, if null is not dealed with first, it will give error.
+        
+
+
         Sending complex info as prop
             If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
         Typing API Resp

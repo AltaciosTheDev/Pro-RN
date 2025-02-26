@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { BASE_URL, ITEMS_PER_PAGE } from "./constants";
-import { JobItem } from "./types";
+import { JobItem, JobItemContent } from "./types";
 
 
 export function useActiveId() {
-  const [activeId, setActiveId] = useState<number | null>(+window.location.hash.substring(1) || null) //if no stored job, null.
+  const [activeId, setActiveId] = useState<number | null>(null) //if no stored job, null.
   
   console.log(activeId)
   
@@ -23,7 +23,7 @@ export function useActiveId() {
 }
 
 export function useJobItemContent(activeId:number | null) {
-    const [jobItemContent, setJobItemContent] = useState()
+    const [jobItemContent, setJobItemContent] = useState<JobItemContent | null>(null)
     
     useEffect(() => {
       if (!activeId) return;

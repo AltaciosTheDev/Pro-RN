@@ -7,4 +7,13 @@ export type JobItem = {
     relevanceScore: number,
   }
 
-  
+export type JobItemContent = JobItem & {
+  companyURL: string,
+  coverImgURL: string,
+  description: string,
+  duration: string,
+  location: string,
+  qualifications: string[],
+  reviews: string [],
+  salary: string
+}
