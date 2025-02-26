@@ -1,7 +1,20 @@
 import BookmarkIcon from "./BookmarkIcon";
-
-export default function JobItemContent() {
-  return <EmptyJobContent/>
+// badgeLetters
+// company
+// companyURL
+// coverImgURL
+// daysAgo
+// description
+// duration
+// id
+// location
+// qualifications
+// relevanceScore
+// reviews
+// salary
+// title
+export default function JobItemContent({jobItemContent}) {
+  if(!jobItemContent) return <EmptyJobContent/>
   
   return (
     <section className="job-details">

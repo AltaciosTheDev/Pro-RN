@@ -1053,9 +1053,29 @@ INITIALIZE PROJECT
                 Hash alone won't cause re renders, it is for data persistance only.
             
     useActiveId custom Hook
+        Objective
+            Group all logic related to this feature in a single place
+        Benefit
+            1)De clutter main app or files unnecessary for this
+            2)If implementation wants to be changed, only 1 place to work on
+    Fetch jobItemContent(Custom Hook)
+        WHEN 
+            activeId changes
+        REMEMBER
+            onClick for specific jobItem already deals with changing the hash and the activeId state. We can work with reacting to this change. 
+        guardClause
+            !activeId return
+        Types consistency is enforced
+            A type has defined before (activeID = number | null) will force you to keep that same type and work around it.
+
+            EXAMPLE
+                useJobItemContent(activeId: number | null)
+                    typenarrow the null cause with guard clasue
+                    only number type is left to deal with
         
                 
 
+        
         
     
 

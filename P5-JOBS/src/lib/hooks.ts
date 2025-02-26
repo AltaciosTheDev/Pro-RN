@@ -1,24 +1,48 @@
 import { useEffect, useState } from "react";
-import { ITEMS_PER_PAGE } from "./constants";
+import { BASE_URL, ITEMS_PER_PAGE } from "./constants";
 import { JobItem } from "./types";
 
+
 export function useActiveId() {
-    const [activeId, setActiveId] = useState<number | null>(+window.location.hash.substring(1) || null) //if no stored job, null.
+  const [activeId, setActiveId] = useState<number | null>(+window.location.hash.substring(1) || null) //if no stored job, null.
+  
+  console.log(activeId)
+  
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveId(+window.location.hash.substring(1))
+    }
+    handleHashChange()
+    window.addEventListener("hashchange", handleHashChange)
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange)
+    }
+  },[])
+  
+  return activeId
+}
 
-      console.log(activeId)
+export function useJobItemContent(activeId:number | null) {
+    const [jobItemContent, setJobItemContent] = useState()
     
-      useEffect(() => {
-        const handleHashChange = () => {
-          setActiveId(+window.location.hash.substring(1))
-        }
-        handleHashChange()
-        window.addEventListener("hashchange", handleHashChange)
-        return () => {
-          window.removeEventListener("hashchange", handleHashChange)
-        }
-      },[])
+    useEffect(() => {
+      if (!activeId) return;
 
-    return activeId
+      const fetchJobItemContent = async (activeId:number) => {
+        const response = await fetch(`${BASE_URL}/${activeId}`)
+  
+        if (!response.ok) {
+          throw new Error();
+        }
+        const data = await response.json()
+        setJobItemContent(data.jobItem)
+        console.log(data.jobItem);
+
+      }
+      fetchJobItemContent(activeId)
+  
+    },[activeId])
+    return jobItemContent
 }
 
 export function useJobItems (searchText: string) {
@@ -34,7 +58,7 @@ export function useJobItems (searchText: string) {
     const fetchJobItems = async () => {
       setIsLoading(true)
       const response = await fetch(
-        `https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=${searchText}`
+        `${BASE_URL}?search=${searchText}`
       );
       if (!response.ok) {
         throw new Error();
