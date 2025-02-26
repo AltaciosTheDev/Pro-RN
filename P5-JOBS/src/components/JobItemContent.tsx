@@ -30,7 +30,7 @@ export default function JobItemContent() {
       </section>
     );
 
-  if (!isLoading && !jobItemContent) return <EmptyJobContent />; //score
+  if (!jobItemContent) return <EmptyJobContent />; //score
 
   const {
     badgeLetters,
