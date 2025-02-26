@@ -23,12 +23,14 @@ export function useActiveId() {
 }
 
 export function useJobItemContent(activeId:number | null) {
-    const [jobItemContent, setJobItemContent] = useState<JobItemContent | null>(null)
+  const [jobItemContent, setJobItemContent] = useState<JobItemContent | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
     
     useEffect(() => {
       if (!activeId) return;
 
       const fetchJobItemContent = async (activeId:number) => {
+        setIsLoading(true)
         const response = await fetch(`${BASE_URL}/${activeId}`)
   
         if (!response.ok) {
@@ -36,13 +38,14 @@ export function useJobItemContent(activeId:number | null) {
         }
         const data = await response.json()
         setJobItemContent(data.jobItem)
+        setIsLoading(false)
         console.log(data.jobItem);
 
       }
       fetchJobItemContent(activeId)
   
     },[activeId])
-    return jobItemContent
+    return [jobItemContent, isLoading] as const
 }
 
 export function useJobItems (searchText: string) {
