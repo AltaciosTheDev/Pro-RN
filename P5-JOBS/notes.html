@@ -1101,14 +1101,12 @@ INITIALIZE PROJECT
             if !JobItemContent return <EmptyJobContent/>
     isLoading
         Multiple isLoading must be in separate files. 
+    Style active jobListItem
+        inside jobListItem
+            useActiveId c-hook
+            isActive={activdeId == jobItem.id} -> conditionally render prop to produce boolean value
+    ResultsCount
         
-            
-                
-
-        
-        
-    
-
 ----------------
 4)PAGINATION
     1)Hide previous button on initial page

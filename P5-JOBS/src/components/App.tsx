@@ -18,7 +18,7 @@ import { useState } from "react";
 function App() {
   //states
   const [searchText, setSearchText] = useState<string>("");
-  const [jobItemsSliced, isLoading] = useJobItems(searchText)
+  const [jobItemsSliced, isLoading,jobItemsCount] = useJobItems(searchText)
   
 
   return (
@@ -34,7 +34,7 @@ function App() {
       <Container>
         <Sidebar>
           <SidebarTop>
-            <ResultsCount />
+            <ResultsCount jobItemsCount={jobItemsCount}/>
             <SortingControls />
           </SidebarTop>
           <JobList jobItems={jobItemsSliced} isLoading={isLoading}/>

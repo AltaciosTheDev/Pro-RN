@@ -54,6 +54,7 @@ export function useJobItems (searchText: string) {
 
     //derived states
     const jobItemsSliced = jobItems.slice(0 ,ITEMS_PER_PAGE)
+    const jobItemsCount = jobItems.length
 
   useEffect(() => {
     if (!searchText) return;
@@ -74,6 +75,6 @@ export function useJobItems (searchText: string) {
     fetchJobItems();
   }, [searchText]);
 
-  return [jobItemsSliced,isLoading] as const
+  return [jobItemsSliced,isLoading,jobItemsCount] as const
 }
 
