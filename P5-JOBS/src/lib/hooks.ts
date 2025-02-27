@@ -6,7 +6,7 @@ import { JobItem, JobItemContent } from "./types";
 export function useActiveId() {
   const [activeId, setActiveId] = useState<number | null>(null) //if no stored job, null.
   
-  console.log(activeId)
+  //console.log(activeId)
   
   useEffect(() => {
     const handleHashChange = () => {
@@ -46,6 +46,17 @@ export function useJobItemContent(activeId:number | null) {
   
     },[activeId])
     return [jobItemContent, isLoading] as const
+}
+
+export function useDebounce(value,delay){
+  const [debouncedValue, setDebouncedValue] = useState(value)
+
+  useEffect(() => {
+    const timerId = setTimeout(() => setDebouncedValue(value), delay)
+    return () => clearTimeout(timerId)
+  },[value,delay])
+
+  return debouncedValue
 }
 
 export function useJobItems (searchText: string) {

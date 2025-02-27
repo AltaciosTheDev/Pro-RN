@@ -1021,9 +1021,7 @@ INITIALIZE PROJECT
         It won't be received on the component definition side. 
     Type Form
         searchText: string
-        setSearchText: React.Dispatch<React.SetStateFunction<string>>
-    Debounce Search
-        Applies a delay to the fetching to avoid excessive calls to the api.
+        setSearchText: React.Dispatch<React.SetStateFunction<string>>.
 2)JOB DETAILS
     Keep track of active job Id
         WHY 
@@ -1106,7 +1104,19 @@ INITIALIZE PROJECT
             useActiveId c-hook
             isActive={activdeId == jobItem.id} -> conditionally render prop to produce boolean value
     ResultsCount
-        
+        derived state in useJobItems hook where info is readily available
+3)Debounce searchText
+    Obj
+        Limit api fetch until user has finished typing in input
+    HOW
+        Fetch with a debounced searchText
+    
+    STEPS
+        useEffect(() => {
+            const timerId = setTimeout(() => setDebouncedSearchText(searchText), 1000)
+            return () => clearTimeout(timerId)
+        },[searchText])
+    
 ----------------
 4)PAGINATION
     1)Hide previous button on initial page
@@ -1236,6 +1246,31 @@ LEARNED - SUMMARY
             isLoading?
             !var
             positive return for component
+    Debounce searchText
+        Technique to limit # of times a function is executed.
+        Ensures function is only executed after a specific delay.
+        HOW
+            1)each time event is triggered, timer is set.
+            2)if event is triggered before timer ends, time restarts.
+            3)func executes only after timer has finished wihtout interruptions.
+        WHEN
+            1)search input
+            2)button click prevention
+            3)windowx resize
+    C-hooks library
+        usehooks-ts.com
+    Tip when determining where to locate hooks or functions
+        Look at where you already have access to data
+
+        EXAMPLE
+            debouncesearchtext can be in app b/c searchtext is already there.
+    SetTimeout in Reac
+        Accumulated timeouts will execute.
+
+        SOLUTION
+            Removal of each of the unnecessary calls. 
+            1)store id of each
+            2)return a function that executes clearTimeout with that id.
 ---------
     Sending complex info as prop
         If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
