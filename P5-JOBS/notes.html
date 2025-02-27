@@ -1073,11 +1073,11 @@ INITIALIZE PROJECT
         guardClause
             !activeId return
         Types consistency is enforced
-            A type has defined before (activeID = number | null) will force you to keep that same type and work around it.
+            A type defined before (activeID = number | null) will force you to keep that same type and work around it.
 
             EXAMPLE
                 useJobItemContent(activeId: number | null)
-                    typenarrow the null cause with guard clasue
+                    type narrow the null case with guard clasue
                     only number type is left to deal with
     type JobItemContent
         perfect example of type intersection
@@ -1099,6 +1099,8 @@ INITIALIZE PROJECT
     Render JobItemContent
         Render EmptyJobContent
             if !JobItemContent return <EmptyJobContent/>
+    isLoading
+        Multiple isLoading must be in separate files. 
         
             
                 
@@ -1107,19 +1109,7 @@ INITIALIZE PROJECT
         
     
 
-
-    1)jobITemDetails state
-        Create state to store data, needed to update ui on re renders based on changes.
-    2)Store jobId in URL
-        WHY
-            Allow the jobId to persist and load jobDetails on initial load without searching.
-        WHAT ABOUT LS
-            Local storage is device-specific—it does not work for sharing links.
-    3)Fetch jobItemDetails on jobItem click
-    4)Cache jobItemDetails
-        To avoid unnecessary fetches of data already loaded beforehand.
-    5)Blank state
-    6)Loading(Spinner)
+----------------
 4)PAGINATION
     1)Hide previous button on initial page
     2)Hide next button on last page
@@ -1138,166 +1128,135 @@ INITIALIZE PROJECT
 
 
 
+LEARNED - SUMMARY
+    cacheing
+        storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
+    clone repo to here
+        git clone https://github.com/ByteGrad/starter-rmtdev.git .
+    sharing repo    
+        package.json to install node_modules and avoid uploading the massive folder 
+    icon to use action
+        wrap icon in a button 
+            example
+                BookmarkIcon
+                BookmarkButton
+    reusability even in small components
+        BookmarkIcon component 
+    logo to start page
+        wrap image or icon in anchor tag 
+    FETCHING BASED ON PURPOSE
+        onLoad
+            useEffect
+                state as dependency
+                    state changes:
+                        1)component re renders
+                        2)state is given as input value
+                        3)useEffect runs again and fetches based on most recent state value
+        onReaction
+            onChange(equivalent event)
+    Params
+        Query
+            resource located, need to filter further
+            example
+                search
+                sortBy
+                limit
+        Path(Route)
+            locate specific resoure
+    Never Type
+        Ts type that represents a value that never occurs. 
+        Expression will never produce a value.
+        Ts will infer this value when initializing an empty array [].
+    Loading state
+        isLoading && <Spinner/>
+            Always needed
+        !isLoading && Data.map
+            Prevents niche cases of previous fetch data existing and new fetch being loaded
+    How custom hooks work
+        HOW
+            By following proper hook logic, we guarantee it will work as if it is not there
+        Objective
+            Group all logic related to this feature in a single place
+        Benefit
+            1)De clutter main app or files unnecessary for this
+            2)If implementation wants to be changed, only 1 place to work on
+                useEffect
+                React-Query
+                Other libraries
+            3)Re use logic
+    Returning array from custom hook
+        SITUATION
+            Where prop is sent
+                Receives type as union number | string
+            Where prop is used
+                Props is defined as what it should be ideally
+        PROB
+            Both come into conflict and must be addressed
+        SOLU
+            Tuple will provide ideal type for each
+                return [jobItemsSliced,isLoading] as const
+    Key Prop
+        Funny enough, it must be given but react won't pass it. 
+        It won't be received on the component definition side. 
+    Window object
+        Global namespace with global variables and functions as properties.
+        
+        1)size and position
+        2)document and DOM access
+            .document  -> html DOM
+            .location  -> current URL(protocol, hosty)
+                1).href      -> get or set URL  
+                2).reload()  -> reload page
+                3).assign()  -> navigate to new URL
+                4).replace() -> replaces in url in history, no back option  
+            .history   -> browser session history
+            .navigator -> browser and device info
+    Window.location.hash
+        Fragment identifier in a URL, part after the #.
+        Write
+            window.location.has = "jobId"
+        Read
+            const id=window.location.hash.substring(1)
+        Reacting to hash change
+            window.addEventListener("hashchange", () => {...})
+    Returning function in useEffect
+        Remember to clean up after side effects
+    Types consistency is enforced
+        A type  defined before (activeID = number | null) will force you to keep that same type and work around it. (useJobIems(activeID))
+    Excellent useCase for Type Intersection
+        Types where you fetch surface info on list
+        And then fetch details for the details page
+    Importing same name type as component
+        import {type JobItemContent}
+    State<type | null> and Type Narrow
+        Always make sure you contemplate the null case of the state first
+        When you look for something inside state, if null is not dealed with first, it will give error.
+    isLoading
+        Multiple isLoading must be in separate files.        
+    Order of logic / conditional 
+        Negatvie cases first
+            isLoading?
+            !var
+            positive return for component
+---------
+    Sending complex info as prop
+        If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
+    Typing API Resp
+        analyze what comes back and type the object of the response
+    Children prop to encapsulate html tags
+        create component that will use a div to wrap around children. This encapsulates logic. 
+    
+    
+        
+        
+            
 
-
-    SEARCH 
-        Auto searching when typing
-
-        TARGET
-            resource in a pre built servert
-
-        WHERE
-            1)useEffect 
-                EXAMPLE
-                    useEffect(() => {
-                        if(!searchText) return //only fetch when input not empty will avoid fetch onloading b/c of this. 
-                        fetch("https://bytegrad.com/course-assets/projects/rmtdev/api/data?search=react")
-                    },[searchText])
-                React-Query works with useEffect. 
-
-            2)EVENT HANDLER
-                fetch inside the handler
-                    auto avoid fetching on mount
-                    only fetches when provoked
-
-        LOCATION
-            Maintain all related states in same place(job list, search text) 
-            1)Initially in form
-            2)app 
-                state
-                useffect initial render funciton
-
-    PREVENTING PROP DRILLING
-        children prop when it is simpler, instead of context or zustand.
 
     
-
-
-    LEARNED - SUMMARY
-        cacheing
-            storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
-        clone repo to here
-            git clone https://github.com/ByteGrad/starter-rmtdev.git .
-        sharing repo    
-            package.json to install node_modules and avoid uploading the massive folder 
-        icon to use action
-            wrap icon in a button 
-                example
-                    BookmarkIcon
-                    BookmarkButton
-        reusability even in small components
-            BookmarkIcon component 
-        logo to start page
-            wrap image or icon in anchor tag 
-        FETCHING BASED ON PURPOSE
-            onLoad
-                useEffect
-                    state as dependency
-                        state changes:
-                            1)component re renders
-                            2)state is given as input value
-                            3)useEffect runs again and fetches based on most recent state value
-            onReaction
-                onChange(equivalent event)
-        Params
-            Query
-                resource located, need to filter further
-                example
-                    search
-                    sortBy
-                    limit
-            Path(Route)
-                locate specific resoure
-        Never Type
-            Ts type that represents a value that never occurs. 
-            Expression will never produce a value.
-            Ts will infer this value when initializing an empty array [].
-        Loading state
-            isLoading && <Spinner/>
-                Always needed
-            !isLoading && Data.map
-                Prevents niche cases of previous fetch data existing and new fetch being loaded
-        How custom hooks work
-            Same as without it
-            HOW
-                By following proper hook logic, we guarantee it will work as if it is not there
-            Objective
-                Group all logic related to this feature in a single place
-            Benefit
-                1)De clutter main app or files unnecessary for this
-                2)If implementation wants to be changed, only 1 place to work on
-                    useEffect
-                    React-Query
-                    Other libraries
-                3)Re use logic
-        Returning array from custom hook
-            SITUATION
-                Where prop is sent
-                    Receives type as union number | string
-                Where prop is used
-                    Props is defined as what it should be ideally
-            PROB
-                Both come into conflict and must be addressed
-            SOLU
-                Tuple will provide ideal type for each
-                    return [jobItemsSliced,isLoading] as const
-        Key Prop
-            Funny enough, it must be given but react won't pass it. 
-            It won't be received on the component definition side. 
-        Window object
-            Global namespace with global variables and functions as properties.
-            
-            1)size and position
-            2)document and DOM access
-                .document  -> html DOM
-                .location  -> current URL(protocol, hosty)
-                    1).href      -> get or set URL  
-                    2).reload()  -> reload page
-                    3).assign()  -> navigate to new URL
-                    4).replace() -> replaces in url in history, no back option  
-                .history   -> browser session history
-                .navigator -> browser and device info
-        Window.location.hash
-            Fragment identifier in a URL, part after the #.
-            Write
-                window.location.has = "jobId"
-            Read
-                const id=window.location.hash.substring(1)
-            Reacting to hash change
-                window.addEventListener("hashchange", () => {...})
-        Returning function in useEffect
-            Remember to clean up after side effects
-        Types consistency is enforced
-            A type  defined before (activeID = number | null) will force you to keep that same type and work around it. (useJobIems(activeID))
-        Excellent useCase for Type Intersection
-            Types where you fetch surface info on list
-            And then fetch details for the details page
-        Importing same name type as component
-            import {type JobItemContent}
-        State<type | null> and Type Narrow
-            Awlays make sure you contemplate the null case of the state first
-            When you look for something inside state, if null is not dealed with first, it will give error.
-        
-
-
-        Sending complex info as prop
-            If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
-        Typing API Resp
-            analyze what comes back and type the object of the response
-        Children prop to encapsulate html tags
-            create component that will use a div to wrap around children. This encapsulates logic. 
-        
-        
-            
-            
                 
 
 
-        
-                    
-
     
-        
     
     
             
