@@ -1116,6 +1116,10 @@ INITIALIZE PROJECT
             const timerId = setTimeout(() => setDebouncedSearchText(searchText), 1000)
             return () => clearTimeout(timerId)
         },[searchText])
+    type with generics
+        useDebounce<T>(value:T,delay = 1000):T
+    Default params
+        Perfect use for a standard delay unless user specifies.
     
 ----------------
 4)PAGINATION

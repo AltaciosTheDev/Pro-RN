@@ -18,7 +18,7 @@ import {useState } from "react";
 function App() {
   //states
   const [searchText, setSearchText] = useState<string>("");
-  const debouncedSearchText = useDebounce(searchText, 1000)
+  const debouncedSearchText = useDebounce<string>(searchText)
   const [jobItemsSliced, isLoading,jobItemsCount] = useJobItems(debouncedSearchText)
 
 
