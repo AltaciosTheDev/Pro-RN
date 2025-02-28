@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BASE_URL, ITEMS_PER_PAGE } from "./constants";
 import { JobItem, JobItemContent } from "./types";
+import { useQuery } from "@tanstack/react-query";
 
 
 export function useActiveId() {
@@ -23,30 +24,57 @@ export function useActiveId() {
 }
 
 export function useJobItemContent(activeId:number | null) {
-  const [jobItemContent, setJobItemContent] = useState<JobItemContent | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
-    
-    useEffect(() => {
-      if (!activeId) return;
-
-      const fetchJobItemContent = async (activeId:number) => {
-        setIsLoading(true)
-        const response = await fetch(`${BASE_URL}/${activeId}`)
-  
-        if (!response.ok) {
-          throw new Error();
-        }
-        const data = await response.json()
-        setJobItemContent(data.jobItem)
-        setIsLoading(false)
-        console.log(data.jobItem);
-
+  const {data, isLoading} = useQuery(["job-item", activeId], 
+    async () => {
+      if(!activeId) return
+      const response = await fetch(`${BASE_URL}/${activeId}`)
+      if (!response.ok) {
+        throw new Error();
       }
-      fetchJobItemContent(activeId)
-  
-    },[activeId])
-    return [jobItemContent, isLoading] as const
+      const data = await response.json()
+      return data.jobItem
+    },
+    {
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !!activeId, //run on mount, if id, then run. 
+      onError: () => {
+
+      } 
+    }
+  )
+  console.log(data)
+  return [data, isLoading] as const
 }
+
+//------------ useJobItemContent V1 - useEffect--------------
+// export function useJobItemContent(activeId:number | null) {
+//   const [jobItemContent, setJobItemContent] = useState<JobItemContent | null>(null)
+//   const [isLoading, setIsLoading] = useState(false)
+    
+//     useEffect(() => {
+//       if (!activeId) return;
+
+//       const fetchJobItemContent = async (activeId:number) => {
+//         setIsLoading(true)
+//         const response = await fetch(`${BASE_URL}/${activeId}`)
+  
+//         if (!response.ok) {
+//           throw new Error();
+//         }
+//         const data = await response.json()
+//         setJobItemContent(data.jobItem)
+//         setIsLoading(false)
+//         console.log(data.jobItem);
+
+//       }
+//       fetchJobItemContent(activeId)
+  
+//     },[activeId])
+//     return [jobItemContent, isLoading] as const
+// }
+// ---------------------------------------------------------------
 
 export function useDebounce<T>(value:T,delay = 1000):T{
   const [debouncedValue, setDebouncedValue] = useState(value)

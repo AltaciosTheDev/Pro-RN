@@ -1120,29 +1120,105 @@ INITIALIZE PROJECT
         useDebounce<T>(value:T,delay = 1000):T
     Default params
         Perfect use for a standard delay unless user specifies.
+4)Changing fetch to React-Query
+    Obj
+       Store recently fetched data to avoid re fetching
+    WHERE
+        1)jobItems
+        2)jobItemContent
+    PROVIDER
+        Establish a provider in the main file with <App>
+    
+    
+    
     
 ----------------
-4)PAGINATION
-    1)Hide previous button on initial page
-    2)Hide next button on last page
-5)SORTING
-    1)Relevant | Recent will sort the list and cause a re render b/c it changed state. 
-6)BOOKMARKS
-    2)BookmarkedIds state
-        Create state to store data, needed to update ui on re renders based on changes.
-    2)Conditionally style bookmark icon
-        If bookmarkIds.includes(id) activate bookmarked class
-    3)Include jobItem in bookmarks popover
-        If bookmarksIds.includes(id) then include 
-    4)Close popover
-        Clicking outside of the popover should close it.
+
+React Query
+    Powerful library to manage state and fetching.
+
+    WHY
+        Automaically handles all the manual things you are used to doing:
+            1)loading 
+            2)errors
+            3)caching
+            4)refetching stale info
+    COMPARISON
+        WITHOUT
+            useEffect -> fetch
+            useState -> result
+            useState -> loading
+            useState -> errors
+            manual re fetch for stale info
+        WITH
+            useQuery hook
+    INSTALL
+        npm install @tanstack/react-query
+    SETUP QUERY CLIENT IN MAIN FILE
+        import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
+
+        const queryClient = new QueryClient()
+
+        function App() {
+            return(
+                <QueryClientProvider client={QueryClient}>
+                    <...>
+                </QueryClientProvider>
+            )
+        }
     
+        WHAT HAPPENS
+            Query client wraps around your app and enables caching for all app.
+    FETCH DATA WITH USEQUERY
+        import {useQuery} from "@tanstack/react-query"
 
-
+        function MyComponent() {
+            const {data,error,isLoading} = useQuery({
+                queryKey: ['key'], 
+                queryFn: async () => {
+                    const response = await fetch("https://your-api.com/data");
+                    if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }   
+                    return response.json(); // Return the parsed JSON data
+                },
+                staleTime: 1000 * 60 * 5, 
+                cacheTime: 1000 * 60 * 10,
+                refetchOnWindowFocus: false, // 
+            })
+        }
+        PARAMS
+            queryKey                -> unique key to remember query for caching
+            queryFn                 -> fn that fetches
+            isLoading               -> true while fetching
+            error                   -> request fails(500)
+            data ->                 -> data response
+            staleTime               -> (Optional) Keep data fresh
+            cacheTime               -> (Optional) Keep data in cache
+            refetchOnWindowFocus    -> (Optional) Prevent refetching when window regains focus
+            enabled                 -> (optional) Run on mount? (boolean)
+        RETURNED
+            Property	Type	        Description
+            data	    Object / Array	The response data from the API.
+            error	    Object / null	The error object if the request fails.
+            isLoading	Boolean	        true while the query is fetching for the first time.
+            isError	    Boolean	        true if an error occurred.
+            isFetching	Boolean	        true if React Query is refetching data in the background.
+            refetch	    Function	    A function to manually trigger a refetch.
+    IMPROVEMENTS
+        1)No more manual state handling(isLoading, Error, Data)
+        2)Cache
+        3)auto updates stale data
+        4)No need for custom try catch
+        
 
 LEARNED - SUMMARY
     cacheing
         storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
+        POPULAR WAYS
+            1)react-query
+            2)nextjs
+            3)swr vercel
     clone repo to here
         git clone https://github.com/ByteGrad/starter-rmtdev.git .
     sharing repo    
