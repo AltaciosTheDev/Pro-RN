@@ -23,28 +23,27 @@ export function useActiveId() {
   return activeId
 }
 
+const fetchJobItemContent =  async (activeId:number | null) => {
+  const response = await fetch(`${BASE_URL}/${activeId}`)
+  if (!response.ok) {
+    throw new Error();
+  }
+  const data = await response.json()
+  return data.jobItem
+}
+
 export function useJobItemContent(activeId:number | null) {
-  const {data, isLoading} = useQuery(["job-item", activeId], 
-    async () => {
-      if(!activeId) return
-      const response = await fetch(`${BASE_URL}/${activeId}`)
-      if (!response.ok) {
-        throw new Error();
-      }
-      const data = await response.json()
-      return data.jobItem
-    },
+  
+  const {data, isLoading} = useQuery(["job-item", activeId], //run on id change, dep array 
+    () =>fetchJobItemContent(activeId!), //type assetion 
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
       retry: false,
-      enabled: !!activeId, //run on mount, if id, then run. 
-      onError: () => {
-
-      } 
+      enabled: !!activeId, //on mount condition to run, if id run.
     }
   )
-  console.log(data)
+  
   return [data, isLoading] as const
 }
 

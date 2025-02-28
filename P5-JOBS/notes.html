@@ -1128,6 +1128,9 @@ INITIALIZE PROJECT
         2)jobItemContent
     PROVIDER
         Establish a provider in the main file with <App>
+    Non null type assertion
+        Good way to deal with the datatype | null guard clause
+    
     
     
     
@@ -1166,6 +1169,7 @@ React Query
                 </QueryClientProvider>
             )
         }
+    
     
         WHAT HAPPENS
             Query client wraps around your app and enables caching for all app.
@@ -1351,6 +1355,15 @@ LEARNED - SUMMARY
             Removal of each of the unnecessary calls. 
             1)store id of each
             2)return a function that executes clearTimeout with that id.
+    Non-Null Assertion (!)
+        The non-null assertion operator (!) tells TypeScript:
+            “I am 100% sure this value is NOT null or undefined.”
+            Use with caution—it bypasses TypeScript’s safety checks.
+        HOW TO USE
+            cases in which type is something | null as substitute for guard clause
+        GOOD EXAMPLE
+            Inside react query query-fn to avoid guard clausing the number | null activeID
+        
 ---------
     Sending complex info as prop
         If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
