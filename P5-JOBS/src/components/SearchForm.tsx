@@ -7,7 +7,7 @@ export default function SearchForm({searchText,setSearchText}: SearchFormProps) 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("Form submitted");
+    //alert("Form submitted");
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -279,7 +279,12 @@ PROJECT 3 - TREKBAG
 
     USEMEMO
         hook in react to avoid doing recalculation by storing a computation in memory until dependencies change. 
-        Same useEffefcct syntax
+        SYNTAX
+            Same useEffefcct syntax
+        WHY
+            Avoid recalculating taxing stuff on every re render, only when deps change.
+        SIMILAR TO
+            not wanting to run useeffect on every re render b/c of performance
 
 
     CHILDREN COMPOSITION
@@ -1135,7 +1140,29 @@ INITIALIZE PROJECT
     typing data from react query
         SOLU
             type data returned from fetcher function
-        
+    typing fetch function 
+        Promise<JobItemContent>
+    Error handling
+        Pass the error
+        Use the error
+            onError: (error) => {
+                console.log(error)
+            } 
+    Purify the function
+        Remove derived states to maintain the function pure
+    Refactor the useJobItems Hook
+        Possibility of undefined
+            If funcion is never run, the returned data could be undefined. 
+            SOLUTION
+                Just like before, give it an initial value.
+            EXAMPLE
+                initialData: [], // Ensures data starts as an empty array
+            WHAT HAPPENS
+                Data will never be undefined, always empty array or full array
+        Possibility of undefined values that are being sent with one data type | undefined and where they are used they are defined as without undefined.
+            Short circuit the negative 
+                const jobItemsSliced = jobItems?.slice(0 ,ITEMS_PER_PAGE) || []
+                 const jobItemsCount = jobItems?.length || 0
     
     
     
@@ -1206,6 +1233,7 @@ React Query
             cacheTime               -> (Optional) Keep data in cache
             refetchOnWindowFocus    -> (Optional) Prevent refetching when window regains focus
             enabled                 -> (optional) Run on mount? (boolean)
+            onError                 -> func to run when error occurs 
         RETURNED
             Property	Type	        Description
             data	    Object / Array	The response data from the API.
@@ -1219,8 +1247,26 @@ React Query
         2)Cache
         3)auto updates stale data
         4)No need for custom try catch
+    DIFF isLoading vs isInitialLoading
+        isLoading: 
+            true when the query has no cached data and is fetching.
+            This means while we haven't fetched, it is true and spinner forever.
+        isInitialLoading: 
+            true only while fetching and then false forever.
+        RESULT
+            If the query refetches (e.g., due to enabled changing or a manual refetch), isLoading might be true again, but isInitialLoading will remain false.
+    INITIAL RETURNED DATA BEFORE FETCH
+        React query does not know what to return, so it returns UNDEFINED.
+    PLACEHOLDERDATA
+        it gives React Query a temporary value (in this case, an empty array []) while the actual data is being fetched. 
+        LIKE SAYING
+            NOW - assume an empty array
+            LATER - i'll change it after the fetch is done
+        BENEFITS
+            No dealing with undefined
+    
         
-
+        
 LEARNED - SUMMARY
     cacheing
         storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
@@ -1241,6 +1287,16 @@ LEARNED - SUMMARY
         BookmarkIcon component 
     logo to start page
         wrap image or icon in anchor tag 
+        Children prop to encapsulate html tags
+        create component that will use a div to wrap around children. This encapsulates logic.
+        EXAMPLE
+            export function SidebarTop({children}: {children: React.ReactNode}){
+                return (
+                    <div className="sidebar__top">
+                    {children}
+                    </div>
+                )
+            }
     FETCHING BASED ON PURPOSE
         onLoad
             useEffect
@@ -1368,14 +1424,35 @@ LEARNED - SUMMARY
             cases in which type is something | null as substitute for guard clause
         GOOD EXAMPLE
             Inside react query query-fn to avoid guard clausing the number | null activeID
-        
----------
     Sending complex info as prop
         If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
     Typing API Resp
-        analyze what comes back and type the object of the response
-    Children prop to encapsulate html tags
-        create component that will use a div to wrap around children. This encapsulates logic. 
+        Use Promise Generic
+            Promise<>
+        Type your data
+           Type = Data 
+        Use the data as the type for the Promise Generic
+            Promise<Data>
+    Using !resp.ok
+        Can save you an unnecessary guard clause.
+        HOW
+            If fetch depends on paramater that can be null: data | null, it handles this case for you.
+        RESULTING TYPE NARROW
+            Allows ts too infer that null case is handled, and data will always be truthy
+    what browser does in the 500 errors
+        Automatically throws Error() like we do in the other server codes\
+    Possibility of undefined, methods depending on value being array 
+        ?. optional chain
+        Establishing the undefined case means type will be type | undefined
+            PROBLEM
+                In the other side, data has not been typed as counting the undefined scenario
+            SOLUTION
+                Short circuit ||
+                    if undefined || [] / 0
+            
+
+    
+        
     
     
         

@@ -13,14 +13,18 @@ import PaginationControls from "./PaginationControls";
 import JobList from "./JobList";
 import {useDebounce, useJobItems } from "../lib/hooks";
 import {useState } from "react";
+import { ITEMS_PER_PAGE } from "../lib/constants";
 
 
 function App() {
   //states
   const [searchText, setSearchText] = useState<string>("");
   const debouncedSearchText = useDebounce<string>(searchText)
-  const [jobItemsSliced, isLoading,jobItemsCount] = useJobItems(debouncedSearchText)
+  const [jobItems, isLoading] = useJobItems(debouncedSearchText)
 
+  //derived states
+  const jobItemsSliced = jobItems?.slice(0 ,ITEMS_PER_PAGE) || []
+  const jobItemsCount = jobItems?.length || 0
 
   return (
     <>
