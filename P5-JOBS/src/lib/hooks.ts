@@ -23,19 +23,19 @@ export function useActiveId() {
   return activeId
 }
 
-const fetchJobItemContent =  async (activeId:number | null) => {
+const fetchJobItemContent =  async (activeId:number | null): Promise<JobItemContent> => {
   const response = await fetch(`${BASE_URL}/${activeId}`)
   if (!response.ok) {
     throw new Error();
   }
   const data = await response.json()
-  return data.jobItem
+  return data?.jobItem
 }
 
 export function useJobItemContent(activeId:number | null) {
   
   const {data, isLoading} = useQuery(["job-item", activeId], //run on id change, dep array 
-    () =>fetchJobItemContent(activeId!), //type assetion 
+    () => fetchJobItemContent(activeId!), //type assetion 
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
