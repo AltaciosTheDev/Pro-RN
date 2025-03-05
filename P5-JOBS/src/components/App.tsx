@@ -14,6 +14,7 @@ import JobList from "./JobList";
 import {useDebounce, useJobItems } from "../lib/hooks";
 import {useState } from "react";
 import { ITEMS_PER_PAGE } from "../lib/constants";
+import { Toaster } from "react-hot-toast";
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
         <JobItemContent/>
       </Container>
       <Footer />
+      <Toaster position="top-right"/>
     </>
   );
 }

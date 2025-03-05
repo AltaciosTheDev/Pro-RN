@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL} from "./constants";
 import { JobItem, JobItemContent } from "./types";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 
 export function useActiveId() {
@@ -46,7 +47,7 @@ export function useJobItemContent(activeId:number | null) {
       retry: false,
       enabled: !!activeId,//on mount condition to run, if id run.
       onError: (error) => {
-        console.log(error)
+        toast.error(error.message)
       } 
     }
   )
@@ -116,7 +117,7 @@ export function useJobItems (searchText: string) {
       retry: false,
       enabled: !!searchText,//on mount condition to run, if id run.
       onError: (error) => {
-        console.log(error)
+        toast.error(String(error))
       } 
     }
   )

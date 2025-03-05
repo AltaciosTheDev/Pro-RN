@@ -1160,112 +1160,159 @@ INITIALIZE PROJECT
             WHAT HAPPENS
                 Data will never be undefined, always empty array or full array
         Possibility of undefined values that are being sent with one data type | undefined and where they are used they are defined as without undefined.
-            Short circuit the negative 
+            Short circuit the negative case scenario
                 const jobItemsSliced = jobItems?.slice(0 ,ITEMS_PER_PAGE) || []
                  const jobItemsCount = jobItems?.length || 0
-    
+5)Add toast messages
+6)Pagination
+7)Sorting
+8)Bookmarking
     
     
     
 ----------------
+NEW TOOLS
+    React Query
+        Powerful library to manage state and fetching.
 
-React Query
-    Powerful library to manage state and fetching.
+        WHY
+            Automaically handles all the manual things you are used to doing:
+                1)loading 
+                2)errors
+                3)caching
+                4)refetching stale info
+        COMPARISON
+            WITHOUT
+                useEffect -> fetch
+                useState -> result
+                useState -> loading
+                useState -> errors
+                manual re fetch for stale info
+            WITH
+                useQuery hook
+        INSTALL
+            npm install @tanstack/react-query
+        SETUP QUERY CLIENT IN MAIN FILE
+            import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
 
-    WHY
-        Automaically handles all the manual things you are used to doing:
-            1)loading 
-            2)errors
-            3)caching
-            4)refetching stale info
-    COMPARISON
-        WITHOUT
-            useEffect -> fetch
-            useState -> result
-            useState -> loading
-            useState -> errors
-            manual re fetch for stale info
-        WITH
-            useQuery hook
-    INSTALL
-        npm install @tanstack/react-query
-    SETUP QUERY CLIENT IN MAIN FILE
-        import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
+            const queryClient = new QueryClient()
 
-        const queryClient = new QueryClient()
+            function App() {
+                return(
+                    <QueryClientProvider client={QueryClient}>
+                        <...>
+                    </QueryClientProvider>
+                )
+            }
+            WHAT HAPPENS
+                Query client wraps around your app and enables caching for all app.
+        FETCH DATA WITH USEQUERY
+            import {useQuery} from "@tanstack/react-query"
 
-        function App() {
-            return(
-                <QueryClientProvider client={QueryClient}>
-                    <...>
-                </QueryClientProvider>
-            )
-        }
-    
-    
-        WHAT HAPPENS
-            Query client wraps around your app and enables caching for all app.
-    FETCH DATA WITH USEQUERY
-        import {useQuery} from "@tanstack/react-query"
-
-        function MyComponent() {
-            const {data,error,isLoading} = useQuery({
-                queryKey: ['key'], 
-                queryFn: async () => {
-                    const response = await fetch("https://your-api.com/data");
-                    if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }   
-                    return response.json(); // Return the parsed JSON data
-                },
-                staleTime: 1000 * 60 * 5, 
-                cacheTime: 1000 * 60 * 10,
-                refetchOnWindowFocus: false, // 
-            })
-        }
-        PARAMS
-            queryKey                -> unique key to remember query for caching
-            queryFn                 -> fn that fetches
-            isLoading               -> true while fetching
-            error                   -> request fails(500)
-            data ->                 -> data response
-            staleTime               -> (Optional) Keep data fresh
-            cacheTime               -> (Optional) Keep data in cache
-            refetchOnWindowFocus    -> (Optional) Prevent refetching when window regains focus
-            enabled                 -> (optional) Run on mount? (boolean)
-            onError                 -> func to run when error occurs 
-        RETURNED
-            Property	Type	        Description
-            data	    Object / Array	The response data from the API.
-            error	    Object / null	The error object if the request fails.
-            isLoading	Boolean	        true while the query is fetching for the first time.
-            isError	    Boolean	        true if an error occurred.
-            isFetching	Boolean	        true if React Query is refetching data in the background.
-            refetch	    Function	    A function to manually trigger a refetch.
-    IMPROVEMENTS
-        1)No more manual state handling(isLoading, Error, Data)
-        2)Cache
-        3)auto updates stale data
-        4)No need for custom try catch
-    DIFF isLoading vs isInitialLoading
-        isLoading: 
-            true when the query has no cached data and is fetching.
-            This means while we haven't fetched, it is true and spinner forever.
-        isInitialLoading: 
-            true only while fetching and then false forever.
-        RESULT
-            If the query refetches (e.g., due to enabled changing or a manual refetch), isLoading might be true again, but isInitialLoading will remain false.
-    INITIAL RETURNED DATA BEFORE FETCH
-        React query does not know what to return, so it returns UNDEFINED.
-    PLACEHOLDERDATA
-        it gives React Query a temporary value (in this case, an empty array []) while the actual data is being fetched. 
-        LIKE SAYING
-            NOW - assume an empty array
-            LATER - i'll change it after the fetch is done
-        BENEFITS
-            No dealing with undefined
-    
+            function MyComponent() {
+                const {data,error,isLoading} = useQuery({
+                    queryKey: ['key'], 
+                    queryFn: async () => {
+                        const response = await fetch("https://your-api.com/data");
+                        if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }   
+                        return response.json(); // Return the parsed JSON data
+                    },
+                    staleTime: 1000 * 60 * 5, 
+                    cacheTime: 1000 * 60 * 10,
+                    refetchOnWindowFocus: false, // 
+                })
+            }
+            PARAMS
+                queryKey                -> unique key to remember query for caching
+                queryFn                 -> fn that fetches
+                isLoading               -> true while fetching
+                error                   -> request fails(500)
+                data ->                 -> data response
+                staleTime               -> (Optional) Keep data fresh
+                cacheTime               -> (Optional) Keep data in cache
+                refetchOnWindowFocus    -> (Optional) Prevent refetching when window regains focus
+                enabled                 -> (optional) Run on mount? (boolean)
+                onError                 -> func to run when error occurs 
+            RETURNED
+                Property	Type	        Description
+                data	    Object / Array	The response data from the API.
+                error	    Object / null	The error object if the request fails.
+                isLoading	Boolean	        true while the query is fetching for the first time.
+                isError	    Boolean	        true if an error occurred.
+                isFetching	Boolean	        true if React Query is refetching data in the background.
+                refetch	    Function	    A function to manually trigger a refetch.
+        IMPROVEMENTS
+            1)No more manual state handling(isLoading, Error, Data)
+            2)Cache
+            3)auto updates stale data
+            4)No need for custom try catch
+        DIFF isLoading vs isInitialLoading
+            isLoading: 
+                true when the query has no cached data and is fetching.
+                This means while we haven't fetched, it is true and spinner forever.
+            isInitialLoading: 
+                true only while fetching and then false forever.
+            RESULT
+                If the query refetches (e.g., due to enabled changing or a manual refetch), isLoading might be true again, but isInitialLoading will remain false.
+        INITIAL RETURNED DATA BEFORE FETCH
+            React query does not know what to return, so it returns UNDEFINED.
+        PLACEHOLDERDATA
+            it gives React Query a temporary value (in this case, an empty array []) while the actual data is being fetched. 
+            LIKE SAYING
+                NOW - assume an empty array
+                LATER - i'll change it after the fetch is done
+            BENEFITS
+                No dealing with undefined
         
+    REACT HOT TOAST
+        Customizable react library for toast notifications.
+
+        FEATURES
+            lightweight and fast
+            auto dismissable
+            customizable
+            promise support
+            works anywhere
+            
+        INSTALL
+            npm install react-hot-toast
+        USAGE
+            import { Toaster, toast } from 'react-hot-toast';
+
+            function App() {
+                return (
+                    <div>
+                    <button onClick={() => toast('Hello, world!')}>Show Toast</button>
+                    <Toaster />
+                    </div>
+                );
+            }
+            export default App;
+        TYPES
+            1)toast.success('Successfully saved!');
+            2)toast.error('Something went wrong!');
+            3)Custom Toast with Loading Indicator
+                toast.promise(myPromise, {
+                    loading: 'Loading...',
+                    success: 'Data loaded!',
+                    error: 'Error loading data!',
+                });
+            4)Custom Styling
+                toast('This is a custom toast', {
+                    duration: 4000,
+                    position: 'top-right',
+                    style: {
+                        background: '#333',
+                        color: '#fff',
+                    },
+                });
+
+
+
+        
+            
         
 LEARNED - SUMMARY
     cacheing
@@ -1449,7 +1496,7 @@ LEARNED - SUMMARY
             SOLUTION
                 Short circuit ||
                     if undefined || [] / 0
-            
+    
 
     
         
