@@ -1185,10 +1185,41 @@ INITIALIZE PROJECT
         THINK OF IT THIS WAY
             ts needs proof what you are doing is allowed and you must proof it is of that type for him to allow it.
     Create error util function 
-        For reusability purposes.
-
-
+        For reusability purposes move the entire function to the utils and import in the hook.
 6)Pagination
+    Set the components
+        import the radix arrow components
+    State to store page
+        const [currentPage, setCurrentPage] = useState(1)
+        WHERE
+            App b/c jobItem to slice by page is there already.
+    Create previous and next page functions for the buttons
+        const handleChangePage = (pagination: 'previous' | 'next') => {
+            if(pagination === 'previous'){
+            setCurrentPage((prev) => prev - 1 )
+            }
+            else if(pagination === 'next'){
+            setCurrentPage((prev) => prev + 1)
+        }
+        WHY
+            specific due to error in providing the parameter
+    render previous and next page in buttons
+        send currentPage as prop to paginationControls
+        {currentPage -1}{currentPage +1}
+    conditionally render previos and next buttons
+        previous
+            {currentPage > 1 && previousButton}
+        next
+            derive last page
+                const lastPage = jobItemsCount / ITEMS_PER_PAGE
+
+            {currentPage < lastPAge && nextButton}
+    
+    
+        
+                
+    
+        
 7)Sorting
 8)Bookmarking
     
