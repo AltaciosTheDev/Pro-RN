@@ -1164,6 +1164,30 @@ INITIALIZE PROJECT
                 const jobItemsSliced = jobItems?.slice(0 ,ITEMS_PER_PAGE) || []
                  const jobItemsCount = jobItems?.length || 0
 5)Add toast messages
+    Use library
+        <Toaster position="top-right"/>
+        toast.error={message}
+    Type narrow the message passed to toast for ts
+        WHY
+            React query error param is unknown type. Ts hates this.
+        HOW
+            let message 
+            if(error instanceof Error){
+            message = error.message
+            }
+            else if(typeof error === "string"){
+            message = error
+            }
+            else{
+            message = 'An error occured.'
+            }
+            toast.error(message)
+        THINK OF IT THIS WAY
+            ts needs proof what you are doing is allowed and you must proof it is of that type for him to allow it.
+    Create error util function 
+        For reusability purposes.
+
+
 6)Pagination
 7)Sorting
 8)Bookmarking
@@ -1496,6 +1520,20 @@ LEARNED - SUMMARY
             SOLUTION
                 Short circuit ||
                     if undefined || [] / 0
+    Unknown ts type
+        opposite of any, can't do anything, everything throws errors.
+
+        WHY
+            type of paramter for the onError function of React Query can be anything even though react hot toast expects a specific type.
+
+            FIX
+                Ts needs to specifically know what it is dealing with at all times.
+                Type narrow 
+            EXTRA DATA
+                React Query new versions make the error parameter the default Error object type.
+        
+        
+    
     
 
     

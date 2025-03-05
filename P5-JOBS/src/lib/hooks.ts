@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BASE_URL} from "./constants";
 import { JobItem, JobItemContent } from "./types";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { handleUnknownError } from "./utils";
 
 
 export function useActiveId() {
@@ -46,9 +46,7 @@ export function useJobItemContent(activeId:number | null) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: !!activeId,//on mount condition to run, if id run.
-      onError: (error) => {
-        toast.error(error.message)
-      } 
+      onError: handleUnknownError // auto passed parameter
     }
   )
   const isLoading = isInitialLoading
@@ -116,9 +114,8 @@ export function useJobItems (searchText: string) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: !!searchText,//on mount condition to run, if id run.
-      onError: (error) => {
-        toast.error(String(error))
-      } 
+      onError: handleUnknownError // auto passed parameter
+
     }
   )
   // `isLoading` tracks ongoing fetches, including initial and subsequent requests
