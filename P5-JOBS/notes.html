@@ -1214,12 +1214,27 @@ INITIALIZE PROJECT
                 const lastPage = jobItemsCount / ITEMS_PER_PAGE
 
             {currentPage < lastPAge && nextButton}
-    
-    
-        
-                
-    
-        
+    create custom paginationButton component
+        conditionslly render page and arrow based on direction 
+            {direction === "previous" && (
+                <>
+                Page {page - 1}
+                <ArrowLeftIcon />
+                </>
+            )}
+        conditionally style the class for the next button only
+            className={`pagination__button ${
+                direction == "next" ? "pagination__button--next" : ""
+            }`}
+        type using almost same types and invoke the function 
+    derived pagination state
+        const lastPage = jobItemsCount / ITEMS_PER_PAGE;
+    use pages to determine the slice of jobitems to render
+        const jobItemsSliced =
+            jobItems?.slice(
+            currentPage * ITEMS_PER_PAGE - ITEMS_PER_PAGE,
+            currentPage * ITEMS_PER_PAGE
+        ) || [];
 7)Sorting
 8)Bookmarking
     
@@ -1562,6 +1577,15 @@ LEARNED - SUMMARY
                 Type narrow 
             EXTRA DATA
                 React Query new versions make the error parameter the default Error object type.
+    Client vs server side pagination
+        client
+            Implemented client, all calculations done on the clien
+            Receive entire package of data
+            can slow down the client if too much data
+        server
+            server only sends the data for that page, fetches every page.
+            better for massive data
+        
         
         
     
