@@ -17,3 +17,7 @@ export type JobItemContent = JobItem & {
   reviews: string [],
   salary: string
 }
+
+export type SortBy = 'relevant' | 'recent'
+
+export type PageDirection = "previous" | "next"

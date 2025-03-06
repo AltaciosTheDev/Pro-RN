@@ -1236,6 +1236,43 @@ INITIALIZE PROJECT
             currentPage * ITEMS_PER_PAGE
         ) || [];
 7)Sorting
+    By:
+        1)recent | daysAgo
+        2)relevance | relevanceScore
+    STATE
+        const [sortBy, setSortBy] = useState<'relevant' | 'recent'>('relevant')
+    WHERE
+        App b/c it will be used to sort jobItems
+    ORDER
+        1)fetch
+        2)sort
+        3)paginate
+    handleSortBy function
+        const handleSortBy = (sortOption: 'relevant' | 'recent') => {
+            setSortBy(sortOption)
+        }
+        back to first page
+            setCurrentPage(1)
+    style active sort option class
+        sortOption === 'recent' | 'relevant' ? sorting__button--active : ""
+    sort jobList based on sortBy
+        [...(jobItems|[])].sort()
+            To work on a brand new array and not modify the existing.
+        a - b
+            less to more
+        b - a 
+            more to less
+        always specify default return like in switches
+            return 0 in this case
+        guard clause
+            if jobItems is undefined || []
+    render based on jobItemsSorted
+        jobItemsSorted?.slice(pages)
+    create & use SortBy & Direction types
+        import { Direction, SortBy } from "../lib/types";
+        export type SortBy = 'relevant' | 'recent'
+        export type Direction = "previous" | "next"
+    
 8)Bookmarking
     
     
@@ -1585,6 +1622,13 @@ LEARNED - SUMMARY
         server
             server only sends the data for that page, fetches every page.
             better for massive data
+    Ts literal + union type good use
+        const [sortBy, setSortBy] = useState<'relevant' | 'recent'>('relevant')
+    [...(jobItems || [])]
+        for mutating methods its best to destructure and create a new
+        must guard for undefined case and assure that an empty array will be returned []
+    
+    
         
         
         
