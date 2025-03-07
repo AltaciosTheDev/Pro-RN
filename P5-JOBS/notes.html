@@ -1357,7 +1357,8 @@ INITIALIZE PROJECT
                     const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(() => JSON.parse(localStorage.getItem("bookmarkedIds") || "[]"));
         use LS custom hook 
             purpose
-                Persist any data not only the bookmarks
+                1)Persist any data not only the bookmarks
+                2)De clutter main app and enmcapsulate logic for reusability
             Implementation
                 1)create state and initialize if reading from LS
                 2)write with it on a useEffect to LS
@@ -1366,11 +1367,6 @@ INITIALIZE PROJECT
                 export function useLocalStorage<T>(key:string, initialValue:T):[T, React.Dispatch<React.SetStateAction<T>>] 
                     ...
                 }
-            
-                                
-                        
-                        
-
         
     BookmarkButton && BookmarkPopup
         Obj

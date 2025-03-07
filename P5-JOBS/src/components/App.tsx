@@ -16,7 +16,7 @@ import { useState } from "react";
 import { ITEMS_PER_PAGE } from "../lib/constants";
 import { Toaster } from "react-hot-toast";
 import { PageDirection, SortBy } from "../lib/types";
-import BookmarksPopover from "./BookmarksPopover";
+
 
 function App() {
   //states
@@ -25,8 +25,6 @@ function App() {
   const [jobItems, isLoading] = useJobItems(debouncedSearchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortBy>('relevant')
-  const [isOpen, setIsOpen] = useState(false)
-
 
   //derived states
   const jobItemsSorted = [...(jobItems || [])].sort((a,b) => {
@@ -61,9 +59,7 @@ function App() {
     setCurrentPage(1)
   }
 
-  const togglePopOver = () => {
-    setIsOpen((prev) => !prev)
-  }
+
 
 
 
@@ -73,7 +69,7 @@ function App() {
       <Header>
         <HeaderTop>
           <Logo />
-          <BookmarksButton togglePopOver={togglePopOver}/>
+          <BookmarksButton/>
         </HeaderTop>
         <SearchForm searchText={searchText} setSearchText={setSearchText} />
       </Header>
@@ -95,7 +91,7 @@ function App() {
       <Footer />
       <Toaster position="top-right" />
 
-      {isOpen && <BookmarksPopover/>}
+      
     </>
   );
 }

@@ -24,7 +24,7 @@ export const useBookmarkedIdsContext = () => {
 
   if (!context) {
     throw new Error(
-      "BookmarkedIds context needs to be used inside the provider"
+      "useBookmarkedIdsContext needs to be used inside the provider"
     );
   }
   return context;
