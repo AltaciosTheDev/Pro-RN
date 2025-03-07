@@ -6,7 +6,7 @@ import { handleUnknownError } from "./utils";
 import { BookmarkContext } from "../contexts/BookmarkContexProvider";
 
 
-export const useLocalStorage = (key:string, initialValue) => {
+export function useLocalStorage<T>(key:string, initialValue:T):[T, React.Dispatch<React.SetStateAction<T>>] {
   //define state | retrieve from LS
   const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue)));
 

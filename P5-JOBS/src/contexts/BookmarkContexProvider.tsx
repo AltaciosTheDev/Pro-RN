@@ -13,7 +13,7 @@ type BookmarkContextProviderProps = {
 }
 
 export default function BookmarkContexProvider({children}: BookmarkContextProviderProps) {
-  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage("bookmarkedIds",[])
+  const [bookmarkedIds, setBookmarkedIds] = useLocalStorage<number[]>("bookmarkedIds",[])
 
   console.log(bookmarkedIds);
 
@@ -28,8 +28,6 @@ export default function BookmarkContexProvider({children}: BookmarkContextProvid
       }
     });
   };
-
-  
 
   return <BookmarkContext.Provider value={{bookmarkedIds, handleToggleBookmark}}>
     {children}

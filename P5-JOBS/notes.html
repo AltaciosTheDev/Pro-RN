@@ -1362,7 +1362,10 @@ INITIALIZE PROJECT
                 1)create state and initialize if reading from LS
                 2)write with it on a useEffect to LS
                 3)return state and setState functions
-            
+            type custom hook with generics
+                export function useLocalStorage<T>(key:string, initialValue:T):[T, React.Dispatch<React.SetStateAction<T>>] 
+                    ...
+                }
             
                                 
                         
