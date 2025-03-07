@@ -1335,6 +1335,30 @@ INITIALIZE PROJECT
             <button className="bookmark-btn" onClick={() => handleToggleBookmark(jobItemId)}>
         Conditionally stle filled class
             <BookmarkFilledIcon className={bookmarkedIds.includes(jobItemId) ? "filled" : ""}/>
+        StopPropatation and preventDefault
+            Anchor default behavior will always be to go to specific place.
+            e.stopPropagation()
+            e.preventDefault()
+        Local Storage
+            Write
+                useEffect
+                    b/c it is an exeternal system
+                  useEffect(() => {
+                    localStorage.setItem('bookmarkedIds', JSON.stringify(bookmarkedIds))
+                }, [bookmarkedIds])
+            Read
+                1)read from LS
+                    const bookmarksFromLocalStorage = JSON.parse(localStorage.getItem("bookmarkedIds") || "[]")
+                WHY
+                    structure of array needs to be in string before converted
+                2)set initial state to the search from LS
+                      const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(bookmarksFromLocalStorage);
+                3)change initial state to function to avoid on every re render
+                    const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(() => JSON.parse(localStorage.getItem("bookmarkedIds") || "[]"));
+        
+        
+        
+
         
     BookmarkButton && BookmarkPopup
         Obj
@@ -1349,6 +1373,8 @@ INITIALIZE PROJECT
         Conditionally rendering
             Anywhere b/c of its CSS
             {isOpen && <BookmarksPopover/>}
+
+    
             
             
         
@@ -1706,7 +1732,16 @@ LEARNED - SUMMARY
         must guard for undefined case and assure that an empty array will be returned []
     Can use variables to seend booleans as props
         isActive={sortOption === "relevant"}
-    
+    e.stopPropagation() special anchor behavior
+        e.preventDefault()
+    LS in useEffect
+        IF NOT
+            async nature of state will make it really hard to have properly synced.
+        IF 
+            Will be in sync without much hastle
+    Function as initial value in useState
+        BENEFIT
+            Only runs on mount, avoids needless computation on every re render.
         
         
         

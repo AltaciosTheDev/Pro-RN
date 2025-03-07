@@ -9,7 +9,11 @@ jobItemId: number
 export default function BookmarkIcon({jobItemId}: BookmarkIconProps) {
   const {bookmarkedIds, handleToggleBookmark} = useBookmarkedIdsContext()
   return (
-    <button className="bookmark-btn" onClick={() => handleToggleBookmark(jobItemId)}>
+    <button className="bookmark-btn" onClick={(e) =>{
+      handleToggleBookmark(jobItemId)
+      e.stopPropagation()
+      e.preventDefault()
+      }} >
       <BookmarkFilledIcon className={bookmarkedIds.includes(jobItemId) ? "filled" : ""}/>
     </button>
   );
