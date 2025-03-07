@@ -1355,9 +1355,18 @@ INITIALIZE PROJECT
                       const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(bookmarksFromLocalStorage);
                 3)change initial state to function to avoid on every re render
                     const [bookmarkedIds, setBookmarkedIds] = useState<number[]>(() => JSON.parse(localStorage.getItem("bookmarkedIds") || "[]"));
-        
-        
-        
+        use LS custom hook 
+            purpose
+                Persist any data not only the bookmarks
+            Implementation
+                1)create state and initialize if reading from LS
+                2)write with it on a useEffect to LS
+                3)return state and setState functions
+            
+            
+                                
+                        
+                        
 
         
     BookmarkButton && BookmarkPopup

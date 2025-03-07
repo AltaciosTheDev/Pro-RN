@@ -6,6 +6,19 @@ import { handleUnknownError } from "./utils";
 import { BookmarkContext } from "../contexts/BookmarkContexProvider";
 
 
+export const useLocalStorage = (key:string, initialValue) => {
+  //define state | retrieve from LS
+  const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue)));
+
+  //save state to LS
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value))
+  }, [value, key])
+
+  return [value, setValue] as const
+}
+
+
 export const useBookmarkedIdsContext = () => {
   const context = useContext(BookmarkContext)
 
