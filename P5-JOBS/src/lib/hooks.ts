@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { BASE_URL} from "./constants";
 import { JobItem, JobItemContent } from "./types";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { handleUnknownError } from "./utils";
 import { BookmarkContext } from "../contexts/BookmarkContexProvider";
 
@@ -60,6 +60,26 @@ const fetchJobItemContent =  async (activeId:number | null): Promise<JobItemCont
   }//making use of the existing guard clause helps me not need another one
   const data = await response.json()
   return data.jobItem //will always have data 
+}
+
+//use queries: fetch multiple queries based on parameters(based on below func but plural)
+export function useJobItems(ids: number[]){
+  const results = useQueries({
+    queries: ids.map((id) => ({
+      queryKey: ["job-item", id],
+      queryFn: () => fetchJobItemContent(id!),
+      staleTime: 1000 * 60 * 60,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !!id,//on mount condition to run, if id run.
+      onError: handleUnknownError // auto passed parameter
+    })),
+  })
+  //console.log(results)
+  const isLoading = results.some((result) => result.isLoading)//returns true if at least 1
+  const jobItems = results.map((result) => result.data).filter((jobItem) => jobItem !== undefined)
+
+  return [jobItems, isLoading] as const
 }
 
 //new: react-query
@@ -132,7 +152,7 @@ const fetchJobItems = async (searchText: string): Promise<JobItem[]> => {
 };
 
 //new: react-query
-export function useJobItems (searchText: string) {
+export function useSearchQuery (searchText: string) {
   const {data, isInitialLoading} = useQuery(["job-items",searchText],
     () => fetchJobItems(searchText),
     {

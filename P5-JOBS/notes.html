@@ -1381,8 +1381,56 @@ INITIALIZE PROJECT
         Conditionally rendering
             Anywhere b/c of its CSS
             {isOpen && <BookmarksPopover/>}
+        Render jobList inside bookmarks popover
+            <JobList jobItems={[]} isLoading={false}/>
+        rename useJobItems to useSearchQuery
+            Appropriate name for the function.
+            UseJobItems should be the plural of useJobItemContent and work with Ids.
+        create useJobItems hook to fetch multiple jobItems based on Id
+            export function useJobItems(ids: number[]){
+                const jobItems = useQueries({
+                    queries: ids.map((id) => ({
+                    queryKey: ["job-item", id],
+                    queryFn: () => fetchJobItemContent(id),
+                    staleTime: 1000 * 60 * 60,
+                    refetchOnWindowFocus: false,
+                    retry: false,
+                    enabled: !!id,//on mount condition to run, if id run.
+                    onError: handleUnknownError // auto passed parameter
+                    })),
+                })
+                console.log(jobItems)
+                return jobItems
+            }
+        Transform the result and filter out the undefined
+            const jobItems = results.map((result) => result.data).filter((jobItem) => jobItem !== undefined)
+        Add to context Type 
+            bookmarkedJobItems: JobItemContent[]
+        Create global isLoading based on individuals isLoading
+              const isLoading = results.some((result) => result.isLoading)
+        IN bookmarks context, use the hook with the already saved bookmarkedIds array
+            const [bookmarkedJobItems, isLoading] = useJobItems(bookmarkedIds);
+        Add these bookmarkedJobITems to the context to be distributed
+            value={{
+                bookmarkedIds, handleToggleBookmark,bookmarkedJobItems,isLoading
+            }}>
+        Use This newly shared bookmarkedJobItems in the BookmarkPopover
+            
+        
 
-    
+
+
+
+       LAST  modify bookmarks context to useJobItems with bookmarksId
+            const {jobItems, isLoading} = useJobItems(bookmarkedIds)
+                (this hook only accepts a string, so idk)?
+
+
+         LAST consume the bookmarks context to retrieve bookmarkedIds
+            const {jobItems, isLoading} = useBookmarkedIdsContext()
+                (have to find a way to ge these there)?
+        
+
             
             
         
@@ -1483,6 +1531,25 @@ NEW TOOLS
                 LATER - i'll change it after the fetch is done
             BENEFITS
                 No dealing with undefined
+        USEQUERIES
+            Way to make several fetches in paralell instead of waterfall
+            Each querie has its individual data,loading,error.
+
+            SYNTAX
+                const jobItems = useQueries({
+                    queries: ids.map((id) => ({
+                    queryKey: ["job-item", id],
+                    queryFn: () => fetchJobItemContent(id),
+                    staleTime: 1000 * 60 * 60,
+                    refetchOnWindowFocus: false,
+                    retry: false,
+                    enabled: !!id,//on mount condition to run, if id run.
+                    onError: handleUnknownError // auto passed parameter
+                    })),
+                })
+                console.log(jobItems)
+                return jobItems
+        
         
     REACT HOT TOAST
         Customizable react library for toast notifications.
