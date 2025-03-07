@@ -1,15 +1,28 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BASE_URL} from "./constants";
 import { JobItem, JobItemContent } from "./types";
 import { useQuery } from "@tanstack/react-query";
 import { handleUnknownError } from "./utils";
+import { BookmarkContext } from "../contexts/BookmarkContexProvider";
+
+
+export const useBookmarkedIdsContext = () => {
+  const context = useContext(BookmarkContext)
+
+  if (!context) {
+    throw new Error(
+      "BookmarkedIds context needs to be used inside the provider"
+    );
+  }
+  return context;
+}
+
 
 
 export function useActiveId() {
   const [activeId, setActiveId] = useState<number | null>(null) //if no stored job, null.
   
   //console.log(activeId)
-  
   useEffect(() => {
     const handleHashChange = () => {
       setActiveId(+window.location.hash.substring(1))

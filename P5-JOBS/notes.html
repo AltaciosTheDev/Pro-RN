@@ -1163,7 +1163,7 @@ INITIALIZE PROJECT
             Short circuit the negative case scenario
                 const jobItemsSliced = jobItems?.slice(0 ,ITEMS_PER_PAGE) || []
                  const jobItemsCount = jobItems?.length || 0
-5)Add toast messages
+4)Add toast messages
     Use library
         <Toaster position="top-right"/>
         toast.error={message}
@@ -1186,7 +1186,7 @@ INITIALIZE PROJECT
             ts needs proof what you are doing is allowed and you must proof it is of that type for him to allow it.
     Create error util function 
         For reusability purposes move the entire function to the utils and import in the hook.
-6)Pagination
+5)Pagination
     Set the components
         import the radix arrow components
     State to store page
@@ -1235,7 +1235,7 @@ INITIALIZE PROJECT
             currentPage * ITEMS_PER_PAGE - ITEMS_PER_PAGE,
             currentPage * ITEMS_PER_PAGE
         ) || [];
-7)Sorting
+6)Sorting
     By:
         1)recent | daysAgo
         2)relevance | relevanceScore
@@ -1273,8 +1273,85 @@ INITIALIZE PROJECT
         export type SortBy = 'relevant' | 'recent'
         export type Direction = "previous" | "next"
     
-8)Bookmarking
-    
+7)Bookmarking
+    WHAT
+        Keep log of bookmarked jobs
+    WHERE
+        LocalStorage
+    BookmarkIcon
+        create state to store bookmarkedIcons
+            const [bookmarkedIds, setBookmarkedIds] = useState<number>([])
+        create handle toggleBookmarks
+            if !bookmarkedIds.includes(id)
+                add it 
+            else
+                remove it
+        Context API
+            WHY
+                1)used in jobListItem & JobItemContent
+                2)too many levels too drill app -> list -> item -> bookmarkIcon
+
+            create context
+                const BookmarkContext = createContext<BookmarkContextProps | null>(null);
+                    1)bookarmedIds state
+                    2)handleToogleBookmarks
+            wrap context around app
+                ReactDOM.createRoot(document.getElementById("root")!).render(
+                    <React.StrictMode>
+                        <QueryClientProvider client={queryClient}>
+                            <BookmarkContexProvider>
+                                <App />
+                            </BookmarkContexProvider>
+                        </QueryClientProvider>
+                    </React.StrictMode>
+                );
+
+            type context & context provider
+                type BookmarkContextProps = {
+                    bookmarkedIds: number[]
+                    handleToggleBookmark: (id:number) => void
+                }
+                type BookmarkContextProviderProps = {
+                children: React.ReactNode
+                }
+            create custom hook for useBookmarkedIdsContext
+                export const useBookmarkedIdsContext = () => {
+                const context = useContext(BookmarkContext)
+                if (!context) {
+                    throw new Error(
+                    "BookmarkedIds context needs to be used inside the provider"
+                    );
+                }
+                return context;
+                }
+            consume context in jobListItem & JobItemContent
+                const {bookmarkedIds, handleToggleBookmark} = useBookmarkedIdsContext()
+        Send id to bookmark icon
+            jobListItem
+                <BookmarkIcon jobItemId={jobItem.id}/>
+            jobItemContent
+                <BookmarkIcon jobItemId={jobItemContent.id}/>
+        Use toggler
+            <button className="bookmark-btn" onClick={() => handleToggleBookmark(jobItemId)}>
+        Conditionally stle filled class
+            <BookmarkFilledIcon className={bookmarkedIds.includes(jobItemId) ? "filled" : ""}/>
+        
+    BookmarkButton && BookmarkPopup
+        Obj
+            fetch full data of job based on ids of bookmarkedIds in LS
+
+        State controlling
+            const [isOpen, setIsOpen] = useState(false)
+        Function toggling     
+            const togglePopOver = () => {
+                setIsOpen((prev) => !prev)
+            }
+        Conditionally rendering
+            Anywhere b/c of its CSS
+            {isOpen && <BookmarksPopover/>}
+            
+            
+        
     
     
 ----------------
@@ -1627,7 +1704,8 @@ LEARNED - SUMMARY
     [...(jobItems || [])]
         for mutating methods its best to destructure and create a new
         must guard for undefined case and assure that an empty array will be returned []
-    
+    Can use variables to seend booleans as props
+        isActive={sortOption === "relevant"}
     
         
         

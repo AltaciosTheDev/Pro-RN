@@ -1,10 +1,17 @@
+import {TriangleDownIcon } from "@radix-ui/react-icons";
 
-export default function BookmarksButton() {
+type BookmarksButtonProps = {
+  togglePopOver: () => void
+}
+
+export default function BookmarksButton({togglePopOver}: BookmarksButtonProps) {
   return (
     <section>
-      <button className="bookmarks-btn">
+      <button className="bookmarks-btn " onClick={togglePopOver}>
         bookmarks
+        <TriangleDownIcon/>
       </button>
+      
     </section>
   );
 }
