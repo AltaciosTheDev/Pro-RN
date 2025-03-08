@@ -1416,25 +1416,42 @@ INITIALIZE PROJECT
             }}>
         Use This newly shared bookmarkedJobItems in the BookmarkPopover
             
-        
-
-
-
-
        LAST  modify bookmarks context to useJobItems with bookmarksId
             const {jobItems, isLoading} = useJobItems(bookmarkedIds)
-                (this hook only accepts a string, so idk)?
-
 
          LAST consume the bookmarks context to retrieve bookmarkedIds
             const {jobItems, isLoading} = useBookmarkedIdsContext()
-                (have to find a way to ge these there)?
+
+        Close popover on clicking outside
+            Obj
+                Clicking outside the popover will close it
+            HOW
+                Use popover as basis and whenever you click outside it, make it close.
+            useEffect()
+                const handleClick = (e) => {
+                    if (
+                        e.target instanceOf HTMLElement && 
+                        !e.target.closest(".bookmarks-btn") &&
+                        !e.target.closest(".bookmarks-popover")
+                    )
+                        setIsOpen(false);
+                    };
+                    document.addEventListener("click", handleClick);
+
+                    return () => {
+                    document.removeEventListener("click", handleClick);
+                };
+
+            e.target.closest(".class")
+                Returns true if the event comes from anywhere inside this element with that class
+                Returns false if the event comes from anywhere else not including that class
+
         
+            
+            
 
             
-            
-        
-    
+                           
     
 ----------------
 NEW TOOLS
@@ -1820,6 +1837,8 @@ LEARNED - SUMMARY
     Typing a prop and passing that data + more
         Ts will not complain as long as what was specified is included minimum
         You can configure ts too complain
+    e.target.closest(".classname")
+        Returns true if event comes from within the element with the classname provided
         
         
     

@@ -59,10 +59,6 @@ function App() {
     setCurrentPage(1)
   }
 
-
-
-
-
   return (
     <>
       <Background />
