@@ -1504,6 +1504,63 @@ INITIALIZE PROJECT
                     Asserting
                         e.target as Node
                     
+8)Performance optimizations
+    1)useActiveID
+        PROBLEM
+            Whenever it is used, all code will run again. 
+                1)useeffect will run
+                2)usestate wil ll be created several times
+                3)eventlisteners will be created several times
+            Currently used in 2 places:
+                1)JobItemContent(to indicate which jobItem to fetch)
+                2)JobItemList(indicate which item to highlight as active)
+        SOLUTION 
+            Context it so only 1 exists and can be shared.
+        PROCESS
+            create ActiveIdContextProvider component
+                1)export const ActiveIdContext = createContext<ActiveIdContext | null>(null);
+                2)export default function ActiveIdContextProvider({children}: ActiveIdContextProviderProps) {
+                    const activeId = useActiveId();
+                    return <ActiveIdContext.Provider value={{activeId}}>
+                        {children}
+                    </ActiveIdContext.Provider>;
+                }
+            create useActiveIdContext Hook for boilerplate guard clause code
+                export const useActiveIdContext = () => {
+                const context = useContext(ActiveIdContext)
+
+                if (!context) {
+                    throw new Error(
+                    "useActiveIdContext needs to be used inside the provider"
+                    );
+                }
+                return context;
+                }
+            wrap around app
+                This is where the context provider hell comes from
+                    <React.StrictMode>
+                        <QueryClientProvider client={queryClient}>
+                            <ActiveIdContextProvider>
+                                <BookmarkContexProvider>
+                                    <App />
+                                </BookmarkContexProvider>
+                            </ActiveIdContextProvider>
+                        </QueryClientProvider>
+                    </React.StrictMode>
+            consume
+                const {activeId} = useActiveIdContext()
+                    1)JobItemContent    
+                    2)JobList
+        RESULT
+            State is created only once
+            Event listeners are attached only one
+            Data is maintained pure and shared
+        
+    
+            
+
+
+            
 
         
                 

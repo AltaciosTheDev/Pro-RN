@@ -4,6 +4,7 @@ import { JobItem, JobItemContent } from "./types";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { handleUnknownError } from "./utils";
 import { BookmarkContext } from "../contexts/BookmarkContexProvider";
+import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
 
 
 export function useClickOutside(refs:React.RefObject<HTMLElement>[], handler: () => void) {
@@ -47,7 +48,16 @@ export const useBookmarkedIdsContext = () => {
   return context;
 }
 
+export const useActiveIdContext = () => {
+  const context = useContext(ActiveIdContext)
 
+  if (!context) {
+    throw new Error(
+      "useActiveIdContext needs to be used inside the provider"
+    );
+  }
+  return context;
+}
 
 export function useActiveId() {
   const [activeId, setActiveId] = useState<number | null>(null) //if no stored job, null.
