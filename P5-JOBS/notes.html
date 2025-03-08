@@ -1475,7 +1475,37 @@ INITIALIZE PROJECT
                     function parameters
                         props = 1
                         ref =2 
-                
+                custom hook 
+                    What do we need to pass?
+                        1)refs in []
+                        2)function to execute
+                    Iterate over refs and make 1 functin to execute for all
+                        refs.every((ref) => !ref.current?.contains(e.target))
+                Final Product
+                    export function useClickOutside(refs, handler) {
+                        useEffect(() => {
+                            const handleClick = (e: MouseEvent) => {
+                            if (
+                                e.target instanceof HTMLElement && 
+                                refs.every((ref) => !ref.current?.contains(e.target))
+                            )
+                                handler()
+                            };
+                            document.addEventListener("click", handleClick);
+
+                            return () => {
+                            document.removeEventListener("click", handleClick);
+                            };
+                        }, [refs, handler]);
+                    }
+                Type the refs and the handler
+                    Typing
+                        refs:React.RefObject<HTMLElement>[], handler: () => void
+                    Asserting
+                        e.target as Node
+                    
+
+        
                 
 
         
@@ -1892,7 +1922,13 @@ LEARNED - SUMMARY
         _
         function(_, ref)
         This way the eslint or ts error message will stop appearing.
-    
+    Features so common there are custom hooks already
+        1)useDeounce()
+        2)useLocalStorage()
+        3)useClickOutside()
+    Trick when refactoring a function into a custom hook
+        Generalize the already specific result
+        
 
         
         

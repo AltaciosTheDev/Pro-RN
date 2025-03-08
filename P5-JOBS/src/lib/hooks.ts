@@ -6,6 +6,23 @@ import { handleUnknownError } from "./utils";
 import { BookmarkContext } from "../contexts/BookmarkContexProvider";
 
 
+export function useClickOutside(refs:React.RefObject<HTMLElement>[], handler: () => void) {
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (
+        e.target instanceof HTMLElement && 
+        refs.every((ref) => !ref.current?.contains(e.target as Node))
+      )
+        handler()
+    };
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [refs, handler]);
+}
+
 export function useLocalStorage<T>(key:string, initialValue:T):[T, React.Dispatch<React.SetStateAction<T>>] {
   //define state | retrieve from LS
   const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue)));
