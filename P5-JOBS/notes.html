@@ -1427,24 +1427,56 @@ INITIALIZE PROJECT
                 Clicking outside the popover will close it
             HOW
                 Use popover as basis and whenever you click outside it, make it close.
-            useEffect()
-                const handleClick = (e) => {
-                    if (
-                        e.target instanceOf HTMLElement && 
-                        !e.target.closest(".bookmarks-btn") &&
-                        !e.target.closest(".bookmarks-popover")
-                    )
-                        setIsOpen(false);
+            1)e.target.closest('.class')
+                useEffect()
+                    const handleClick = (e) => {
+                        if (
+                            e.target instanceOf HTMLElement && 
+                            !e.target.closest(".bookmarks-btn") &&
+                            !e.target.closest(".bookmarks-popover")
+                        )
+                            setIsOpen(false);
+                        };
+                        document.addEventListener("click", handleClick);
+
+                        return () => {
+                        document.removeEventListener("click", handleClick);
                     };
-                    document.addEventListener("click", handleClick);
+                DOWNSIDE
+                    Too dependent on classes, if they change everything changes.
+            2)useRef()
+                create refs
+                    const buttonRef = useRef<HTMLButtonElement>(null)
+                    const popoverRef = useRef<HTMLDivElement>(null)
+                use refs in conditionals
+                    if (
+                        e.target instanceof HTMLElement && 
+                        !buttonRef.current?.contains(e.target) &&
+                        !popoverRef.current?.contains(e.target)
+                    )
+                provide refs to elements
+                    <button ref={buttonRef}>
+                    <BookmarksPopover ref={popoverRef}/>
+                consume ref on the bookmarks popover
+                    const BookmarksPopover = forwardRef(function(props, ref) {
+                    return <div ref={ref} </div>;
+                    })
+                    export default BookmarksPopover
+                type the ref
+                    as usual generics in the function provided by react
 
-                    return () => {
-                    document.removeEventListener("click", handleClick);
-                };
-
-            e.target.closest(".class")
-                Returns true if the event comes from anywhere inside this element with that class
-                Returns false if the event comes from anywhere else not including that class
+                    forwardRef<HTMLDivElement>
+                how would you type the props
+                    forwardRef<HTMLDivElement, {here}
+                irony
+                    typing
+                        ref = 1 
+                        props = 2
+                    function parameters
+                        props = 1
+                        ref =2 
+                
+                
 
         
             
@@ -1839,6 +1871,29 @@ LEARNED - SUMMARY
         You can configure ts too complain
     e.target.closest(".classname")
         Returns true if event comes from within the element with the classname provided
+    Refs
+        Passing a ref as a prop and consuming
+            1)ref is received separate from props
+            2)must wrap component in forwarefRef(function(props, ref){
+            })
+        Type the ref
+            Generics in the function provided by react
+                forwardRef<HTMLDivElement>
+        Type the prop
+            forwardRef<HTMLDivElement, {here}
+        Irony in placement
+            typing
+                ref = 1 
+                props = 2
+            function parameters
+                props = 1
+                ref =2 
+    Indicating a required parameter will not be used
+        _
+        function(_, ref)
+        This way the eslint or ts error message will stop appearing.
+    
+
         
         
     
