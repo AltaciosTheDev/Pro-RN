@@ -21,7 +21,7 @@ export default function BookmarksButton() {
         bookmarks
         <TriangleDownIcon />
       </button>
-      {isOpen && <BookmarksPopover ref={popoverRef}/>}
+      {isOpen && <BookmarksPopover ref={popoverRef} />}
     </section>
   );
 }

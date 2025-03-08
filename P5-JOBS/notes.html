@@ -1673,11 +1673,18 @@ NEW TOOLS
                     },
                 });
 
+    createPortal()
+        createPortal lets you render some children into a different part of the DOM.
+
+        SYNTAX
+            {createPortal(children, domNode, key?)}
+        
+        WHERE DOES IT END UP
+            Literally outside the .root
+        
+        
 
 
-        
-            
-        
 LEARNED - SUMMARY
     cacheing
         storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
@@ -1928,6 +1935,9 @@ LEARNED - SUMMARY
         3)useClickOutside()
     Trick when refactoring a function into a custom hook
         Generalize the already specific result
+    createPortal
+        Way to locate pop ups and popovers in the entire document.body while still having them in the component they should be in.
+    
         
 
         
