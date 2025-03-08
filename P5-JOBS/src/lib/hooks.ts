@@ -77,7 +77,7 @@ export function useJobItems(ids: number[]){
   })
   //console.log(results)
   const isLoading = results.some((result) => result.isLoading)//returns true if at least 1
-  const jobItems = results.map((result) => result.data).filter((jobItem) => jobItem !== undefined)
+  const jobItems = results.map((result) => result.data).filter((jobItem) => !!jobItem)
 
   return [jobItems, isLoading] as const
 }
