@@ -1509,7 +1509,7 @@ INITIALIZE PROJECT
         PROBLEM
             Whenever it is used, all code will run again. 
                 1)useeffect will run
-                2)usestate wil ll be created several times
+                2)usestate will be created several times
                 3)eventlisteners will be created several times
             Currently used in 2 places:
                 1)JobItemContent(to indicate which jobItem to fetch)
@@ -1555,6 +1555,58 @@ INITIALIZE PROJECT
             State is created only once
             Event listeners are attached only one
             Data is maintained pure and shared
+        
+    2)Pulling everything from the App component(context everything)
+        PROBLEM
+            state will cause anything in that component and its children to re render. (Basically all the app)
+        LESSON
+            Try the most you can to avoid re calculating array calculations.(very expensive)
+        A)Search Text
+            a)create searchTextContextProvider component
+                1)move searchText and debouncedSearchText to here
+                2)provide value={{searchText, debouncedSearchText, setSearchText}}
+            b)create useSearchTextContext
+                useContext(searchTextContext)
+            c)consume useSearchTextContext everywhere we need 
+                1)jobItems requres debouncedSearchText, we can't put it in app must create context
+                2)form(provides searchText, setSearchText)
+        B)JobItems
+            a)create JobItemsContexyProvier
+                1)move jobitems, sortby, currentPage
+                2)provide all of it
+            b)create usejobitemscontext
+                useContext(jobItemsContext)
+            c)consume useJobItemsContext
+                1)jobList
+                2)paginationControl
+                3)sortingControl
+                4)ResultsCounter
+            d)Special case due to giving it different information
+                BEFORE
+                    a)app
+                        We were giving it the whole joblistitemsliced
+                    b)boomkarkpopover
+                        We were giving it the whole bookmarkedJobItems
+                NOW
+                    a)App
+                        <JobListSearch/>
+                            Data
+                                const {isLoading, jobItemsSliced} = useJobItemsContext()
+                            Render
+                                <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
+                    b)BookmarkPopover
+                        Data
+                            const { bookmarkedJobItems, isLoading } = useBookmarkedIdsContext();
+                        Render
+                            <JobList jobItems={bookmarkedJobItems} isLoading={isLoading} />
+            
+                
+                
+
+
+
+
+
         
     
             
@@ -1994,6 +2046,27 @@ LEARNED - SUMMARY
         Generalize the already specific result
     createPortal
         Way to locate pop ups and popovers in the entire document.body while still having them in the component they should be in.
+    Wrapper for reusable Component
+        Create a wrapper and render reusable component inside to provide the data through props
+        Implementation
+            App
+                <JobListSearch/>
+            JobListSearch
+                Data
+                    const {isLoading, jobItemsSliced} = useJobItemsContext()
+                Render
+                    <JobList jobItems={jobItemsSliced} isLoading={isLoading} />
+            BookmarkPopover
+                Data
+                    const { bookmarkedJobItems, isLoading } = useBookmarkedIdsContext();
+                Render
+                    <JobList jobItems={bookmarkedJobItems} isLoading={isLoading} />
+        
+
+
+
+
+
     
         
 

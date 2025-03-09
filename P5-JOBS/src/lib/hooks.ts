@@ -5,8 +5,11 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { handleUnknownError } from "./utils";
 import { BookmarkContext } from "../contexts/BookmarkContexProvider";
 import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
+import { SearchTextContext } from "../contexts/SearchTextContextProvider";
+import { JobItemsContext } from "../contexts/JobItemsContextProvider";
 
 
+//hook to close any modal or popover when clicking outside. Pass refs needed and handler function
 export function useClickOutside(refs:React.RefObject<HTMLElement>[], handler: () => void) {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -24,6 +27,7 @@ export function useClickOutside(refs:React.RefObject<HTMLElement>[], handler: ()
   }, [refs, handler]);
 }
 
+//hook to read and write any value to / from local storage. Pass key and initial value.
 export function useLocalStorage<T>(key:string, initialValue:T):[T, React.Dispatch<React.SetStateAction<T>>] {
   //define state | retrieve from LS
   const [value, setValue] = useState(() => JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue)));
@@ -36,7 +40,33 @@ export function useLocalStorage<T>(key:string, initialValue:T):[T, React.Dispatc
   return [value, setValue] as const
 }
 
+//hook that encapsulates undefined / null logic of jobItems
+export const useJobItemsContext = () => {
+  const context = useContext(JobItemsContext)
 
+  if (!context) {
+    throw new Error(
+      "JobItemsContext needs to be used inside the provider"
+    );
+  }
+  return context;
+}
+
+
+//hook that encapsulates undefined / null logic of searchTextContext
+export const useSearchTextContext = () => {
+  const context = useContext(SearchTextContext)
+
+  if (!context) {
+    throw new Error(
+      "useSearchTextContext needs to be used inside the provider"
+    );
+  }
+  return context;
+}
+
+
+//hook that encapsulates undefined / null logic of bookmarksidscontext
 export const useBookmarkedIdsContext = () => {
   const context = useContext(BookmarkContext)
 
@@ -48,6 +78,7 @@ export const useBookmarkedIdsContext = () => {
   return context;
 }
 
+//hook that encapsulates undefined / null logic of activeIdcontext
 export const useActiveIdContext = () => {
   const context = useContext(ActiveIdContext)
 
@@ -59,6 +90,7 @@ export const useActiveIdContext = () => {
   return context;
 }
 
+//hook that encapsulates logic for storing the active id and listening for a change on it. 
 export function useActiveId() {
   const [activeId, setActiveId] = useState<number | null>(null) //if no stored job, null.
   
@@ -154,6 +186,7 @@ export function useJobItemContent(activeId:number | null) {
 // }
 // ---------------------------------------------------------------
 
+//hook for debouncing any value by a sepcific ammount of time. Pass value and delay time.
 export function useDebounce<T>(value:T,delay = 1000):T{
   const [debouncedValue, setDebouncedValue] = useState(value)
 
