@@ -1599,8 +1599,34 @@ INITIALIZE PROJECT
                             const { bookmarkedJobItems, isLoading } = useBookmarkedIdsContext();
                         Render
                             <JobList jobItems={bookmarkedJobItems} isLoading={isLoading} />
+    3)useMemo(Memoize derived state)
+        Efficiency in 2 steps = avoiding unnecessary
+            1)re - renders
+                Already worked on by encapsulating and contexting everything.
+            2)computations
+                There could still be some things that even if the component re renders, complete recalculation may not be necessary.
+        1)Sorted case
+            PROBLEM
+                Since everything is in context, sorted calculation may run if page state changes and it     
+            shouldn't b/c sort runs before slicing. Page changes but the items are already correctly sorted.
+
+            SOLUTION
+                Memoize unless JobItems or sortby change. No need to re run if page changes.
+        2)Splie case
+            PROBLEM
+                None really, no case exists where this is not necessary to re run but oh well
+            SOLUTION
+                Memoize LOL
+        
+        
+                
+
+        
+        
             
                 
+            
+        
                 
 
 
