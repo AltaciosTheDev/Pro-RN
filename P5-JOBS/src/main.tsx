@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <BookmarkContexProvider>
           <SearchTextContextProvider>
             <JobItemsContextProvider>
-            <App />
+              <App />
             </JobItemsContextProvider>
           </SearchTextContextProvider>
         </BookmarkContexProvider>

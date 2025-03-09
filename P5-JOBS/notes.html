@@ -1612,11 +1612,22 @@ INITIALIZE PROJECT
 
             SOLUTION
                 Memoize unless JobItems or sortby change. No need to re run if page changes.
-        2)Splie case
+        2)Splice case
             PROBLEM
                 None really, no case exists where this is not necessary to re run but oh well
             SOLUTION
                 Memoize LOL
+        3)Context Value case
+            PROBLEM
+                when state in context changes, return value is recalculated and all consumers re render entirely independent of what value changed b/c it recalculates all of it.
+        4)Callbacking functions
+            PROBLEM
+                function gets re created on every render with new reference in memory, meaning the memo will detect it as a new changed one and re calculate everything. It defeats the purpose of the memo, having functions not callbacked.
+            SOLUTION
+                useCallback(useMemo but for functions)
+                
+            
+            
         
         
                 
@@ -2087,6 +2098,17 @@ LEARNED - SUMMARY
                     const { bookmarkedJobItems, isLoading } = useBookmarkedIdsContext();
                 Render
                     <JobList jobItems={bookmarkedJobItems} isLoading={isLoading} />
+    Efficiency = avoid unnecessary
+        1)re renders
+            a)context and encapsulation with states 
+        2)calculations
+            a)use memo to avoid calculating unless dependencies change
+    Importance of updating objects and arrays with new ones
+        If done on the original (ex: sorting), the reference to that variable does not change. 
+        MEANING
+            Dependencies will not be triggered by the change in it, b/c they will register as if it is the same.
+    
+    
         
 
 

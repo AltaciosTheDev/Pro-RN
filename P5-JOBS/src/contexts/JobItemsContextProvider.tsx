@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState} from "react";
+import { createContext, useCallback, useMemo, useState} from "react";
 import { useSearchQuery, useSearchTextContext } from "../lib/hooks";
 import { JobItem, PageDirection, SortBy } from "../lib/types";
 import { ITEMS_PER_PAGE } from "../lib/constants";
@@ -50,21 +50,41 @@ export default function JobItemsContextProvider({children}: JobItemsContextProvi
     console.log(sortBy)
 
     //handlers
-    const handleChangePage = (pagination: PageDirection) => {
+    const handleChangePage = useCallback(() => (pagination: PageDirection) => {
     if (pagination === "previous") {
         setCurrentPage((prev) => prev - 1);
         
     } else if (pagination === "next") {
         setCurrentPage((prev) => prev + 1);
     }
-    };
+    },[])
 
-    const handleSortBy = (sortOption: SortBy) => {
+    const handleSortBy = useCallback(() => (sortOption: SortBy) => {
     setSortBy(sortOption)
     setCurrentPage(1)
-    }
+    },[])
 
-  return <JobItemsContext.Provider value={{jobItemsSliced,isLoading, jobItemsCount, sortBy, handleSortBy,lastPage,currentPage,handleChangePage}}>
+const contextValue = useMemo(() => ({
+    jobItemsSliced,
+    isLoading, 
+    jobItemsCount, 
+    sortBy, 
+    handleSortBy,
+    lastPage,
+    currentPage,
+    handleChangePage
+}), [
+    jobItemsSliced,
+    isLoading, 
+    jobItemsCount, 
+    sortBy, 
+    handleSortBy,
+    lastPage,
+    currentPage,
+    handleChangePage
+])
+
+  return <JobItemsContext.Provider value={contextValue}>
     {children}
   </JobItemsContext.Provider>;
 }
