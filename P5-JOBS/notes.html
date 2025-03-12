@@ -243,8 +243,9 @@ PROJECT 3 - TREKBAG
         Can be used as a substitute for an id in an object in a database
 
     useRef()
-        Hook to literally hook in a ref for an element in the browser.
-        useEffect()
+        1)Hook to literally hook in a ref for an element in the browser.
+        2)Save values without triggering re renders
+        
 
     TOAST instead of ALERTS
         more professional
@@ -909,7 +910,6 @@ PROJECT 4 - CORPCOMMENT
     
 P5 - RMTDEV
 --------------
-
 TO LEARN(NEW TOPICS)
     1)React Query 
     2)Cache
@@ -922,6 +922,7 @@ FEATURES(SECTIONS)
     4)Pagination
     5)Sorting
     6)Bookmarks
+    7)Performance
 
 INITIALIZE PROJECT
     CLONE REPO  
@@ -1626,42 +1627,6 @@ INITIALIZE PROJECT
             SOLUTION
                 useCallback(useMemo but for functions)
                 
-            
-            
-        
-        
-                
-
-        
-        
-            
-                
-            
-        
-                
-
-
-
-
-
-        
-    
-            
-
-
-            
-
-        
-                
-
-        
-            
-            
-
-            
-                           
-    
-----------------
 NEW TOOLS
     React Query
         Powerful library to manage state and fetching.
@@ -1828,9 +1793,6 @@ NEW TOOLS
         WHERE DOES IT END UP
             Literally outside the .root
         
-        
-
-
 LEARNED - SUMMARY
     cacheing
         storing frequently accessed data in a temp storage location to reduce retrieval time and improve performance. 
@@ -1852,7 +1814,7 @@ LEARNED - SUMMARY
     logo to start page
         wrap image or icon in anchor tag 
         Children prop to encapsulate html tags
-        create component that will use a div to wrap around children. This encapsulates logic.
+    create component that will use a div to wrap around children. This encapsulates logic.
         EXAMPLE
             export function SidebarTop({children}: {children: React.ReactNode}){
                 return (
@@ -1863,12 +1825,11 @@ LEARNED - SUMMARY
             }
     FETCHING BASED ON PURPOSE
         onLoad
-            useEffect
-                state as dependency
-                    state changes:
-                        1)component re renders
-                        2)state is given as input value
-                        3)useEffect runs again and fetches based on most recent state value
+            state changes and causes:
+                1)component re renders
+                2)new state value is given as input value
+                3)new state value is used in the UI
+                3)useEffect runs again and fetches based on most recent state value(last to happen)
         onReaction
             onChange(equivalent event)
     Params
@@ -1880,15 +1841,17 @@ LEARNED - SUMMARY
                 limit
         Path(Route)
             locate specific resoure
-    Never Type
+    Never Type(cause by [])
         Ts type that represents a value that never occurs. 
         Expression will never produce a value.
         Ts will infer this value when initializing an empty array [].
     Loading state
-        isLoading && <Spinner/>
+        Must use 2 conditionals
+        1)isLoading && <Spinner/>
             Always needed
-        !isLoading && Data.map
-            Prevents niche cases of previous fetch data existing and new fetch being loaded
+        2)!isLoading && Data.map
+            WHY?
+                If is loading, then spinner AND data will map. Prevents niche cases of previous fetch data existing and new fetch being loaded.
     How custom hooks work
         HOW
             By following proper hook logic, we guarantee it will work as if it is not there
@@ -1938,6 +1901,8 @@ LEARNED - SUMMARY
             window.addEventListener("hashchange", () => {...})
     Returning function in useEffect
         Remember to clean up after side effects
+        EXAMPLE
+            If timeout not cleaned, will run all the timeouts of the ammounts of re renders the component had. 
     Types consistency is enforced
         A type  defined before (activeID = number | null) will force you to keep that same type and work around it. (useJobIems(activeID))
     Excellent useCase for Type Intersection
@@ -1962,6 +1927,7 @@ LEARNED - SUMMARY
             1)each time event is triggered, timer is set.
             2)if event is triggered before timer ends, time restarts.
             3)func executes only after timer has finished wihtout interruptions.
+            4)must clean each deprecated timeout or they will all finish executing and the debounce will be useless.
         WHEN
             1)search input
             2)button click prevention
@@ -1970,7 +1936,6 @@ LEARNED - SUMMARY
         usehooks-ts.com
     Tip when determining where to locate hooks or functions
         Look at where you already have access to data
-
         EXAMPLE
             debouncesearchtext can be in app b/c searchtext is already there.
     SetTimeout in Reac
@@ -2015,10 +1980,8 @@ LEARNED - SUMMARY
                     if undefined || [] / 0
     Unknown ts type
         opposite of any, can't do anything, everything throws errors.
-
         WHY
             type of paramter for the onError function of React Query can be anything even though react hot toast expects a specific type.
-
             FIX
                 Ts needs to specifically know what it is dealing with at all times.
                 Type narrow 
@@ -2037,7 +2000,8 @@ LEARNED - SUMMARY
     [...(jobItems || [])]
         for mutating methods its best to destructure and create a new
         must guard for undefined case and assure that an empty array will be returned []
-    Can use variables to seend booleans as props
+        Better to mutate so reference to variable changes and useMemo is not affected
+    Can use variables to send booleans as props
         isActive={sortOption === "relevant"}
     e.stopPropagation() special anchor behavior
         e.preventDefault()
@@ -2049,6 +2013,7 @@ LEARNED - SUMMARY
     Function as initial value in useState
         BENEFIT
             Only runs on mount, avoids needless computation on every re render.
+            Performance benefits.
     Typing a prop and passing that data + more
         Ts will not complain as long as what was specified is included minimum
         You can configure ts too complain
@@ -2076,7 +2041,7 @@ LEARNED - SUMMARY
         function(_, ref)
         This way the eslint or ts error message will stop appearing.
     Features so common there are custom hooks already
-        1)useDeounce()
+        1)useDebounce()
         2)useLocalStorage()
         3)useClickOutside()
     Trick when refactoring a function into a custom hook
@@ -2103,13 +2068,477 @@ LEARNED - SUMMARY
             a)context and encapsulation with states 
         2)calculations
             a)use memo to avoid calculating unless dependencies change
+        3)functions affecting calculations / states
+            a)use callback to avoid functions being created on every re render
     Importance of updating objects and arrays with new ones
         If done on the original (ex: sorting), the reference to that variable does not change. 
         MEANING
             Dependencies will not be triggered by the change in it, b/c they will register as if it is the same.
+    UseState new updated value 
+        Accesible only in new render, that is why console logs previous value first.
+    useRef
+        If no state is used to cause re render, we will log new value for useRef but the UI will never show that value.
+        The only thing that causes re renders is state
+    useCallback
+        Functions get recreated on every re render, even if they dont change when memoized, they will cause a re calculation and that will cause a re render.
+    useMemo
+        Don't re calculate value unless dependencies change to avoid app getting stuck.
+
+NEXT JS(BEGINNER TO INTERMEDIATE)
+----------------------
+
+GAME CHANGER
+    Can build full stack apps, no need for separate back end anymore
+
+WHAT
+    React framework for full stack applications. 
+
+    HOW
+        React | Components to Build UI
+        Next | additional features and optimizations
+
+REACT DISSADVANTAGES
+    1)Has to execute the js code and this becomes invisible to the search bots
+    2)iniiial paint high load times
+
+HIGH LEVEL OVERVIEW 
+    Abstracts away a lot of the network boundary when server side rendering.
+    No need to think about a route and serving the html in a traditional manner. 
+
+BENEFITS
+    1)Abstracts and auto configures tooling like bundling, compiling and more. 
+    2)Allows to spend more time on building rather than configuring.
     
+CREATE PROJECT
+    npx create-next-app@latest .
     
+1)ROUTING AND NAGIVATION
+   App routing system based on react server components.
+
+   HOW
+        Uses folders instead of files to to define routes.
+    MATCHING
+        Uses a page.js/tsx file inside a folder to represent the route
+    ROOT ROUTE
+        /app
+        ├── page.js             # Renders at "/"
+    ROUTES
+        ├── about
+        │   ├── page.js         # Renders at "/about"
+    DYNAMIC ROUTE
+        ├── blog
+        │   ├── page.js         # Renders at "/blog"
+        │   ├── [id]
+        │   │   ├── page.js     # Renders at "/blog/:id"
+
+    PARAMS
+        Next auto provides the {params} as prop to the page component
+
+        EXAMPLE
+            export default function Vans({params}) {
+                return (
+                <main>Vans main page to render in /vans route</main>
+                );
+            }
+  
+    LAYOUT
+        The new root component(main.js) rendering {children} that are all the pages.
+                
+        REUSABLE ELEMENTS
+            This is the component that will have elements like header and footer.
+
+            EXAMPLE(in layout.tsx)
+                return (<>
+                    <Header/>
+                    {children}
+                    <Footer/>
+                    </>
+                )
+
+    NESTED LAYOUTS(Different Layouts for Different Sections)
+        You can create nested layouts for specific sections (e.g., blog/ has its own layout).
+
+        EXAMPLE
+            app/blog/layout.js (Only for Blog Pages)
+
+            export default function BlogLayout({ children }) {
+                return (
+                    <section>
+                    <h1>Blog Section</h1>
+                    {children}
+                    </section>
+                );
+            }
+
+            Folder structure
+                /vans
+                    /deprecated
+                        page.tsx(page to render in /vans/deprecate route)
+                layout.tsx(will share components between all pages in the vans folder)
+                page.tsx(main page to render in /vans route)
         
+    LINK COMPONENT
+        The <Link> component is still used for client-side navigation.
+        Does not require to=, just href=.
+
+        EXAMPLE
+            import Link from "next/link";
+            
+            export default function Navbar() {
+            return (
+                <nav>
+                <Link href="/">Home</Link>
+                <Link href="/about">About</Link>
+                <Link href="/blog">Blog</Link>
+                </nav>
+            );
+        }
+
+        DIFFERENCES WITH LINK FROM REACT ROUTER
+            1)Prefetches pages
+            2)Does not work with external link, need anchor tag.
+
+    MINDSET BASED ON PAGES 
+        
+                                
+2)METADATA
+    Metadata in Next.js helps define SEO-related information, such as page titles, descriptions, Open Graph (OG) tags, and favicons.
+
+    Ways next provides to handle metadata
+        1)static
+            Defined in metadata object in page or layout
+            HOW
+                React has predefined interfaces that convert that object to the required html. As long as the html exists, you can write the property and provide the values.
+        2)dynamic
+            using generatemetadata for dynamic values
+3)STYLING
+    TAILWIND CSS
+        Nextjs already integrates tailwind.css and removes configuration.
+
+        BENEFIT OF TAILWIND
+            Dictionary of classed already created, just use them.
+
+4)<IMAGE/>
+    Provides custom tag which is optimized replacement for standard HTMl <img> tag.
+
+    FEATURES
+        1)optimized loading
+        2)automatic resizing
+        3)performance boost 
+        4)blur replacement
+        5)built in responsive support
+    HOW TO USE
+        import Image from "next/image";
+
+        <Image 
+            src="/my-image.jpg" // Local image in the public/ folder
+            alt="My beautiful image"
+            width={500} // Image width in pixels
+            height={300} // Image height in pixels
+      />
+    LOCAL
+        To use a local image, import your .jpg, .png, or .webp image files from your public folder.
+
+        import Image from 'next/image'
+        import profilePic from './me.png'
+
+        <Image
+            src={profilePic}
+            alt="Picture of the author"
+            // width={500} automatically provided
+            // height={500} automatically provided
+            // blurDataURL="data:..." automatically provided
+            // placeholder="blur" // Optional blur-up while loading
+        />
+
+    EXTERNAL
+        For remote images (like from a CDN or API), allow them in next.config.js.
+
+        CONFIG FILE
+            const nextConfig = {
+                images: {
+                    remotePatterns: [
+                    {
+                        protocol: "https",
+                        hostname: "example.com", // Change to your image host
+                    },
+                    ],
+                },
+            };
+        USING IMAGE
+            <Image 
+                src="https://example.com/image.jpg" 
+                alt="External Image"
+                width={400} 
+                height={250} 
+            />
+        
+5)CLIENT VS SERVER COMPONENTS
+    Components designed for specific purposes to improve performance and scalability.
+
+    SERVER COMPONENTS
+        Rendered in the server and sent as html to the client.
+
+        NO ACCESS TO BROWSER FEATURES
+            1)DOM
+            2)events
+            3)local state
+
+        BENEFIT
+            GET requests
+                Off load the get requests in the server
+        
+        FEATURES
+            1)allows to offload more logic to the server, increasing performance in user device
+            2)faster load times
+            3)can fetch data on the server without client side involvement
+            4)can keep large dependencies on the server
+
+        USE CASES
+            1)fetch data
+            2)access backend resource
+            3)access sensitive information(access tokens, api keys)
+            4)large dependencies
+
+        WHEN BECOMING A SERVER COMPONENT
+            Everything inside the app/ directory are server components by default(CHILDREN as well)
+
+        HOW DOES NEXT ABSTRACT
+            1)Manual Routing:
+                Next auto routes server components
+                Express would need to manually define them
+            2)Auto data fetching
+                Next server compnents can fetch data and render seemlessly
+                Expres needs to manually fetch data and pass it as prop
+
+    CLIENT COMPONENT
+        Traditional client rendered react component meant for interactity:
+            1)click events
+            2)form submission
+            3)state management
+
+        WHAT DOES IT MEAN FOR NEXTJS
+            Indication that component will be rendered and executed in the browser.
+
+        FEATURES
+            1)rendered on client
+            2)access to browser features
+                1)dom
+                2)events
+                3)local state
+            3)js to make components interactive
+
+        USE CASES
+            1)interactivity
+            2)hooks and lifecycle effects
+
+        HOW TO MAKE SOMETHING A CLIENT COMPONENT
+            1)IMPORTED COMPONENTS
+                Any component imported to a client component will become client component.
+            2)SPECIFY 
+                To mark as client, add the 'use-client' directive top of the file.
+        WHERE TO HAVE CLIENT COMPONENTS 
+            Outside edgess of the tree, the leaves.
+                
+            EXAMPLE
+                Button component, nothing that will affect other major components. 
+
+        HOW TO HAVE A SERVER COMPONENT INSIDE A CLIENT COMPONENT
+            CHILDREN PROP 
+                Using the {children} prop inside a client component WON'T make it a client component.
+            
+        CONTEXT OF INSTANTIATION
+            A component can be rendered in both contexts, being client in 1 instance and server in another. 
+
+    HOW TO HAVE SERVER -> CLIENT -> SERVER
+        1)Server -> by default will be 
+        2)Client in server1 -> use client 
+        3)Server in Client -> render as children prop
+
+    
+    
+            
+6)SERVER ACTIONS(POST,PUT,DELETE)
+    Feature that allows to define functions in the server that can be called from the client, to perform server side operations without the need for API routes. 
+
+    BENEFIT
+        Meant to replace endpoints that are only used for POST PUT DELETE ACTIONS, unnecesarry and redundnant.
+
+    WHY
+        Improve 
+            1)experience
+            2)performance 
+        HOW
+            simplifying handling of:   
+                1)server side logic 
+                2)reducing boilerplate code
+        
+    FEATURES
+        1)no need to api routes
+            eliminate need for custom /api/* to handle server logic. 
+            logic can be directly defined in sscomponents.
+        2)auto server execution
+            server actions are auto executed on the server when invoked by the client. 
+        3)simplified code
+            reduce boilerplate code
+        4)rssc integration
+            ssa work seemless with rssc, natural extension of that. 
+
+    HOW TO USE
+        Mark function with @server
+            'use server' directive at top of file to indicate server action. 
+        Trigger action from client
+            Call the action in the CSC
+        Handle response
+            Once executed, handle response on the client side.
+
+7)SUSPENSE AND STREAMING
+    Cutting edge features that leverage the latest advancement in React for working with SSR
+
+    WHY
+        1)optimize performance
+        2)improve UX 
+
+    SUSPENSE
+        Allows to delay rendering of component until some async data is ready. 
+
+        WHY
+            Prevents the UI from rendering incomplete components
+
+        HOW DOES IT WORK
+            Wraps a component that may include async logic and provides a fallback to render in its place. 
+
+            EXAMPLE
+                <Suspense fallback={<p>Loading...</p>}>
+                    <ProductList />
+                </Suspense>
+
+        NEXT JS
+            Loading.tsx
+                Special file in next to tell it that it is the fallback while something is loading.
+            
+            By using the loading component, next js automatically wraps the page in a suspense and provides the loading as fallback.
+
+        USE CASE
+            Show the page and suspense the component with the fetch that takes time to finish.
+
+    STREAMING
+        Rendering content progressively from the server as it becomes available rather than waiting for the entire page to be ready before sending it to the client.
+
+        WHY
+            Allows the user to start interacting with it while other parts are still being fetched. 
+
+        HOW
+            React Suspense + React Server Components
+        
+        BENEFITS
+            1)Faster TTI 
+            2)optimized SSR
+            3)less blocking
+
+    COMPLEMENTATION OF BOTH
+        Suspense
+            handles async data fetching smoothly 
+        Streaming
+            progressively delivers the rendered content from the server
+
+8)CHACHING
+    Instant auto caching on client of fetch requests. 
+
+    REMOVES
+        1)after 5min
+        2)onReload
+
+    SPECIFY IN THE LITERAL FETCH REQUEST AS AN OPTION PARAM (only works in nextjs) 
+        {
+            cache: "no-cache"
+        }
+    SPECIFY WHEN TO REFETCH 
+        {
+            next:{
+                revalidate: 3600
+            }
+        }
+
+    TYPES OF CACHE IN SERVER
+        1)data cache
+            Even if component needs to be rendered again, data will persist. 
+        2)full route cache
+            means the page and all its children compoonents will not run every time and will be frozen
+    
+9)STATIC & DYNAMIC RENDERING
+    STATIC(prod)
+        Only runs during build
+    DYNAMIC(dev)
+        Runs every time the route is accessed.
+
+        HOW TO FORCE A COMPONENT TO BE DYNAMIC
+            export const dynamic = "force-dynamic" at top of file
+10)MIDDLEWARE
+    Something to run before the request hits the server
+
+    USE CASE
+        1)check if logged in 
+    
+    EXAMPLE
+        export function middleware(request: NexRequest) {
+            const isAuthenticated = false
+            if(!isAuthenticated) {
+                return NextResponse.redirect("/login")
+            }
+            return NextResponse.next()
+        }
+
+    AUTH LIBRARIES
+        1)kinde
+        2)nextAuth
+
+11)FOLDER STRUCTURE
+    ...
+12)PRODUCTION: BUILD AND DEPLOYING
+    STATIC EXPORT
+        Only html, css, js files
+
+        HOW
+            next.config.js file
+                output: "export" 
+                unoptimized: true
+
+        DOWNSIDE
+            Loss in all server features
+
+    NEXTJS app = nodejs app
+        
+    .NEXT folder
+        Folder with the build app
+
+    .env (can be uploaded)
+        DATABASE_URL="file:./dev.db"
+    
+    .env.local(private)
+        To be protected always
+
+<React.Fragment>
+    Can be used to wrap around a list and provide it with the key prop so a div does not disrupt the html.
+
+TYPE OVER INTERFACE
+    1)intersection instead of extension
+    2)all data types
+    3)unions
+    4)utility types
+    5)tuples
+    6)not merged like interfaces(by redeclaration)
+    7)
+
+P6 - EVENTO 
+----------------
+TO LEARN:
+
+SECTIONS:
+    1)structure
+    2)styling
+    3)
+
 
 
 
