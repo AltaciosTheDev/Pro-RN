@@ -2198,9 +2198,7 @@ CREATE PROJECT
             1)Prefetches pages
             2)Does not work with external link, need anchor tag.
 
-    MINDSET BASED ON PAGES 
-        
-                                
+    MINDSET BASED ON PAGES                         
 2)METADATA
     Metadata in Next.js helps define SEO-related information, such as page titles, descriptions, Open Graph (OG) tags, and favicons.
 
@@ -2211,6 +2209,10 @@ CREATE PROJECT
                 React has predefined interfaces that convert that object to the required html. As long as the html exists, you can write the property and provide the values.
         2)dynamic
             using generatemetadata for dynamic values
+        
+    FAVICON
+        Whatever has "favicon.ico" name inside the src folder will be the default favicon for the page.
+    
 3)STYLING
     TAILWIND CSS
         Nextjs already integrates tailwind.css and removes configuration.
@@ -2355,9 +2357,7 @@ CREATE PROJECT
         2)Client in server1 -> use client 
         3)Server in Client -> render as children prop
 
-    
-    
-            
+
 6)SERVER ACTIONS(POST,PUT,DELETE)
     Feature that allows to define functions in the server that can be called from the client, to perform server side operations without the need for API routes. 
 
@@ -2530,14 +2530,46 @@ TYPE OVER INTERFACE
     6)not merged like interfaces(by redeclaration)
     7)
 
+GIT NEW KNOWLEDGE
+    git reset --hard COMMIT_THAT_REMAINS(remove commits from local repo)
+    git push origin BRANCH_NAME --force(push commits to remote repo)
+
 P6 - EVENTO 
 ----------------
 TO LEARN:
+    1)tailwind
+    2)prisma
+    3)skeleton
+    4)vercel
 
 SECTIONS:
-    1)structure
+    1)routing
     2)styling
-    3)
+    3)home page
+        1)search
+    4)events page
+        1)pagination
+    5)individual event page
+    6)deploy
+    7)pre generate pages during build
+
+INITIATE PROJECT
+    npm create-next-app@14.0.1
+
+1)Routing
+    Folders and Pages
+        1)home page
+        2)events by city page (/events/[city])
+            1)austin
+            2)seattle
+            3)all
+        3)individual event page (event/[slug])
+        3)terms and conditions page
+        4)privacy policy page
+    Layout
+        
+
+
 
 
 
