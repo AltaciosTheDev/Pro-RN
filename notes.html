@@ -2567,6 +2567,15 @@ TO LEARN:
     2)prisma
     3)skeleton
     4)vercel
+    5)clsx
+        Is a simple library that lets you toggle class names easily. You can install it using npm install clsx
+    6)framer motion
+        Production ready animation motion library for react
+
+        CONTENT
+            animations
+            variants
+            gestures
 
 SECTIONS:
     1)routing
@@ -2597,6 +2606,29 @@ INITIATE PROJECT
             <Link>
         {children}
         Footer>
+2)Styling
+    header
+    home
+    style active link
+        determine current link
+            onst activePathname = usePathname()
+        clsx
+            className={clsx("hover:text-white hover:scale-110 transition", {
+            "text-white": activePathname === route.path,
+            "text-white/50":activePathname !== route.path
+        })}
+        framer motion
+            activePathname === route.path && <motion.div layoutId="header-active-link" className="bg-accent h-1 w-full absolute bottom-0"></motion.div>
+
+            Shared layout animation 
+                framer motion is able to detect the two creations of the motion.div between renders and transitionate smoothly between them by the id.
+        
+            
+            
+    
+
+        
+            
 
                 
 LEARNED SUMMARY
