@@ -2612,6 +2612,9 @@ INITIATE PROJECT
     style active link
         determine current link
             onst activePathname = usePathname()
+
+            Does the pathname Cause a Re-render?
+                Yes, changing the pathname in a React app will trigger a re-render if it's being used inside a component.
         clsx
             className={clsx("hover:text-white hover:scale-110 transition", {
             "text-white": activePathname === route.path,
@@ -2622,7 +2625,29 @@ INITIATE PROJECT
 
             Shared layout animation 
                 framer motion is able to detect the two creations of the motion.div between renders and transitionate smoothly between them by the id.
-        
+3)search form, converting server to client component
+    create handlesubmit function
+        const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+        };
+    controlling input
+        const [search, setSearch] = useState("")
+        onChange={(e) => setSearch(e.target.value)}
+        value={search}
+    convert to client
+        create a dedicated SearchForm component and 'use client'
+            
+        when to convert
+            1)use a hook
+            2)hook into event
+    link to the router through the search when enter event
+        useRouter
+            import {useRouter} from "next/navigation"
+            const router = useRouter()
+            router.push(`/events/${search}`)
+
+    
+
             
             
     
