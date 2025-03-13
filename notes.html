@@ -2221,6 +2221,9 @@ CREATE PROJECT
         
     FAVICON
         Whatever has "favicon.ico" name inside the src folder will be the default favicon for the page.
+
+    METADATA TYPE
+        
     
 3)STYLING
     TAILWIND CSS
@@ -2550,7 +2553,17 @@ TO LEARN:
     1)tailwind
         Adding space between children
             space-x-4
-        
+        configuring accent color
+            config file
+                theme: {
+                    extend: {
+                        colors: {
+                            accent: "#a4f839",
+                        },
+                    },
+                }
+            consue in file
+                text-accent
     2)prisma
     3)skeleton
     4)vercel
@@ -2584,18 +2597,8 @@ INITIATE PROJECT
             <Link>
         {children}
         Footer>
-2)Styling
-    Home Page
-        html structure
-    Header
-        header tag 
-            flex and layout
-        routes
-            map over
-            style specific link
-        
-        
 
+                
 LEARNED SUMMARY
     Always wrap inputs in form
         No matter where they are, an input should never go without a form.
