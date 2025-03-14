@@ -1,3 +1,4 @@
+import EventsList from '@/app/components/EventsList'
 import H1 from '@/app/components/H1'
 import { Evento } from '@/lib/types'
 import React from 'react'
@@ -22,7 +23,7 @@ export default async function EventsPage({params}: EventsPageProps) {
       {city === 'all' && <H1>All Events</H1>}
       {city !== 'all' && <H1>Events in {city.charAt(0).toUpperCase() + city.substring(1)}</H1>} 
 
-      {events.map((event) => <section key={event.id}>{event.name}</section>)}
+      <EventsList events={events}/>
     </main>
   )
 }

@@ -2617,8 +2617,13 @@ CREATE PROJECT
     .env.local(private)
         To be protected always
 
-<React.Fragment>
-    Can be used to wrap around a list and provide it with the key prop so a div does not disrupt the html.
+13)@/path
+    starts at the source folder so it is easier to know what is being imported and from where
+
+    DEFIND IN TSCONFIG
+        "paths": {
+            "@/*": ["./src/*"]
+        }
 
 TYPE OVER INTERFACE
     1)intersection instead of extension
@@ -2803,8 +2808,28 @@ Evento Type
             description: string
         }
 
-
+Events List
+    Create list component
+    Type list component
+    @path import
+    
+Events Card
+    Create card component
+    type card component
+    @path import            
+    structure
+        Image
+            Same invocation
+            src
+                config in the next config file
+            style image
+                height
+                width
+        details(div)
             
+        
+        
+        
 
     
         
@@ -2844,6 +2869,19 @@ LEARNED SUMMARY
         hardcored and then dynamic
     making sure lists are good
         just render the raw data without the styling and components
+    Sending complex info as prop
+        If it is a list, and you are rendering a component, send the entire object as an item and destructure on the other side. 
+    flex shorthand default
+        flex-grow: 0: Flex items do not grow to fill the available space.
+        flex-shrink: 1: Flex items can shrink to fit into the container.
+        flex-basis: auto: The initial size of the flex items is based on their content.
+    flex 1
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0%;
+    using flex 1
+        suppose you have 2 children in a flex parent
+        1 has a fixed height and the other flex 1, that will grow to fill the rest of the container.
 
     
 
