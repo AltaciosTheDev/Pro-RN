@@ -2113,101 +2113,169 @@ CREATE PROJECT
     npx create-next-app@latest .
     
 1)ROUTING AND NAGIVATION
-   App routing system based on react server components.
 
-   HOW
+    ROUTING
+    App routing system based on react server components.
+
+    HOW
         Uses folders instead of files to to define routes.
-    MATCHING
-        Uses a page.js/tsx file inside a folder to represent the route
-    ROOT ROUTE
-        /app
-        ├── page.js             # Renders at "/"
-    ROUTES
-        ├── about
-        │   ├── page.js         # Renders at "/about"
-    DYNAMIC ROUTE
-        ├── blog
-        │   ├── page.js         # Renders at "/blog"
-        │   ├── [id]
-        │   │   ├── page.js     # Renders at "/blog/:id"
+        MATCHING
+            Uses a page.js/tsx file inside a folder to represent the route
+        ROOT ROUTE
+            /app
+            ├── page.js             # Renders at "/"
+        ROUTES
+            ├── about
+            │   ├── page.js         # Renders at "/about"
+        DYNAMIC ROUTE
+            ├── blog
+            │   ├── page.js         # Renders at "/blog"
+            │   ├── [id]
+            │   │   ├── page.js     # Renders at "/blog/:id"
 
-    PARAMS
-        Next auto provides the {params} as prop to the page component
+        Dynamic Routes
+            When you don't know the exact segment names ahead of time and want to create routes from dynamic data, you can use Dynamic Segments that are filled in at request time or prerendered at build time.
 
-        EXAMPLE
-            export default function Vans({params}) {
-                return (
-                <main>Vans main page to render in /vans route</main>
-                );
-            }
-  
-    LAYOUT
-        The new root component(main.js) rendering {children} that are all the pages.
-                
-        REUSABLE ELEMENTS
-            This is the component that will have elements like header and footer.
+            CREATING DYNAMIC SEGMENT
+                A Dynamic Segment can be created by wrapping a folder's name in square brackets: [folderName]. For example, [id] or [slug].
 
-            EXAMPLE(in layout.tsx)
-                return (<>
-                    <Header/>
-                    {children}
-                    <Footer/>
-                    </>
-                )
+            USING THE DYNAMIC SEGMENT
+                Dynamic Segments are passed as the params prop to layout, page, route, and generateMetadata functions.
 
-    NESTED LAYOUTS(Different Layouts for Different Sections)
-        You can create nested layouts for specific sections (e.g., blog/ has its own layout).
-
-        EXAMPLE
-            app/blog/layout.js (Only for Blog Pages)
-
-            export default function BlogLayout({ children }) {
-                return (
-                    <section>
-                    <h1>Blog Section</h1>
-                    {children}
-                    </section>
-                );
-            }
-
-            Folder structure
-                /vans
-                    /deprecated
-                        page.tsx(page to render in /vans/deprecate route)
-                layout.tsx(will share components between all pages in the vans folder)
-                page.tsx(main page to render in /vans route)
+                EXAMPLE
+                    export default async function Page({
+                        params,
+                        }: {
+                        params: Promise<{ slug: string }>
+                        }) {
+                        const { slug } = await params
+                        return <div>My Post: {slug}</div>
+                    }
         
-    LINK COMPONENT
-        The <Link> component is still used for client-side navigation.
-        Does not require to=, just href=.
+                GTK
+                    Since the params prop is a promise. You must use async/await or React's use function to access the values.
 
-        EXAMPLE
-            import Link from "next/link";
-            
-            export default function Navbar() {
-            return (
-                <nav>
-                <Link href="/">Home</Link>
-                <Link href="/about">About</Link>
-                <Link href="/blog">Blog</Link>
-                </nav>
-            );
-        }
 
-        DIFFERENCES WITH LINK FROM REACT ROUTER
-            1)Prefetches pages in prod
-                Meaning most of the work is done when actually clicking it.
-            2)Does not work with external link, need anchor tag.
+    
+        LAYOUT
+            The new root component(main.js) rendering {children} that are all the pages.
+                    
+            REUSABLE ELEMENTS
+                This is the component that will have elements like header and footer.
 
-    SPECIAL FILES
-        layout
-        pages
-        template
-        not-found
-            Default created, but if we create one in the root foler, it takes precedence.
-        error
+                EXAMPLE(in layout.tsx)
+                    return (<>
+                        <Header/>
+                        {children}
+                        <Footer/>
+                        </>
+                    )
 
-    MINDSET BASED ON PAGES                         
+        NESTED LAYOUTS(Different Layouts for Different Sections)
+            You can create nested layouts for specific sections (e.g., blog/ has its own layout).
+
+            EXAMPLE
+                app/blog/layout.js (Only for Blog Pages)
+
+                export default function BlogLayout({ children }) {
+                    return (
+                        <section>
+                        <h1>Blog Section</h1>
+                        {children}
+                        </section>
+                    );
+                }
+
+                Folder structure
+                    /vans
+                        /deprecated
+                            page.tsx(page to render in /vans/deprecate route)
+                    layout.tsx(will share components between all pages in the vans folder)
+                    page.tsx(main page to render in /vans route)
+                        
+        SPECIAL FILES
+            layout
+            pages
+            template
+            not-found
+                Default created, but if we create one in the root foler, it takes precedence.
+            error
+                
+    NAVIGATION
+        Way to navigate:
+            1)<Link> Component
+            2)useRouter hook (Client Components)
+            3)redirect function (Server Components)
+            4)Using the native History API
+
+        LINK COMPONENT
+            The <Link> component is still used for client-side navigation.
+            Does not require to=, just href=.
+
+            EXAMPLE
+                import Link from "next/link";
+                
+                export default function Navbar() {
+                return (
+                    <nav>
+                    <Link href="/">Home</Link>
+                    <Link href="/about">About</Link>
+                    <Link href="/blog">Blog</Link>
+                    </nav>
+                );
+            }
+
+            DIFFERENCES WITH LINK FROM REACT ROUTER
+                1)Prefetches pages in prod
+                    Meaning most of the work is done when actually clicking it.
+                2)Does not work with external link, need anchor tag.
+
+        USEROUTER()
+            The useRouter hook allows you to programmatically change routes from Client Components.
+
+            EXAMPLE
+                'use client'
+                import { useRouter } from 'next/navigation'
+                
+                export default function Page() {
+                const router = useRouter()
+                
+                return (
+                    <button type="button" onClick={() => router.push('/dashboard')}>
+                    Dashboard
+                    </button>
+                )
+            }
+        redirect function
+            For Server Components, use the redirect function instead.
+
+            EXAMPLE
+                For Server Components, use the redirect function instead.
+
+                 const team = await fetchTeam(id)
+                if (!team) {
+                    redirect('/join')
+                }
+
+        Navigation functions
+            usePathname()
+                usePathname is a Client Component hook that lets you read the current URL's pathname.
+
+                RETURNS
+                    usePathname returns a string of the current URL's pathname. For example: '/'
+
+                EXAMPLE
+                    'use client'
+ 
+                    import { usePathname } from 'next/navigation'
+                    
+                    export default function ExampleClientComponent() {
+                    const pathname = usePathname()
+                    return <p>Current pathname: {pathname}</p>
+                    }
+        
+
+    
 2)METADATA
     Metadata in Next.js helps define SEO-related information, such as page titles, descriptions, Open Graph (OG) tags, and favicons.
 
@@ -2231,6 +2299,8 @@ CREATE PROJECT
 
         BENEFIT OF TAILWIND
             Dictionary of classed already created, just use them.
+
+        
 
 4)<IMAGE/>
     Provides custom tag which is optimized replacement for standard HTMl <img> tag.
@@ -2562,8 +2632,17 @@ TO LEARN:
                         },
                     },
                 }
-            consue in file
-                text-accent
+            consume in file
+                text-accent 
+         styling rules learned and used
+            overflow-y-scroll
+                has scrollbar always available for specified element
+        responsiveness
+            px-4 md:px-2
+                Start with the smaller screen value, and then specify bigger sizes
+        hover styles
+            hover:[rule]
+        
     2)prisma
     3)skeleton
     4)vercel
@@ -2642,9 +2721,50 @@ INITIATE PROJECT
             2)hook into event
     link to the router through the search when enter event
         useRouter
-            import {useRouter} from "next/navigation"
-            const router = useRouter()
-            router.push(`/events/${search}`)
+            Allows to programmatically change routes inside the client components.
+
+            Gives you access to router-related information and functions, allowing you to:
+                1)Access the current URL (pathname, query, etc.)
+                2)Navigate programmatically (push, replace, back, etc.)
+                3)Listen for route changes and execute logic on navigation
+
+            USE
+                import {useRouter} from "next/navigation"
+                const router = useRouter()
+                router.push(`/events/${search}`)
+
+Resusable H1 component
+    Component will be the same regardless of page. 
+
+    Scrollbar 
+        Added permanent scroll page in home and events pages with different stles.
+
+    Making H1 text dynamic
+        Retrieve the city
+            PROBLEM
+                usePathname can only be used in client components
+            SOLUTION
+                params in a server component
+
+                function EventsPage({params}: EventsPageProps) {
+                    const {city} = params
+        Type the params
+            type Params = {
+                city: string
+            }
+
+            type EventsPageProps = {
+                params: Params
+            }
+        Capitalize the city 
+            <H1>Events in {city.charAt(0).toUpperCase() + city.substring(1)}</H1>
+        
+        
+            
+        
+
+    
+
 
     
 
@@ -2672,6 +2792,8 @@ LEARNED SUMMARY
     bigger screens
         more padding
         more space between elements
+    Work methodology
+        hardcored and then dynamic
     
 
 

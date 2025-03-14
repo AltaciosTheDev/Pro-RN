@@ -1,7 +1,20 @@
+import H1 from '@/app/components/H1'
 import React from 'react'
 
-export default function EventsPage() {
+type Params = {
+  city: string
+}
+
+type EventsPageProps = {
+  params: Params
+}
+
+export default function EventsPage({params}: EventsPageProps) {
+  const {city} = params
   return (
-    <div>This page appears for events/*. For the /events there willl be a redirect</div>
+    <main className='flex flex-col items-center py-24 px-[20px] min-h-[110vh]'>
+      {city === 'all' && <H1>All Events</H1>}
+      {city !== 'all' && <H1>Events in {city.charAt(0).toUpperCase() + city.substring(1)}</H1>} 
+    </main>
   )
 }
