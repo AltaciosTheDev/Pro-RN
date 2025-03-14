@@ -2399,9 +2399,10 @@ CREATE PROJECT
         FETCHING DATA(GET REQUEST)
             BENEFITS
                 1)can console log
-                2)no need for useEffect or hooks
+                2)no need for useEffect or useState or any hook 
                 3)reduce bundle js sent to the client
                 4)api keys are a lot more convenient to use
+                5)data is stored normally in variables, no hooks
             HOW
                 make compononet function async
                     export default async function EventsPage({params}: EventsPageProps) {...}
@@ -2778,6 +2779,32 @@ Fetch Data in EventsPage
     const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`)
     const events = await response.json()
     console.log(events)
+
+Evento Type
+    WHERE TO PLACE types folder
+        remember app is focused on routes and server components
+
+        outside app
+            lib
+                types
+                hooks
+                constants
+
+    TYPE
+        export type Evento = {
+            id: number,
+            name: string,
+            slug: string,
+            city: string,
+            location: string,
+            date: Date,
+            organizerName: string,
+            imageUrl: string,
+            description: string
+        }
+
+
+            
 
     
         
