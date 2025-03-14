@@ -2396,6 +2396,20 @@ CREATE PROJECT
                 Next server compnents can fetch data and render seemlessly
                 Expres needs to manually fetch data and pass it as prop
 
+        FETCHING DATA(GET REQUEST)
+            BENEFITS
+                1)can console log
+                2)no need for useEffect or hooks
+                3)reduce bundle js sent to the client
+                4)api keys are a lot more convenient to use
+            HOW
+                make compononet function async
+                    export default async function EventsPage({params}: EventsPageProps) {...}
+                fetch normally
+                    const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`)
+                    const events = await response.json()
+                    console.log(events)
+
     CLIENT COMPONENT
         Traditional client rendered react component meant for interactity:
             1)click events
@@ -2439,6 +2453,7 @@ CREATE PROJECT
         1)Server -> by default will be 
         2)Client in server1 -> use client 
         3)Server in Client -> render as children prop
+
 
 
 6)SERVER ACTIONS(POST,PUT,DELETE)
@@ -2759,6 +2774,12 @@ Resusable H1 component
         Capitalize the city 
             <H1>Events in {city.charAt(0).toUpperCase() + city.substring(1)}</H1>
         
+Fetch Data in EventsPage
+    const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`)
+    const events = await response.json()
+    console.log(events)
+
+    
         
             
         
@@ -2794,6 +2815,9 @@ LEARNED SUMMARY
         more space between elements
     Work methodology
         hardcored and then dynamic
+    making sure lists are good
+        just render the raw data without the styling and components
+
     
 
 
