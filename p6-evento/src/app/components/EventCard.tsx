@@ -12,13 +12,13 @@ export default function EventCard({ event }: EventCardProps) {
 
   return (
     <Link className="flex-1 basis-80 max-w-[500px]" href={`/event/${event.slug}`}>
-      <section className="hover:scale-105 transition active:scale-[1.02] relative flex flex-col h-[380px] bg-white/[3%] rounded-xl overflow-hidden">
+      <section className="state-effects relative flex flex-col h-[380px] bg-white/[3%] rounded-xl overflow-hidden">
         <Image
           width={500}
           height={280}
           alt="EVENTO logo"
           src={event.imageUrl}
-          className="h-[60%] object-fit"
+          className="h-[60%] object-cover"
         ></Image>
         <div className="flex flex-col justify-center items-center flex-1">
           <h2 className="text-2xl font-semibold">{event.name}</h2>

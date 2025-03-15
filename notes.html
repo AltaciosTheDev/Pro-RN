@@ -2698,21 +2698,24 @@ TO LEARN:
         hover styles
             hover:[rule]
         classname prop combined with classname styling
-            
-        
-    2)prisma
-    3)skeleton
-    4)vercel
-    5)clsx
+            cn function created combining clsx(conditional styling) and twmerge(resolving class conflicts)
+        @apply rule
+            In global css file create custom rule and @apply the styling requested, this will allow for the use in the rest of the app
+
+            EXAMPLE
+                .state-effects{
+                    @apply hover:scale-105 transition active:scale-[1.02]
+                }
+    2)clsx
         Is a simple library that lets you toggle class names easily. You can install it using npm install clsx
-    6)framer motion
+    3)framer motion
         Production ready animation motion library for react
 
         CONTENT
             animations
             variants
             gestures
-    7)tailwind merge
+    4)tailwind merge
         is a utility function that helps resolve class conflicts when using Tailwind CSS. It's commonly used to merge and deduplicate conflicting Tailwind classes dynamically.
 
         why
@@ -2723,7 +2726,7 @@ TO LEARN:
         
         EXAMPLE
             <h1 className={twMerge("text-3xl lg:text-6xl font-bold tracking-tight", className)}>{children}</h1>
-    8)cn()
+    5)cn()
         The cn function (short for "class names") is a utility function often used in React + Tailwind CSS projects to manage class names dynamically. It helps merge, conditionally apply, and deduplicate Tailwind classes.
 
         EXAMPLE
@@ -2735,168 +2738,12 @@ TO LEARN:
             }
         clsx(): Handles conditional class logic (e.g., isActive && "bg-blue-500").
         twMerge(): Deduplicates and resolves conflicting Tailwind classes.
-
-SECTIONS:
-    1)routing
-    2)styling
-    3)home page
-        1)search
-    4)events page
-        1)pagination
-    5)individual event page
-    6)deploy
-    7)pre generate pages during build
-
-INITIATE PROJECT
-    npm create-next-app@14.0.1
-
-1)Routing
-    Folders and Pages
-        1)home page
-        2)events by city page (/events/[city])
-            1)austin
-            2)seattle
-            3)all
-        3)individual event page (event/[slug])
-        3)terms and conditions page
-        4)privacy policy page
-    Layout
-        <Header>
-            <Link>
-        {children}
-        Footer>
-2)Styling
-    header
-    home
-    style active link
-        determine current link
-            onst activePathname = usePathname()
-
-            Does the pathname Cause a Re-render?
-                Yes, changing the pathname in a React app will trigger a re-render if it's being used inside a component.
-        clsx
-            className={clsx("hover:text-white hover:scale-110 transition", {
-            "text-white": activePathname === route.path,
-            "text-white/50":activePathname !== route.path
-        })}
-        framer motion
-            activePathname === route.path && <motion.div layoutId="header-active-link" className="bg-accent h-1 w-full absolute bottom-0"></motion.div>
-
-            Shared layout animation 
-                framer motion is able to detect the two creations of the motion.div between renders and transitionate smoothly between them by the id.
-3)search form, converting server to client component
-    create handlesubmit function
-        const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-        };
-    controlling input
-        const [search, setSearch] = useState("")
-        onChange={(e) => setSearch(e.target.value)}
-        value={search}
-    convert to client
-        create a dedicated SearchForm component and 'use client'
-            
-        when to convert
-            1)use a hook
-            2)hook into event
-    link to the router through the search when enter event
-        useRouter
-            Allows to programmatically change routes inside the client components.
-
-            Gives you access to router-related information and functions, allowing you to:
-                1)Access the current URL (pathname, query, etc.)
-                2)Navigate programmatically (push, replace, back, etc.)
-                3)Listen for route changes and execute logic on navigation
-
-            USE
-                import {useRouter} from "next/navigation"
-                const router = useRouter()
-                router.push(`/events/${search}`)
-
-Resusable H1 component
-    Component will be the same regardless of page. 
-
-    Scrollbar 
-        Added permanent scroll page in home and events pages with different stles.
-
-    Making H1 text dynamic
-        Retrieve the city
-            PROBLEM
-                usePathname can only be used in client components
-            SOLUTION
-                params in a server component
-
-                function EventsPage({params}: EventsPageProps) {
-                    const {city} = params
-        Type the params
-            type Params = {
-                city: string
-            }
-
-            type EventsPageProps = {
-                params: Params
-            }
-        Capitalize the city 
-            <H1>Events in {city.charAt(0).toUpperCase() + city.substring(1)}</H1>
-        
-Fetch Data in EventsPage
-    const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`)
-    const events = await response.json()
-    console.log(events)
-
-Evento Type
-    WHERE TO PLACE types folder
-        remember app is focused on routes and server components
-
-        outside app
-            lib
-                types
-                hooks
-                constants
-
-    TYPE
-        export type Evento = {
-            id: number,
-            name: string,
-            slug: string,
-            city: string,
-            location: string,
-            date: Date,
-            organizerName: string,
-            imageUrl: string,
-            description: string
-        }
-
-Events List
-    Create list component
-    Type list component
-    @path import
-    
-Events Card
-    
-            
-        
-        
-        
-
-    
-        
-            
-        
-
-    
-
-
-    
-
-            
-            
-    
-
-        
-            
-
-                
+    streaming
+    skeleton        
+    sqlite
+    prisma
+    vercel
+      
 LEARNED SUMMARY
     Always wrap inputs in form
         No matter where they are, an input should never go without a form.
@@ -2952,9 +2799,28 @@ LEARNED SUMMARY
             top,bottom,left,right,zindex
     color trick
         use same color with more oppacity for less important texts
+    pattern of react components to reuse tags and stling for specific purposes
+        Literally taking super serious reacts way of encapsulating html and making it reusable.
+        Remember when something starts getting repetitive.
+
+        Declaration
+            function Section({children}: {children: React.ReactNode}) {
+                return <section className="mb-12">{children}</section>
+            }
+
+            function SectionHeading({children}: {children: React.ReactNode}) {
+                return <h2 className="mb-8 text-2xl">{children}</h2>
+            }
+        Usage
+             <Section>
+                <SectionHeading>About this event</SectionHeading>
+                <p className="text-lg leading-8 text-white/75 max-w-4xl mx-auto">{event.description}</p>
+            </Section>
     
-    
-    
+        
+
+            
+            
     
 
     
