@@ -2663,6 +2663,8 @@ TO LEARN:
                 Start with the smaller screen value, and then specify bigger sizes
         hover styles
             hover:[rule]
+        classname prop combined with classname styling
+            
         
     2)prisma
     3)skeleton
@@ -2676,6 +2678,17 @@ TO LEARN:
             animations
             variants
             gestures
+    7)tailwind merge
+        is a utility function that helps resolve class conflicts when using Tailwind CSS. It's commonly used to merge and deduplicate conflicting Tailwind classes dynamically.
+
+        why
+            1)Avoids Conflicting Classes
+            2)Improves Code Readability & Maintainability
+            3)Helpful in Dynamic Styling
+            4)combines with clsx
+        
+        EXAMPLE
+            <h1 className={twMerge("text-3xl lg:text-6xl font-bold tracking-tight", className)}>{children}</h1>
 
 SECTIONS:
     1)routing
