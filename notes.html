@@ -2936,6 +2936,7 @@ LEARNED SUMMARY
         const date = new Date(event.date)
         {date.toLocaleDateString("en-US", {day: "2-digit"})}
         {date.toLocaleDateString("en-US", {month: "short"})}
+        {new Date(event.date).toLocaleDateString("en-US", {weekday: "long", month: "long", day:"numeric"})}
     animations and transitions
         hover:scale[105] -> slightly bigger
         transition -> smooths out the effect
@@ -2944,6 +2945,15 @@ LEARNED SUMMARY
         WRAP everything in LINK or ANCHOR
     overflow hidden uses
         sometimes overflow hidden can fix images or things going crazy and bigger
+    z index requirements
+        only elements relative absolute
+    all elements static 
+        by default every element is static, need to converrt to relative, absolute, fixed, sticky to use
+            top,bottom,left,right,zindex
+    color trick
+        use same color with more oppacity for less important texts
+    
+    
     
     
 
