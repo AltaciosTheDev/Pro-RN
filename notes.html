@@ -2336,6 +2336,40 @@ CREATE PROJECT
             // placeholder="blur" // Optional blur-up while loading
         />
 
+    PROPS
+        FILL
+            This makes the image automatically stretch to cover its parent container.
+            The parent must have position: relative or another positioning style for it to work.
+            Useful when width and height unknown
+            assings by default
+                position absolute 
+                object fit fill 
+        
+        sizes="(max-width: 1280px) 100vw, 1280px"
+            This tells the browser how much space the image should take up at different screen sizes.
+
+            If the viewport width is 1280px or less, the image takes 100% of the viewport width (100vw).
+            If the viewport width is greater than 1280px, the image is fixed at 1280px wide.
+
+            BENEFIT
+                allows the browser to download iamge real size, without it, it downloads it in the size of the viewport.
+
+        quality
+            The quality of the optimized image, an integer between 1 and 100, where 100 is the best quality and therefore largest file size. Defaults to 75.
+
+        priority
+            When true, Next.js will preload the image. 
+            Lazy loading is automatically disabled for images using priority. 
+            
+            WHEN TO USE
+                You should use the priority property on any image detected as the Largest Contentful Paint (LCP) element. 
+                It may be appropriate to have multiple priority images, as different images may be the LCP element for different viewport sizes.
+            
+            
+
+
+
+
     EXTERNAL
         For remote images (like from a CDN or API), allow them in next.config.js.
 
@@ -2702,10 +2736,6 @@ TO LEARN:
         clsx(): Handles conditional class logic (e.g., isActive && "bg-blue-500").
         twMerge(): Deduplicates and resolves conflicting Tailwind classes.
 
-    
-    
-                
-
 SECTIONS:
     1)routing
     2)styling
@@ -2912,6 +2942,9 @@ LEARNED SUMMARY
         active:scale-[1.02]
     aspects of page being navigation elements
         WRAP everything in LINK or ANCHOR
+    overflow hidden uses
+        sometimes overflow hidden can fix images or things going crazy and bigger
+    
     
 
     
