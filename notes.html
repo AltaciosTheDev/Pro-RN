@@ -2194,12 +2194,69 @@ CREATE PROJECT
                     page.tsx(main page to render in /vans route)
                         
         SPECIAL FILES
+            These files effects are dependent on where they are used. 
+
             layout
+                Will provide shared UI to the pages inside of it.
             pages
+                Determines what will be shown based on the folder name(route)
             template
+                TBD
             not-found
-                Default created, but if we create one in the root foler, it takes precedence.
+                Automatically handles every not found URL for the entire application. 
+                No need to manually define the not found component and * url. 
+
+            loading.tsx
+                The special file loading.js helps you create meaningful Loading UI with React Suspense. With this convention, you can show an instant loading state from the server while the content of a route segment loads. The new content is automatically swapped in once rendering is complete.
+
+                DIFFENCE
+                    Feature	            loading.tsx in Next.js	            Suspense in React
+                    Handles async UI?	                Yes                             Yes
+                    Works with Server Components?	    Yes	                            Yes
+                    Works with Client Components?	    No (only layouts and pages)	    Yes
+                    Where it applies	                Whole page or layout	        Specific components
+                    Automatically handled?	            Yes (by Next.js)	            No (you manually wrap components)
+
+                3 WAYS OF HANDLING
+                    1)without suspense
+                        PROBLEMS
+                            1)each component has to handle its own loading state and fetch effect
+                            2)lots of boilerplate code
+                            3)difficult to maintain
+                        EXAMPLE(for each component)
+                            const [data, setData] = useState(null);
+                            const [loading, setLoading] = useState(true);
+
+                             useEffect(() => {
+                                fetch('/api/dashboard')
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    setData(data);
+                                    setLoading(false);
+                                });
+                            }, []);
+
+                            if (loading) return <p>Loading dashboard...</p>;
+
+                    2)React suspense(react 18)
+                        Introduced to avoid handling loading state manually for every component
+
+                        PROBLEMS
+                            1)Only works for client components, not full pages
+                            2)requires manual wrapping around components
+
+                    3)Nextjs app router(loading.tsx)
+                        Automatic loading UI for pages and layouts
+                        Works with server components
+                        less boilerplate than suspense for entire pages
+
+                    CONCLUTION
+                        suspense
+                            for controlling specific component
+                        loading
+                            for controlling an entire page
             error
+                TBD
                 
     NAVIGATION
         Way to navigate:
@@ -2575,7 +2632,7 @@ CREATE PROJECT
         Streaming
             progressively delivers the rendered content from the server
 
-8)CHACHING
+8)CACHING
     Instant auto caching on client of fetch requests. 
 
     REMOVES
@@ -2596,7 +2653,7 @@ CREATE PROJECT
     TYPES OF CACHE IN SERVER
         1)data cache
             Even if component needs to be rendered again, data will persist. 
-        2)full route cache
+        2)full router cache
             means the page and all its children compoonents will not run every time and will be frozen
     
 9)STATIC & DYNAMIC RENDERING
@@ -2708,6 +2765,11 @@ TO LEARN:
                 }
     2)clsx
         Is a simple library that lets you toggle class names easily. You can install it using npm install clsx
+        
+        PARAMETER
+            takes in [] or {} 
+        RETURNS
+            ""
     3)framer motion
         Production ready animation motion library for react
 
@@ -2738,6 +2800,10 @@ TO LEARN:
             }
         clsx(): Handles conditional class logic (e.g., isActive && "bg-blue-500").
         twMerge(): Deduplicates and resolves conflicting Tailwind classes.
+
+    loading states and caching
+        
+        
     streaming
     skeleton        
     sqlite
