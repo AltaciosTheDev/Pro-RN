@@ -13,7 +13,7 @@ type EventPageProps = {
 }
 
 
-export async function generateMetadata({params}: EventPageProps): Metadata {
+export async function generateMetadata({params}: EventPageProps): Promise<Metadata> {
   const {slug} = params
 
   const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events/${slug}`)
