@@ -2595,7 +2595,7 @@ CREATE PROJECT
         WHY
             Prevents the UI from rendering incomplete components
 
-        HOW DOES IT WORK
+        HOW DOES IT WORK(NATIVE / REACT)
             Wraps a component that may include async logic and provides a fallback to render in its place. 
 
             EXAMPLE
@@ -2603,15 +2603,30 @@ CREATE PROJECT
                     <ProductList />
                 </Suspense>
 
-        NEXT JS
+        NEXT JS implementation
             Loading.tsx
-                Special file in next to tell it that it is the fallback while something is loading.
-            
-            By using the loading component, next js automatically wraps the page in a suspense and provides the loading as fallback.
+                By using the loading component, next js automatically wraps the page in a suspense and provides the loading as fallback.
+
+            EXAMPLE
+                <Suspense fallback={<Loading/>}>
+                    <Page/>
+                </Suspense>
 
         USE CASE
             Show the page and suspense the component with the fetch that takes time to finish.
 
+        Definining own boundaries with suspense
+            Benefit
+                Instead of loading for the entire page, it will load what is availalble and provide suspense for the missing loading component.
+
+            Requirements for pattern to load
+                1)move aysnc operation to component that will load
+                    ej: From Events city page -> EventsList
+            Manually define suspense for component that needs it 
+                <Suspense fallback={<LoadingCity/>}>
+                    <EventsPage/>
+                </Suspense>
+            
     STREAMING
         Rendering content progressively from the server as it becomes available rather than waiting for the entire page to be ready before sending it to the client.
 
