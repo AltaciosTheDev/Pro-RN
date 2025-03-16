@@ -1,6 +1,5 @@
 import H1 from "@/app/components/H1"
 import { Evento } from "@/lib/types"
-import { sleep } from "@/lib/utils"
 import Image from "next/image"
 
 type Params = {
@@ -13,7 +12,7 @@ type EventPageProps = {
 
 export default async function EventPage({params}:EventPageProps) {
   const {slug} = params
-    await sleep(2000)
+    
     const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events/${slug}`)
     const event: Evento = await response.json()
     console.log('------------------')

@@ -1,9 +1,8 @@
 import EventsList from '@/app/components/EventsList'
 import H1 from '@/app/components/H1'
-import { Evento } from '@/lib/types'
-import { sleep } from '@/lib/utils'
 import React, { Suspense } from 'react'
-import LoadingCity from './Loading'
+import LoadingCity from './loading'
+
 
 type Params = {
   city: string
@@ -15,7 +14,6 @@ type EventsPageProps = {
 
 export default async function EventsPage({params}: EventsPageProps) {
   const {city} = params
-
 
   return (
     <main className='flex flex-col items-center py-24 px-[20px] min-h-[110vh]'>

@@ -1,15 +1,16 @@
 import { Evento } from '@/lib/types'
 import React from 'react'
 import EventCard from './EventCard'
-import { sleep } from '@/lib/utils'
+
+
 
 type EventsListProps = {
   city: string
 }
 
 export default async function EventsList({city}: EventsListProps) {
-  await sleep(2000)
-  const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`)
+  
+  const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events?city=${city}`,{next:{revalidate:300}})
   const events: Evento[] = await response.json()
   console.log(events)
 
