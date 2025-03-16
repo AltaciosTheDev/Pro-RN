@@ -2341,15 +2341,35 @@ CREATE PROJECT
             Defined in metadata object in page or layout
             HOW
                 React has predefined interfaces that convert that object to the required html. As long as the html exists, you can write the property and provide the values.
+
+                EXAMPLE
+                import type { Metadata } from 'next'
+
+                export const metadata: Metadata = {
+                    title: '...',
+                    description: '...',
+                }
+                
+                export default function Page() {}
+
         2)dynamic
-            using generatemetadata for dynamic values
+            You can use generateMetadata function to fetch metadata that requires dynamic values.
+
+            EXAMPLE
+                export function generateMetadata({params}: EventsPageProps) {
+                const {city} = params
+
+                return {
+                    title: `Events in ${city.charAt(0).toUpperCase() + city.substring(1)}`
+                    }
+                }
+
+            Can also fetch inside this dynamic function.
+            
         
     FAVICON
         Whatever has "favicon.ico" name inside the src folder will be the default favicon for the page.
-
-    METADATA TYPE
-        
-    
+            
 3)STYLING
     TAILWIND CSS
         Nextjs already integrates tailwind.css and removes configuration.

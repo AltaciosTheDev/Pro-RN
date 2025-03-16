@@ -10,3 +10,7 @@ export async function sleep(ms: number) {
     setTimeout(resolve, ms)
   })
 }
+
+export function capitalize(text: string){
+  return text.charAt(0).toUpperCase() + text.substring(1)
+}
