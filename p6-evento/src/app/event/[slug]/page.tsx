@@ -1,5 +1,4 @@
 import H1 from "@/app/components/H1"
-import { Evento } from "@/lib/types"
 import { capitalize, getEvent } from "@/lib/utils"
 import { Metadata } from "next"
 import Image from "next/image"
