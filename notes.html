@@ -2364,8 +2364,15 @@ CREATE PROJECT
                     }
                 }
 
-            Can also fetch inside this dynamic function.
-            
+            Can also fetch inside this dynamic function by fetching again.
+
+                PROBLEM
+                    what about performance doing a double fetch?
+
+                SOLUTION
+                    Data cache, will fetch only once and memoize the data and will never re fetch twice. 
+                
+                
         
     FAVICON
         Whatever has "favicon.ico" name inside the src folder will be the default favicon for the page.
@@ -2648,7 +2655,7 @@ CREATE PROJECT
                 </Suspense>
             
     STREAMING
-        Rendering content progressively from the server as it becomes available rather than waiting for the entire page to be ready before sending it to the client.
+        Render content on the server and send it to the client progresively as it is being generated instead of waiting for the entire page to be generated and sent to the client.
 
         WHY
             Allows the user to start interacting with it while other parts are still being fetched. 
@@ -2767,84 +2774,314 @@ GIT NEW KNOWLEDGE
 P6 - EVENTO 
 ----------------
 TO LEARN:
-    1)tailwind
-        Adding space between children
-            space-x-4
-        configuring accent color
-            config file
-                theme: {
-                    extend: {
-                        colors: {
-                            accent: "#a4f839",
-                        },
+
+1)tailwind
+    Adding space between children
+        space-x-4
+    configuring accent color
+        config file
+            theme: {
+                extend: {
+                    colors: {
+                        accent: "#a4f839",
                     },
-                }
-            consume in file
-                text-accent 
-         styling rules learned and used
-            overflow-y-scroll
-                has scrollbar always available for specified element
-        responsiveness
-            px-4 md:px-2
-                Start with the smaller screen value, and then specify bigger sizes
-        hover styles
-            hover:[rule]
-        classname prop combined with classname styling
-            cn function created combining clsx(conditional styling) and twmerge(resolving class conflicts)
-        @apply rule
-            In global css file create custom rule and @apply the styling requested, this will allow for the use in the rest of the app
-
-            EXAMPLE
-                .state-effects{
-                    @apply hover:scale-105 transition active:scale-[1.02]
-                }
-    2)clsx
-        Is a simple library that lets you toggle class names easily. You can install it using npm install clsx
-        
-        PARAMETER
-            takes in [] or {} 
-        RETURNS
-            ""
-    3)framer motion
-        Production ready animation motion library for react
-
-        CONTENT
-            animations
-            variants
-            gestures
-    4)tailwind merge
-        is a utility function that helps resolve class conflicts when using Tailwind CSS. It's commonly used to merge and deduplicate conflicting Tailwind classes dynamically.
-
-        why
-            1)Avoids Conflicting Classes
-            2)Improves Code Readability & Maintainability
-            3)Helpful in Dynamic Styling
-            4)combines with clsx
-        
-        EXAMPLE
-            <h1 className={twMerge("text-3xl lg:text-6xl font-bold tracking-tight", className)}>{children}</h1>
-    5)cn()
-        The cn function (short for "class names") is a utility function often used in React + Tailwind CSS projects to manage class names dynamically. It helps merge, conditionally apply, and deduplicate Tailwind classes.
-
-        EXAMPLE
-            import { twMerge } from "tailwind-merge";
-            import clsx, { ClassValue } from "clsx";
-
-            export function cn(...inputs: ClassValue[]) {
-                return twMerge(clsx(inputs));
+                },
             }
-        clsx(): Handles conditional class logic (e.g., isActive && "bg-blue-500").
-        twMerge(): Deduplicates and resolves conflicting Tailwind classes.
+        consume in file
+            text-accent 
+        styling rules learned and used
+        overflow-y-scroll
+            has scrollbar always available for specified element
+    responsiveness
+        px-4 md:px-2
+            Start with the smaller screen value, and then specify bigger sizes
+    hover styles
+        hover:[rule]
+    classname prop combined with classname styling
+        cn function created combining clsx(conditional styling) and twmerge(resolving class conflicts)
+    @apply rule
+        In global css file create custom rule and @apply the styling requested, this will allow for the use in the rest of the app
 
-    loading states and caching
+        EXAMPLE
+            .state-effects{
+                @apply hover:scale-105 transition active:scale-[1.02]
+            }
+2)clsx
+    Is a simple library that lets you toggle class names easily. You can install it using npm install clsx
+    
+    PARAMETER
+        takes in [] or {} 
+    RETURNS
+        ""
+3)framer motion
+    powerful animation library for React that allows developers to create smooth, modern animations with minimal effort.
+
+    Why 
+        Declarative animations 
+            Define animations in a simple and readable way.
+        Smooth performance 
+            Uses requestAnimationFrame for fluid animations.
+        Variants system 
+            Organize animations in a structured way.
+        Gestures & interactions 
+            Handle hover, drag, tap, and scroll animations easily.
+        Layout animations 
+            Animate elements as they reflow in the layout.
+
+    When 
+        For micro-interactions (buttons, hover effects, modal transitions).
+        For page transitions in single-page applications (SPAs) and Next.js.
+        For scroll animations (revealing elements on scroll).
+        For drag & drop animations (like Trello cards).
+
+    CONTENT
+        animations
+        variants
+        gestures
+
+    
+4)tailwind merge
+    is a utility function that helps resolve class conflicts when using Tailwind CSS. It's commonly used to merge and deduplicate conflicting Tailwind classes dynamically.
+
+    why
+        1)Avoids Conflicting Classes
+        2)Improves Code Readability & Maintainability
+        3)Helpful in Dynamic Styling
+        4)combines with clsx
+    
+    EXAMPLE
+        <h1 className={twMerge("text-3xl lg:text-6xl font-bold tracking-tight", className)}>{children}</h1>
+5)cn()
+    The cn function (short for "class names") is a utility function often used in React + Tailwind CSS projects to manage class names dynamically. It helps merge, conditionally apply, and deduplicate Tailwind classes.
+
+    EXAMPLE
+        import { twMerge } from "tailwind-merge";
+        import clsx, { ClassValue } from "clsx";
+
+        export function cn(...inputs: ClassValue[]) {
+            return twMerge(clsx(inputs));
+        }
+    clsx(): Handles conditional class logic (e.g., isActive && "bg-blue-500").
+    twMerge(): Deduplicates and resolves conflicting Tailwind classes.
         
+6)Skeleton        
+    Placeholder UI while the actual component is being loaded. 
+
+    WHY
+        so users can understand what to expect before the data is fully loaded. 
+
+    WHEN
+        in places where loading data may take up a little time.
+7)sqlite
+    Lightweight, self-contained, serverless db engine widely used for applications needing a simple, efficient and reliable way to store and manage data. 
+
+    WHAT
+        Database engine
+            RDBMS that follows SQL for managing data.
+        Serverless
+            unlike MySQL or PostgreSQL does not require a separate server. Operates directly on a database file.
+        File Based
+            All data, including tables, indexes, schemas are stored in a single .sqlite or .db file.
+        Lightweight
+            Size < 1mb
+            Requires minimal setup
+        Cross-Platform
+            Works on virtually any platform, desktop to mobile.
+    WHY
+        Ease   
+            No config or install needed, just include the SQLite library and start working.
+            Ideal for beginners
+        Embedded
+            Can be directly embedded into an application
+        Fast 
+            Optimized for performance
+            ACID compliant
+        Free & Open Source
+            Source code is in the public domain
+        Use Cases
+            Small-scale projects or prototyping before moving to larger database
+
+    HOW
+        Database File
+            Operates on a single file. "my_database.sqlite" contains all your data.
+        SQL Syntax
+            Uses standard SQL to interact with database.
+        Programming Interface 
+            accessed via:
+                CLI
+                Integrated into programming language
+
+8)prisma
+    Open source ORM for Node.js and Typescript that simplifies db access and management. 
+
+    COMPATIBLE WITH
+        PostgreSQL, MySQL, SQLite, SQL Server and Mongo
+
+    INITIALIZING
+        npx prisma init --datasource-provider sqlite
+            CREATES
+                .env -> add db url 
+                prisma (folder)
+                    schema.prisma -> define client & db
+        npx prisma db pull (if db already has data)
+            pulls data and auto generates schema
+    
+    KEY FEATURES
+        Type Safety
+            Auto generates Ts types for db schema, means you get:
+                1)autocompletion
+                2)error checking
+                3)refactoring support 
+
+            USAGE
+                Replace previous type with primsa model
+
+                EXAMPLE
+                    import { Evento } from "@/lib/types";
+                    import { Evento } from "@prisma/client";
         
-    streaming
-    skeleton        
-    sqlite
-    prisma
-    vercel
-      
+        Query Simplicity
+            Prisma
+                const users = await prisma.user.findMany({
+                    where: {
+                        age: { gt: 18 },
+                    },
+                    select: {
+                        name: true,
+                        email: true,
+                    },
+                });
+            Mongoose
+                const users = await User.find({ age: { $gt: 18 } }).select("name email");
+
+        Relations (Prisma’s Built-in Relations)
+            Prisma
+                const posts = await prisma.user.findUnique({
+                    where: { id: 1 },
+                    include: { posts: true }, // Fetch related posts
+                });
+            Mongoose
+                const posts = await User.findById(1).populate("posts").exec();
+        
+        Migrations natively
+            Prisma
+                npx prisma migrate dev --name init
+            Mongoose
+                Mongoose doesn’t support migrations natively. You need third-party tools like migrate-mongo.
+
+    Scheming db with Prisma Schema
+        Prisma uses a schema file (schema.prisma) to define your database models. You define:
+            1)models
+            2)relationships
+            3)data constraints
+        SYNTAX
+            model Table {
+                columns -> datatype -> constraints
+                id  -> Int  -> @id @default(autoincrement())
+
+                RELATION
+                weaponId Weapon @relation(fields:[weaponId], references:[id])
+                @@index(weaponId)
+            }   
+            model Weapon {
+                id  -> Int  -> @id @default(autoincrement())
+            }
+
+    Prisma Migrate
+        Powerful tool for handling db migration.
+
+        HOW
+            1)version control db schema
+            2)track changes
+            3)migrate safely across environemnts
+        
+        KEY
+            Auto generates migration files based on changes to prisma schema and apply them to the db.
+            In other words
+                Maintains migration as db evolves 
+
+        npx prisma migrate
+            npx prisma migrate dev --name init
+
+            This command did three things:
+                It created a new SQL migration file for this migration in the prisma/migrations directory.
+                It executed the SQL migration file against the database.
+                It ran prisma generate under the hood (which installed the @prisma/client package and generated a tailored Prisma Client API based on your models).
+
+        Db push vs migrate
+            npx prisma db push	
+                Syncs schema changes without migrations	
+                When
+                    During development when making quick changes
+                How 
+                    Directly updates the database schema to match schema.prisma without keeping migration history
+                Risk
+                    If you delete a field, data is lost immediately.
+            npx prisma migrate	
+                Creates migrations to track schema changes	
+                When
+                    When working in production or version-controlled projects	
+                How
+                    Generates SQL migration files and applies them to keep track of changes
+                Benefits
+                    It creates migration files and applies them.
+                    Keeps a history of changes (useful for teamwork and production).
+                    Prisma warns if there are destructive changes (e.g., deleting a column).
+                    You can rollback changes if needed.
+    Prisma Studio
+        Visual Interface for interactin with db.
+        
+        ALLOWS
+            1)browse data
+            2)run queries
+            3)perfrom CRUD
+
+        COMMAND
+            npx prisma studio 
+
+    Prisma Client
+        Type safe db client that allows for you to interact with your db using Js or Ts.
+
+        HOW
+            Abstracts the SQL queries and provides fluent API to... in db
+                1)query
+                2)create
+                3)update
+                4)delete
+
+        EXAMPLE
+            const prisma = new PrismaClient();
+            / Query all users
+            const users = await prisma.user.findMany();
+            // Create a new user
+            const newUser = await prisma.user.create({
+                data: {
+                    name: 'John Doe',
+                    email: 'johndoe@example.com',
+                },
+            });            
+    
+    Prisma seeding
+        Prisma provides a built-in way to seed a database using a seed script.
+
+        HOW
+            1)Define Your Seed Data (prisma/seed.ts or seed.js)
+            2)Configure the package.json Script
+                 "prisma": {
+                    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+                }
+            *)install ts-node if you have not
+                npm install -D ts-node
+            3)Run the Seed Script
+                npx prisma db seed
+
+    Upsert
+        Will not create new if record already exists.
+    
+    
+                    
+9)vercel
+    
 LEARNED SUMMARY
     Always wrap inputs in form
         No matter where they are, an input should never go without a form.
@@ -2917,6 +3154,9 @@ LEARNED SUMMARY
                 <SectionHeading>About this event</SectionHeading>
                 <p className="text-lg leading-8 text-white/75 max-w-4xl mx-auto">{event.description}</p>
             </Section>
+    seeding db 
+        populating with intial or test data
+    
     
         
 
