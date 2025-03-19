@@ -3010,8 +3010,8 @@ TO LEARN:
             This command did three things:
                 It created a new SQL migration file for this migration in the prisma/migrations directory.
                 It executed the SQL migration file against the database.
-                It ran prisma generate under the hood (which installed the @prisma/client package and generated a tailored Prisma Client API based on your models).
-
+                It ran (prisma generate) under the hood (which installed the @prisma/client package and generated a tailored Prisma Client API based on your models).
+                    This is what provides the autocomplete for you based on your models
         Db push vs migrate
             npx prisma db push	
                 Syncs schema changes without migrations	

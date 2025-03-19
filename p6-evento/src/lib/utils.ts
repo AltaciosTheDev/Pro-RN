@@ -22,6 +22,9 @@ export async function getEvents(city: string) {
   const events = await prisma.evento.findMany({
     where:{
       city: city === "all"? undefined :capitalize(city) //must match exactly 
+    },
+    orderBy: {
+      date: "asc"
     }
   })
   return events
