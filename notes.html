@@ -3079,12 +3079,29 @@ TO LEARN:
             3)Run the Seed Script
                 npx prisma db seed
 
-    Upsert
-        Will not create new if record already exists.
-    
-    
-                    
+    Methods used from API        
+        Upsert
+            Will not create new if record already exists.
+        Get 1 
+            findUnique()
+        Get all
+            findMany()
+        filter
+            where{prop: value}
+        sort
+            orderBy:{
+                date:"asc"
+            }
+                        
 9)vercel
+
+FEATURES
+--------
+Server Side Pagination
+    WHY
+        To load only what is necessary. Too many records will slow the page down.
+    
+    
     
 LEARNED SUMMARY
     Always wrap inputs in form

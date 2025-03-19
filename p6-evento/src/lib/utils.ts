@@ -1,6 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import clsx, { ClassValue } from "clsx";
 import prisma from "./db";
+import { notFound } from "next/navigation";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,6 +14,9 @@ export async function sleep(ms: number) {
 }
 
 export function capitalize(text: string){
+  if (!text) {
+    throw new Error('Text is undefined or empty');
+  }
   return text.charAt(0).toUpperCase() + text.substring(1)
 }
 
@@ -30,15 +34,21 @@ export async function getEvents(city: string) {
   return events
 }
 
-export async function getEvent(slug: string){
-  // const response = await fetch(`https://bytegrad.com/course-assets/projects/evento/api/events/${slug}`)
-  // const event: Evento = await response.json()
+export async function getEvent(slug: string) {
+  try {
+    const event = await prisma.evento.findUnique({
+      where: {
+        slug: slug,
+      },
+    });
 
-  //DIFFERENCE B/C of NEXT - without it we would need to fetch normally through a route
-  const event = await prisma.evento.findUnique({
-    where:{
-      slug:slug
+    if (!event) {
+      throw new Error('Event not found');
     }
-  })
-  return event
+
+    return event;
+  } catch (error) {
+    console.error('Error fetching event:', error);
+    return notFound();
+  }
 }
