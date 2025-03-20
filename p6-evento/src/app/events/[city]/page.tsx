@@ -40,7 +40,7 @@ export default async function EventsPage({params, searchParams}: EventsPageProps
       {city !== 'all' && `Events in ${capitalize(city)}`} 
       </H1>
 
-    <Suspense fallback={<LoadingCity/>}>
+    <Suspense key={city + page} fallback={<LoadingCity/>}>
       <EventsList city={city} page={+page}/>
     </Suspense>
     </main>

@@ -13,7 +13,7 @@ type EventsListProps = {
 
 export default async function EventsList({city, page}: EventsListProps) {
   
-  const {events, itemsOnPage} = await getEvents(city, page)
+  const {events, itemsOnPage} = await getEvents(city, page) //server action 
   
   const previousPath = page > 1 ? `/events/${city}?page=${page-1}` : ""
   const nextPath =`/events/${city}/?page=${page+1}`

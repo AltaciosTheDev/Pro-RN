@@ -2540,6 +2540,24 @@ CREATE PROJECT
                     const events = await response.json()
                     console.log(events)
 
+        RE RENDERING SERVER COMPONENTS WITH NO STATE
+            server components use URL as source of truth
+
+            WHEN
+                If this component is a server component (which it likely is, since it’s an async function and has no client-side state), Next.js will re-fetch and re-render whenever the URL parameters change.
+
+            PROBLEM
+                We lose the fallback / loading indicator with server components and pagination.
+
+            SOLUTION
+                FIRST REAL good use of the key prop
+                PURPOSE
+                    to indicate something is unique, and can be used as dependency array
+                SYNTAX
+                    key={city + page}
+                HOW
+                    The key ensures React treats it as a new component, forcing a remount and re-triggering <Suspense>.
+
     CLIENT COMPONENT
         Traditional client rendered react component meant for interactity:
             1)click events
@@ -3151,6 +3169,8 @@ Server Side Pagination
             icons
                 Install radix
                     npm i @radix-ui/react-icons
+    Benefit of server side pagination
+        almost no logic in the client, server handles most of it.
         
             
         
@@ -3232,6 +3252,8 @@ LEARNED SUMMARY
         populating with intial or test data
     advantages of abstracting fetch functions
         When switching db systems, it is insanely easier to to do. (bytegrad server -> local sqlite db file)
+    advantages of server side pagination
+        server manages all data and logic, client only receives. 
     
     
         
