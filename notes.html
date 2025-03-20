@@ -2287,7 +2287,7 @@ CREATE PROJECT
                     Meaning most of the work is done when actually clicking it.
                 2)Does not work with external link, need anchor tag.
 
-        USEROUTER()
+        USEROUTER() -> to be used in client components
             The useRouter hook allows you to programmatically change routes from Client Components.
 
             EXAMPLE
@@ -2303,7 +2303,7 @@ CREATE PROJECT
                     </button>
                 )
             }
-        redirect function
+        redirect function -> to be used in server components 
             For Server Components, use the redirect function instead.
 
             EXAMPLE
@@ -2330,6 +2330,17 @@ CREATE PROJECT
                     const pathname = usePathname()
                     return <p>Current pathname: {pathname}</p>
                     }
+        notFound()
+            Invoking the notFound() function:
+                1)throws: a NEXT_NOT_FOUND error
+                2)terminates rendering of the route segment in which it was thrown. 
+            Specifying a not-found file allows you to gracefully handle such errors by rendering a Not Found UI within the segment.
+                    
+            EXAMPLE
+                if (!user) {
+                    notFound()
+                }
+                        
         
 
     
@@ -3092,16 +3103,58 @@ TO LEARN:
             orderBy:{
                 date:"asc"
             }
+        count
+            Use count() to count the number of records or non-null field values. 
+                const userCount = await prisma.user.count()
+            BENEFIT
+                dont have to do logic on the client side
+        
                         
 9)vercel
 
 FEATURES
 --------
+Serving not found route
+    WHEN
+        if (!event) -> no matching route param
+    HOW
+        import { notFound } from "next/navigation";
+        return notFound();
+    IMPORTANT
+        if it is not imported from next/navigation it will not work. 
+
+
 Server Side Pagination
     WHY
         To load only what is necessary. Too many records will slow the page down.
-    
-    
+    searchParams
+        provided to server components just like params
+    type searchParams
+        type SearchParams = {
+            searchParams: {[key: string]: string | string[] | undefined }
+        }
+    send as page prop to eventslist
+        page={+page}
+    consume in eventslist
+        EventsList({city, page}: EventsListProps)
+    send to getEvents util function
+        getEvents(city, page)
+    provide to take as number for prisma fetch
+        LIMIT IN PRISMA
+            take
+                provide PAGE
+    PaginationControls component
+        Links
+            href
+                const previousPath = page > 1 ? `/events/${city}?page=${page-1}` : ""
+                const nextPath =`/events/${city}/?page=${page+1}`
+            icons
+                Install radix
+                    npm i @radix-ui/react-icons
+        
+            
+        
+
     
 LEARNED SUMMARY
     Always wrap inputs in form

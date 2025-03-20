@@ -10,11 +10,17 @@ type Params = {
   city: string
 }
 
-type EventsPageProps = {
+type Props = {
   params: Params
 }
 
-export function generateMetadata({params}: EventsPageProps): Metadata {
+type SearchParams = {
+  searchParams: {[key: string]: string | string[] | undefined }
+}
+
+type EventsPageProps = Props & SearchParams
+
+export function generateMetadata({params}: Props): Metadata {
   const {city} = params
 
   return {
@@ -22,8 +28,10 @@ export function generateMetadata({params}: EventsPageProps): Metadata {
   }
 }
 
-export default async function EventsPage({params}: EventsPageProps) {
+export default async function EventsPage({params, searchParams}: EventsPageProps) {
   const {city} = params
+  const page = searchParams.page || 1 // if undefined, default to 1. || coming from the search query it will be string, convert to number.
+  console.log(page)
 
   return (
     <main className='flex flex-col items-center py-24 px-[20px] min-h-[110vh]'>
@@ -33,7 +41,7 @@ export default async function EventsPage({params}: EventsPageProps) {
       </H1>
 
     <Suspense fallback={<LoadingCity/>}>
-      <EventsList city={city}/>
+      <EventsList city={city} page={+page}/>
     </Suspense>
     </main>
   )
