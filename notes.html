@@ -2203,8 +2203,10 @@ CREATE PROJECT
             template
                 TBD
             not-found
-                Automatically handles every not found URL for the entire application. 
-                No need to manually define the not found component and * url. 
+                Automatically handles every not found URL for the entire application.
+                
+                BENEFIT
+                    No need to manually define the not found component and * url. 
 
             loading.tsx
                 The special file loading.js helps you create meaningful Loading UI with React Suspense. With this convention, you can show an instant loading state from the server while the content of a route segment loads. The new content is automatically swapped in once rendering is complete.
@@ -2255,8 +2257,66 @@ CREATE PROJECT
                             for controlling specific component
                         loading
                             for controlling an entire page
-            error
-                TBD
+            error.js/ts
+                Allows to handle unexpected runtime errors and display fallback UI.
+
+                MUST
+                    be client component
+                
+                TYPING
+                    export default function Error({
+                        error,
+                        reset,
+                        }: {
+                        error: Error & { digest?: string }
+                        reset: () => void
+                    })
+                USAGE
+                    Normal writing whatever you want.
+                HOW
+                    Wraps a segment in an error bounday, pretty much the entire app is wrapped around the boundary. Same functioning as the page. 
+
+                    <ErrorBoundary fallback={<p>Something went wrong</p>}>
+                        <Profile />
+                    </ErrorBoundary>
+                PROPS
+                    error
+                        instance of the Error object.
+                        error.message
+                            client components
+                                show the original error message
+                            server components
+                                generic message with an identifier
+                        error.digest
+                            auto generated hash of the error thrown
+                    reset
+                        function that will try to re render the component 
+                    mmanual sent error
+                        any error thrown in the route will be used here.
+
+                        EXAMPLE
+                            if(!parsedPage.success){
+                                throw new Error('Invalid page number')
+                            }
+                            result
+                                Invalid page number will be shown in the error.js/ts
+                    
+
+                BENEFITS
+                    centralized
+                        instead of separately handling (like loading), it centralizes it in a route or layout.
+                    improves ui
+                        no more breaking app or blank screen
+                    auto passing error to the error file
+                        no more manual passing of the object by yourself
+                    supports auto recovery 
+                        auto provides function to try again 
+                    scoped error handling
+                        placing it in a specific folder will make it work only there(like loading)
+                
+                    
+                                            
+                    
                 
     NAVIGATION
         Way to navigate:
@@ -2736,8 +2796,86 @@ CREATE PROJECT
         HOW TO FORCE A COMPONENT TO BE DYNAMIC
             export const dynamic = "force-dynamic" at top of file
 10)MIDDLEWARE
-    Something to run before the request hits the server
+    Middleware allows you to run code before a request is completed. Then, based on the incoming request, you can modify the response by:
+        1)rewriting
+        2)redirecting
+        3)modifying the request or response headers
+        4)or responding directly.
+    
+    COMMON USE CASES
+        1)authentication
+            ensure user identify
+        2)authorization
+            grant access to specific pages or routes
+        3)server side redirects
+            redirecting users in the server directly
+        4)path rewriting
 
+    Convention
+        Use the file middleware.js/ts in the root of the project to define middleware.
+            Limit
+                Only 1 file is supported per project
+            Solution
+                modularity
+                    break them into modules in different files and import them in the middleware.js/ts
+    TYPES
+        import { NextResponse } from 'next/server'
+        import type { NextRequest } from 'next/server'
+    EXAMPLE
+        This function can be marked `async` if using `await` inside
+            export function middleware(request: NextRequest) {
+            return NextResponse.redirect(new URL('/home', request.url))
+        }
+    NEXTRESPONSE
+        The NextResponse API allows you to:
+            redirect the incoming request to a different URL
+            rewrite the response by displaying a given URL
+            Set request headers for API Routes, getServerSideProps, and rewrite destinations
+            Set response cookies
+            Set response headers
+    WHERE TO USE
+        Use the file middleware.ts (or .js) in the root of your project to define Middleware. For example, at the same level as app or pages, or inside src if applicable.
+    
+    WHEN IS IT INVOKED
+        Middleware will be invoked for every route in your project. 
+        
+        B/C OF THIS IS CRUTIAL TO
+            Use matchers to precisely target or exclude specific routes. 
+
+            EXECUTION ORDER OF MATCHERS
+                headers from next.config.js
+                redirects from next.config.js
+                Middleware (rewrites, redirects, etc.)
+                beforeFiles (rewrites) from next.config.js
+                Filesystem routes (public/, _next/static/, pages/, app/, etc.)
+                afterFiles (rewrites) from next.config.js
+                Dynamic Routes (/blog/[slug])
+                fallback (rewrites) from next.config.js
+
+    WAYS TO DEFINE MATCH
+        1)Custom matcher config
+        2)Conditional statements
+
+        CUSTOM MATCHER CONFIG
+            matcher allows you to filter Middleware to run on specific paths.
+
+            SINGLE
+                export const config = {
+                    matcher: '/about/:path*',
+                }
+
+            MULTIPLE
+                export const config = {
+                    matcher: ['/about/:path*', '/dashboard/:path*'],
+                }
+        CONDITIONAL
+            
+            
+        
+        
+
+
+                        
     USE CASE
         1)check if logged in 
     
@@ -3127,8 +3265,67 @@ TO LEARN:
             BENEFIT
                 dont have to do logic on the client side
         
-                        
-9)vercel
+9)zod
+    Zod is a TypeScript-first schema declaration and validation library.
+    
+    ALLOWS
+        1)define data schemas
+        2)validate inputs
+        3)infer TypeScript types all in one place.
+    FEATURES
+        1)TypeScript-first (auto-infers types) / NO NEED FOR SEPARATE TYPES(like prisma i guess)
+        2)No external dependencies
+        3)Chainable, expressive validation API
+        4)Works both server-side and client-side(node, react/next)
+        5)Detailled error messages and autocompletion
+    WHY
+        Data VALIDATION is necessary to ensure data INTEGRITY.
+    
+        WHETHER ... you NEED a reliable way to check data is structured correctly.
+            1)handling api requests
+            2)form validation
+            3)db interactions
+
+   BEST FOR
+        1)TypeScript-heavy projects
+        2)API validation (Express, Next.js)
+        3)Form validation (React, Vue)
+        4)Schema-based data validation
+    
+    WITHOUT
+        You'd have to manually:
+            1) check types
+            2)handle erros
+            3)write a lot of boilerplate code
+    WITH
+        Declarative way to...schemas
+            1)DEFINE
+            2)ENFORCE   
+    HOW
+        uses schema definitions to validate data and infer ts types
+            
+        DEFINE SCHEMA
+            const userSchema = z.object({
+                name: z.string(),
+                age: z.number().min(18), // Must be at least 18
+                email: z.string().email(), // Must be a valid email
+            });
+        PARSE
+            const result = userSchema.safeParse({ name: "John", age: 25, email: "john@example.com" });
+        VALIDATE
+            if (result.success) {
+                console.log("Valid data:", result.data);
+            } else {
+                console.error("Validation errors:", result.error);
+            }
+    
+    INSTALL
+        npm i zod
+
+
+
+10)vercel
+
 
 FEATURES
 --------
@@ -3172,9 +3369,24 @@ Server Side Pagination
     Benefit of server side pagination
         almost no logic in the client, server handles most of it.
         
+Zod validation in evento for incoming data 
+    WHY
+        1)page number
+            1)page number is int
+            2)page number is > 0 
+        2)search form
             
-        
 
+    EXAMPLE
+        const pageNumberSchema = z.coerce.number().int().positive().optional()
+          if(!parsedPage.success){
+            throw new Error('Invalid page number')
+        }const parsedPage = pageNumberSchema.safeParse(searchParams.page)
+    
+Middleware in evento(use cases, redirecting)
+    if user visits /events -> redirect to /events/all
+
+    
     
 LEARNED SUMMARY
     Always wrap inputs in form

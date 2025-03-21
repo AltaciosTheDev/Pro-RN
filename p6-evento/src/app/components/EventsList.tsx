@@ -8,10 +8,10 @@ import { ITEMS_PER_PAGE } from '@/lib/constants'
 
 type EventsListProps = {
   city: string
-  page: number
+  page?: number
 }
 
-export default async function EventsList({city, page}: EventsListProps) {
+export default async function EventsList({city, page = 1}: EventsListProps) {
   
   const {events, itemsOnPage} = await getEvents(city, page) //server action 
   
