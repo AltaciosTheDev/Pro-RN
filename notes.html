@@ -2313,11 +2313,7 @@ CREATE PROJECT
                         auto provides function to try again 
                     scoped error handling
                         placing it in a specific folder will make it work only there(like loading)
-                
-                    
-                                            
-                    
-                
+
     NAVIGATION
         Way to navigate:
             1)<Link> Component
@@ -2346,6 +2342,32 @@ CREATE PROJECT
                 1)Prefetches pages in prod
                     Meaning most of the work is done when actually clicking it.
                 2)Does not work with external link, need anchor tag.
+
+            PROPS
+                The following can be passed
+                
+                Prop	        Example	            Type	            Required
+                href	        href="/dashboard"	String or Object	Yes
+                replace	        replace={false}	    Boolean	            -
+                scroll	        scroll={false}	    Boolean	            -
+                prefetch	    prefetch={false}	Boolean or null	    -
+
+            PREFETCH
+                WHERE
+                    Prod ONLY
+                WHEN
+                    Link component enters users viewport 
+                HOW
+                    Prefetches the route it is linking to. 
+                    Receives the RSC payload (result of rendering a server component) and puts it in the client-side cache(router cache)
+                VALUES
+                    null
+                        static  -> full route prefetched
+                        dynamic -> all static to nearest loading boundary
+                    true
+                        full for both static and dynamic
+                    false
+                        never happens
 
         USEROUTER() -> to be used in client components
             The useRouter hook allows you to programmatically change routes from Client Components.
