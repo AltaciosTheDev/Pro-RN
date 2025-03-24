@@ -7,11 +7,17 @@ import React from "react";
 const btnStyles =
   "justify-center flex items-center gap-2 text-white px-5 py-3 bg-white/5 rounded-lg opacity-75 hover:opacity-100 transition text-sm";
 
+type PaginationControlProps = {
+  previousPath: string
+  nextPath: string
+  itemsOnPage: number
+}
+
 export default function PaginationControls({
   previousPath,
   nextPath,
   itemsOnPage,
-}) {
+}: PaginationControlProps) {
   return (
     <section className="flex w-full justify-between">
       {previousPath && (

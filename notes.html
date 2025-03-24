@@ -2788,13 +2788,56 @@ CREATE PROJECT
             means the page and all its children compoonents will not run every time and will be frozen
     
 9)STATIC & DYNAMIC RENDERING
+    They determine HOW and WHEN a page is built and delivered to the user. 
+
     STATIC(prod)
-        Only runs during build
+        WHEN
+            Static rendering means that HTML is generated at build time, before the request is made by the user.
+        
+        HOW
+            The page is generated once, and it is then served from a static file to the user for every request, which makes it very fast.
+
     DYNAMIC(dev)
-        Runs every time the route is accessed.
+        WHEN
+            Dynamic rendering means the HTML is generated at request time on the server, for each individual request.
+        HOW
+            The page is built dynamically based on the request parameters (e.g., query params, headers, etc.) and delivered to the user at runtime.
 
         HOW TO FORCE A COMPONENT TO BE DYNAMIC
             export const dynamic = "force-dynamic" at top of file
+
+        PRE-GENERATING OF POPULAR ROUTES 
+            Dynamic routes will not be statically rendered during build. However, you can still statically render some popular routes. 
+
+            generateStaticParams()
+                Used with dynamic route segments to statically generate routes at build time INSTEAD of on-demand at request time. 
+                
+                EXAMPLE
+                    // Return a list of `params` to populate the [slug] dynamic segment
+                        export async function generateStaticParams() {
+                        const posts = await fetch('https://.../posts').then((res) => res.json())
+                        
+                        return posts.map((post) => ({
+                            slug: post.slug,
+                        }))
+                    }
+                RETURNS
+                    Array of objects
+                        each object
+                            represents the populated dynamic segment of a single route. 
+                            Each property
+                                is a dynamic segmenet to be filled in for the route.
+                
+            
+    STATIC VS DYNAMIC
+        Feature	                        Static Rendering (SSG)	                                Dynamic Rendering (SSR)
+        When is the HTML generated?	    At build time	                                        At request time
+        Data fetching	                Fetches data only at build time using getStaticProps	Fetches data on each request using getServerSideProps
+        Performance	                    Very fast — pre-built HTML served	                    Slower — server must generate HTML for each request
+        Content freshness	            Content might be outdated (use revalidation)	        Content is always fresh and up-to-date
+        Caching	                        Cached on CDN or server	                                Typically not cached unless manually configured
+        Best for	                    Static content (e.g., blogs, landing pages)	            Dynamic content (e.g., user profiles, real-time data)
+    
 10)MIDDLEWARE
     Middleware allows you to run code before a request is completed. Then, based on the incoming request, you can modify the response by:
         1)rewriting

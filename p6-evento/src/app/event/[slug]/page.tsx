@@ -22,6 +22,16 @@ export async function generateMetadata({params}: EventPageProps): Promise<Metada
   }
 }
 
+export async function generateStaticParams() {
+  //top 100 mnost popular events 
+  return [{
+    slug: 'comedy-extravaganza'
+  },{
+    slug: 'dj-practice-session'
+  }
+]
+}
+
 export default async function EventPage({params}:EventPageProps) {
   const {slug} = params
     
