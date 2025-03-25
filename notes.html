@@ -2999,10 +2999,8 @@ CREATE PROJECT
         1)kinde
         2)nextAuth
 
-11)FOLDER STRUCTURE
-    ...
 12)PRODUCTION: BUILD AND DEPLOYING
-    STATIC EXPORT
+    STATIC EXPORT(no server)
         Only html, css, js files
 
         HOW
@@ -3013,7 +3011,8 @@ CREATE PROJECT
         DOWNSIDE
             Loss in all server features
 
-    NEXTJS app = nodejs app
+    WHAT IS A NEXTJS APP
+        nodejs app
         
     .NEXT folder
         Folder with the build app
@@ -3288,13 +3287,19 @@ TO LEARN:
                     This is what provides the autocomplete for you based on your models
         Db push vs migrate
             npx prisma db push	
-                Syncs schema changes without migrations	
+                Syncs schema changes TO DB without migrations	
                 When
                     During development when making quick changes
                 How 
                     Directly updates the database schema to match schema.prisma without keeping migration history
                 Risk
                     If you delete a field, data is lost immediately.
+                RESULTS
+                    Environment variables loaded from .env
+                    Prisma schema loaded from prisma\schema.prisma
+                    Datasource "db": PostgreSQL database "neondb", schema "public" at "ep-floral-salad-a547yxse-pooler.us-east-2.aws.neon.tech"
+                    Your database is now in sync with your Prisma schema. Done in 2.58s
+                    ✔ Generated Prisma Client (v5.6.0) to .\node_modules\@prisma\client in 83ms
             npx prisma migrate	
                 Creates migrations to track schema changes	
                 When
@@ -3429,9 +3434,44 @@ TO LEARN:
     INSTALL
         npm i zod
 
+9)Opengraph images
+    PURPOSE
+        enhance the appearance of shared links on social media platforms like Facebook, Twitter, LinkedIn, and others.
 
-
+    WHEN
+        you share a URL, these platforms look for special meta tags in the page's HTML to display a rich preview, including a title, description, and image.
+    
+    In Next.js
+        og:image meta tag in the <head> of your page. 
+    
+        SETTING
+            import Head from 'next/head';
+             return 
+                <Head>
+                    <title>{event.name}</title>
+                    <meta name="description" content={event.description} />
+                    
+                    {/* OpenGraph meta tags */}
+                    <meta property="og:title" content={event.name} />
+                    <meta property="og:description" content={event.description} />
+                    <meta property="og:image" content={ogImageUrl} />
+                    <meta property="og:url" content={`https://yourdomain.com/events/${event.slug}`} />
+                    <meta property="og:type" content="website" />
+                </Head>
+    
 10)vercel
+    DEPLOYMENT
+        Does not support sqlite.
+
+        MIGTRATE TO POSTGRES    
+            1)vercel storage
+            2)severless neon db
+            3).env vars to .env file
+            4)connection url to schema.prisma
+            5)npx prisma db push -> push changes in schema to connect to new db
+            6)npx prisma db seed -> re populate db default rows 
+            7)add script -> "postinstall": "prisma generate" -> it will give error if not created
+        
 
 
 FEATURES
