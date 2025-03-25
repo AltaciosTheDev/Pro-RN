@@ -2684,8 +2684,6 @@ CREATE PROJECT
         2)Client in server1 -> use client 
         3)Server in Client -> render as children prop
 
-
-
 6)SERVER ACTIONS(POST,PUT,DELETE)
     Feature that allows to define functions in the server that can be called from the client, to perform server side operations without the need for API routes. 
 
@@ -2719,6 +2717,15 @@ CREATE PROJECT
             Call the action in the CSC
         Handle response
             Once executed, handle response on the client side.
+
+    AVOIDING USING A SERVER ACTION IN A CLIENT COMPONENT
+        WHY
+            1)secrets
+            2)errors
+        HOW
+            server-utils.ts file hahaha
+    
+        
 
 7)SUSPENSE AND STREAMING
     Cutting edge features that leverage the latest advancement in React for working with SSR
@@ -2808,6 +2815,41 @@ CREATE PROJECT
             Even if component needs to be rendered again, data will persist. 
         2)full router cache
             means the page and all its children compoonents will not run every time and will be frozen
+
+    ORM CACHING
+        No, Next.js does not automatically cache Prisma queries. You must manually implement caching using:
+            1)Redis or Upstash for external caching.
+            2)Next.js Request Memoization (React cache() function).
+            3)Revalidation (revalidatePath) in Server Actions. 
+                        
+        WHY
+            The idea is that using the ORM, the ORM should know better how and when to cache.
+
+        unstable_cache() -> for ORM use
+            Allows you to cache the response of expensive operations like db queries and reuse them across multiple requests. 
+            
+            SYNTAX
+                const data = unstable_cache(fetchData, keyParts, options)()
+            PARAMS
+                fetchData
+                    This is an asynchronous function that fetches the data you want to cache. 
+                    RETURNS
+                        MUST be a promise
+                keyParts
+                    This is an extra array of keys that further adds identification to the cache. 
+                    DEFAULT
+                        unstable_cache already uses the arguments and the stringified version of your function as the cache key.
+                options
+                    Behavior of cache.
+                        tags
+                            An array of tags that can be used to control cache invalidation. 
+                            Next.js will not use this to uniquely identify the function.
+                        revalidate
+                            The number of seconds after which the cache should be revalidated. 
+
+
+                
+
     
 9)STATIC & DYNAMIC RENDERING
     They determine HOW and WHEN a page is built and delivered to the user. 

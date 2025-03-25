@@ -1,5 +1,7 @@
 import H1 from "@/app/components/H1"
-import { capitalize, getEvent } from "@/lib/utils"
+import notFound from "@/app/not-found"
+import { getEvent } from "@/lib/server-utils"
+import { capitalize} from "@/lib/utils"
 import { Metadata } from "next"
 import Image from "next/image"
 
@@ -18,8 +20,8 @@ export async function generateMetadata({params}: EventPageProps): Promise<Metada
   const event = await getEvent(slug)
 
   return {
-    title: `${capitalize(event.name)}`
-  }
+    title: "Event not found"
+  };
 }
 
 export async function generateStaticParams() {
@@ -36,8 +38,11 @@ export default async function EventPage({params}:EventPageProps) {
   const {slug} = params
     
     const event = await getEvent(slug)
-    console.log('------------------')
-    console.log(event)
+    
+    if (!event) {
+      return notFound();  // This renders a 404 page
+    }
+
   return <main>
     <section className="relative overflow-hidden flex justify-center items-center">
       <Image

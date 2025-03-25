@@ -1,8 +1,7 @@
 import React from 'react'
 import EventCard from './EventCard'
-import { getEvents } from '@/lib/utils'
 import PaginationControls from './pagination-controls'
-import { ITEMS_PER_PAGE } from '@/lib/constants'
+import { getEvents } from '@/lib/server-utils'
 
 
 
